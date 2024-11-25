@@ -271,5 +271,6 @@ Particle_Renderer<Galaxy_Particle_Info, Billboard_Vertex_Buffer> Galaxy_Particle
 Particle_Renderer<Volumetric_Cone_Particle_Info, Model_Vertex_Buffer> Volumetric_Cone_Particles;
 
 Particle_Renderer<Smoke_Particle_Info, Model_Vertex_Buffer> Bubble_Particles;
+Particle_Renderer<Smoke_Particle_Info, Model_Vertex_Buffer> Colour_Bubble_Particles;
 
 #endif

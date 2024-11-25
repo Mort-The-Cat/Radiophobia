@@ -77,6 +77,9 @@ void Render_All()
 	Billboard_Fire_Particles.Shader.Activate();
 	Billboard_Fire_Particles.Render();
 
+	Colour_Bubble_Particles.Shader.Activate();
+	Colour_Bubble_Particles.Render();
+
 	//
 
 	// Galaxy_Particles.Shader.Activate();
@@ -147,6 +150,7 @@ void Engine_Loop()
 		Volumetric_Cone_Particles.Update();
 
 		Bubble_Particles.Update();
+		Colour_Bubble_Particles.Update();
 
 		// Galaxy_Particles.Update();
 
@@ -181,12 +185,12 @@ void Engine_Loop()
 			{
 				glm::vec3 Position, Velocity;
 
-				Position = glm::vec3(RNG() - 3.0f, RNG() - 4.0f, RNG() - 3.0f);
+				Position = glm::vec3(RNG() - 3.0f, RNG() - 4.4f, RNG() - 3.0f);
 
 				Velocity = glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f);
 
 				Bubble_Particles.Particles.Spawn_Particle(Position, Velocity);
-				// Bubble_Colour_Particles.Particles.Spawn_Particle(Position, Velocity);
+				Colour_Bubble_Particles.Particles.Spawn_Particle(Position, Velocity);
 
 				// Bubble_Particles.Particles.Spawn_Particle(glm::vec3(RNG() - 3.0f, RNG() - 4.0f, RNG() - 3.0f), glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f));
 				// Bubble_Colour_Particles.Particles.Spawn_Particle(glm::vec3(RNG() - 3.0f, RNG() - 4.0f, RNG() - 3.0f), glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f));

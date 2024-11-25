@@ -18,6 +18,9 @@ float Particle_Gravity = -0.15; //Particle_Data[Particle_Index + 7];
 
 out vec2 Refracted_Vector;
 
+out vec3 Position;
+out vec3 Normal;
+
 void main()
 {
 	vec4 Transformed_Position = vec4(In_Position * 3 + Particle_Position, 1.0f);
@@ -25,6 +28,10 @@ void main()
 	Transformed_Position.xyz += Particle_Velocity * log(Particle_Age + 1);
 
 	Transformed_Position.y += Particle_Gravity * Particle_Age;
+
+	Position = Transformed_Position.xyz;
+
+	Normal = In_Normal; // This object doesn't have any rotation rn
 
 	gl_Position = Projection_Matrix * Transformed_Position;
 

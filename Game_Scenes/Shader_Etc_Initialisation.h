@@ -82,6 +82,16 @@ void Initialise_Particles()
 	Create_Particle_Renderer(Bubble_Shader, Pull_Mesh("Assets/Models/Bubble.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke_Noise.png").Texture, Pull_Texture("Black").Texture, &Bubble_Particles);
 	Bubble_Particles.Bind_Textures = false; // We don't need textures for the *bubble* shader
 
+	//
+
+	Shader Colour_Bubble_Shader;
+	Colour_Bubble_Shader.Create_Shader("Shader_Code/Bubble_Particle.vert", "Shader_Code/Colour_Bubble_Particle.frag", nullptr);
+
+	Create_Particle_Renderer(Colour_Bubble_Shader, Pull_Mesh("Assets/Models/Bubble.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke_Noise.png").Texture, Pull_Texture("Black").Texture, &Colour_Bubble_Particles);
+	Colour_Bubble_Particles.Bind_Textures = false;
+
+	//
+
 	/*for (float Radius = 0.3f; Radius < 10.0f; Radius += 0.15f)
 	{
 		for (size_t W = 0; W < 64 * Radius; W++)
