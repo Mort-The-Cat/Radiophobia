@@ -14,12 +14,13 @@ namespace UI_Typing
 		unsigned int Key_Code;
 	};
 
-#define Control_Key_Size 3u
+#define Control_Key_Size 4u
 
-	Key_Press_Info Control_Key_Inputs[3] = {
+	Key_Press_Info Control_Key_Inputs[4] = {
 		{ 0, GLFW_KEY_BACKSPACE },
 		{ 0, GLFW_KEY_LEFT },
-		{ 0, GLFW_KEY_RIGHT }
+		{ 0, GLFW_KEY_RIGHT },
+		{ 0, GLFW_KEY_ENTER }
 	};	// These are keys that cannot be traditionally read with glfwcharcallback function and must be simulated in-engine
 
 	unsigned int Char_Callback = 0x0000u;
@@ -58,8 +59,12 @@ namespace UI_Typing
 		const unsigned int Backspace = GLFW_KEY_BACKSPACE;
 		const unsigned int Left = GLFW_KEY_LEFT;
 		const unsigned int Right = GLFW_KEY_RIGHT;
+		const unsigned int New_Line = GLFW_KEY_ENTER;
 
 		bool Update = false;
+
+		if (Char_Callback == New_Line)
+			Char_Callback = '\n';
 
 		switch (Char_Callback)
 		{
