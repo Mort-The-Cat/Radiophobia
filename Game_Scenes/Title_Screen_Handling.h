@@ -21,7 +21,7 @@ void Setup_Test_Scene()
 	// UI_Elements.push_back(new Button_UI_Element(-1, -1, 1, 1, Return_To_Game_Loop, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture));
 
 	
-	UI_Elements.push_back(new Button_Text_UI_Element(-0.9f, -0.9, 0.8f, -0.3, Return_To_Game_Loop, "Spiel beginnen? Das sieht schön aus! Scheiß drauf", glm::vec3(1.0f), &Font_Georgia, 0.1f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.9f, -0.9, 0.8f, -0.3, Return_To_Game_Loop, "Spiel beginnen? Das sieht\nschön aus! Scheiß drauf", glm::vec3(1.0f), &Font_Georgia, 0.1f));
 	
 	
 	//UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
@@ -52,7 +52,7 @@ void Setup_Test_Scene()
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
 	Scene_Models.back()->Position = glm::vec3(0, 6, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), Generate_AABB_Hitboxes("Assets/Hitboxes/Level_2_Map.obj"));
+	Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Generate_AABB_Hitboxes("Assets/Hitboxes/Level_2_Map.obj"));
 
 	//
 
@@ -121,6 +121,10 @@ void Run_Engine_Loop(UI_Element* Element)
 	for (size_t W = 0; W < UI_Elements.size(); W++)
 		UI_Elements[W]->Flags[UF_TO_BE_DELETED] = true;
 
+	//UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	//UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	//UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+
 	Galaxy_Particles.Delete_All_Particles();
 
 	Setup_Test_Scene();
@@ -165,7 +169,7 @@ void Create_Title_Screen_Page()
 
 	//
 
-	// UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.75f));
+	UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.75f));
 
 	Cursor_Reset = false;
 

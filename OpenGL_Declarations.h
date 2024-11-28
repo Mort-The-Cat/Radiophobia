@@ -67,6 +67,8 @@ void Throw_Error(const char* Error_Message)
 }
 
 GLFWwindow* Window = nullptr;
+// int Window_Width = 1600, Window_Height = 800;
+
 int Window_Width = 1600, Window_Height = 800;
 
 float Window_Aspect_Ratio = 0.5f; // Height / width
@@ -163,7 +165,7 @@ public:
 	void Bind_Buffers(Camera_Uniform_Location_Object Location);
 };
 
-Camera Player_Camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 100);
+Camera Player_Camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 90.0f);
 
 std::string Get_File_Contents(const char* Directory)
 {
@@ -320,6 +322,8 @@ void Initialise_OpenGL_Window()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
+	Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", NULL, NULL);
+
 	/*printf(" >> Open in fullscreen? [Y/N]\n\n >> ");
 
 	char Fullscreen;
@@ -329,15 +333,25 @@ void Initialise_OpenGL_Window()
 	if(std::tolower(Fullscreen) == 'y')
 		Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", glfwGetPrimaryMonitor(), NULL);
 	else*/
+
+	/*
+
+	Window_Width = 1400;
 		
-	Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", NULL, NULL);
+	Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", glfwGetPrimaryMonitor(), NULL);
+
+	const GLFWvidmode* Screen_Information = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+	Window_Aspect_Ratio = ((float)Screen_Information->height / (float)Screen_Information->width);
+
+	Window_Height = Window_Aspect_Ratio * Window_Width;*/
 
 	if (Window == NULL)
 		Throw_Error(" >> Failed to create OpenGL Window!\n");
 
 	glfwMakeContextCurrent(Window);
 
-	glfwSwapInterval(0);
+	glfwSwapInterval(0); // Disables Vsync
 
 	gladLoadGL();
 

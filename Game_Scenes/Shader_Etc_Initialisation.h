@@ -130,11 +130,13 @@ void Initialise_Shaders_And_Particle_Emitters()
 
 	Push_Merged_Material("Assets/Textures/Floor_Tile_Spec.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_Tiles_Normal.png", "Floor");
 
+	Push_Merged_Material("Assets/Textures/Floor_2_Tile_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_2_Tile_Normal.png", "NPP_Wall");
+
 	Push_Merged_Material("Assets/Textures/Brick_Specular.png", "Assets/Textures/Flat_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Floor_Reflect");
 
 	Push_Merged_Specular_Reflectivity("Assets/Textures/Black.png", "Assets/Textures/Black.png", "Black");
 
-	Push_Merged_Material("Assets/Textures/Reddened_Wall_Spec.png", nullptr, "Assets/Textures/Reddened_Wall_Normal.png", "NPP_Wall");
+	// Push_Merged_Material("Assets/Textures/Reddened_Wall_Spec.png", nullptr, "Assets/Textures/Reddened_Wall_Normal.png", "NPP_Wall");
 
 	Initialise_Particles();
 

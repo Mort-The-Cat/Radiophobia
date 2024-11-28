@@ -536,6 +536,13 @@ public:
 
 		for (size_t W = 0; W < Text.length(); W++)
 		{
+			if (Text[W] == '\n')
+			{
+				X_Offset = 0;
+				Y_Offset += 1.0f;
+				continue; // We're perfectly happy, skipping to the next iteration
+			}
+
 			if (Text[W] != ' ')
 			{
 				Font_Table::Character Character = Font->Characters[Text[W]];

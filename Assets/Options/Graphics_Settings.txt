@@ -1,0 +1,2 @@
+Full_Screen 0
+Start_Resolution 1400 700

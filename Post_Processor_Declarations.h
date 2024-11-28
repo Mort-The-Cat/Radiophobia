@@ -122,6 +122,8 @@ namespace Post_Processor
 
 		Vertex_Buffer = Billboard_Vertex_Buffer(-1, -1, 1, 1); // These are view-space screen coordinates
 
+		glfwSetWindowSize(Window, Window_Width, Window_Height);
+
 		// No transformation needs to be done to these at all
 	}
 

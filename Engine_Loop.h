@@ -100,6 +100,8 @@ void End_Of_Frame()
 			std::string(" | Begin physics + update audio/particles: (ms) ") + std::to_string(1000.0f * (Start_Timer - Other_Start_Timer)*/
 			).c_str());
 
+		printf(" >> FPS: %d\n", (int)(Frame_Counter / Time_Elapsed_Since_FPS_Update));
+
 		Time_Elapsed_Since_FPS_Update = 0;
 		Frame_Counter = 0;
 	}
