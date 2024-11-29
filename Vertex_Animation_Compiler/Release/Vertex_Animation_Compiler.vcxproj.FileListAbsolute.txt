@@ -1,1 +1,2 @@
 C:\VisionEngineGL\VisionEngineGL\Vertex_Animation_Compiler\Release\Vertex_Animation_Compiler.exe
+C:\Radiophobia\Radiophobia-main\Vertex_Animation_Compiler\Release\Vertex_Animation_Compiler.exe
