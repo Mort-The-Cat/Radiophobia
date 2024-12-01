@@ -163,6 +163,7 @@
     <ClInclude Include="Engine_Loop.h" />
     <ClInclude Include="Fast_Maths.h" />
     <ClInclude Include="Float_Text_Encoder.h" />
+    <ClInclude Include="Game_Scenes\Items_Declarations.h" />
     <ClInclude Include="Game_Scenes\Shader_Etc_Initialisation.h" />
     <ClInclude Include="Game_Scenes\Title_Screen_Handling.h" />
     <ClInclude Include="Hitdetection.h" />
