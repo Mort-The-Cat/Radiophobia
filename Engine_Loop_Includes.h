@@ -25,4 +25,6 @@
 
 #include "UI_Renderer_Declarations.h"
 
+#include "Game_Scenes/Items_Declarations.h"
+
 #endif

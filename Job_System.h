@@ -22,7 +22,7 @@ public:
 
 	virtual void Control_Function() override
 	{
-		Animator.Animate_Mesh(&Object->Mesh, true);
+		Animator.Animate_Mesh(&Object->Mesh, Tick, true);
 
 		Object->Flags[MF_UPDATE_MESH] = true;		// Keep in mind that this flag doesn't *always* have to be set after the mesh is updated
 													// 

@@ -344,7 +344,9 @@ void Initialise_OpenGL_Window()
 
 	Window_Aspect_Ratio = ((float)Screen_Information->height / (float)Screen_Information->width);
 
-	Window_Height = Window_Aspect_Ratio * Window_Width;*/
+	Window_Height = Window_Aspect_Ratio * Window_Width;
+
+	*/
 
 	if (Window == NULL)
 		Throw_Error(" >> Failed to create OpenGL Window!\n");

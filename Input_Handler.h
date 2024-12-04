@@ -407,6 +407,11 @@ void Player_Movement()
 
 			Player_Camera.Orientation.z -= Tick * 30.0f;
 		}
+
+		//if (Player_Physics_Object.Velocity.y > 0.0f)
+		//{
+		//	Player_Physics_Object.Velocity.y *= powf(0.125f, Tick);
+		//}
 	}
 
 	/*if (Inputs[Controls::Lean_Left])
@@ -443,6 +448,8 @@ void Player_Movement()
 
 	if (Inputs[Controls::Auxilliary])
 	{
+		printf(" >> Player y velocity: %f\n", Player_Physics_Object.Velocity.y);
+
 		//for (size_t W = 0; W < Physics::Scene_Physics_Objects.size(); W++)
 		//{
 		//	Physics::Scene_Physics_Objects[W]->Forces -= glm::vec3(0.25f) * glm::normalize(Physics::Scene_Physics_Objects[W]->Object->Position - Player_Camera.Position);

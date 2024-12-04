@@ -16,6 +16,8 @@
 
 #include "Game_Scenes/Shader_Etc_Initialisation.h"
 
+#include "Game_Scenes/Items_Declarations.h"
+
 int main()
 {
 	printf(" >> Hello!\n");
@@ -30,6 +32,8 @@ int main()
 	Initialise_Sound_Engine();
 
 	Initialise_Shaders_And_Particle_Emitters();
+
+	Initialise_Pistol(); // This initialises the player items
 	
 	Create_Title_Screen_Page();
 

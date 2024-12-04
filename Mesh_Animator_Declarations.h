@@ -56,6 +56,9 @@ struct Mesh_Animation
 #define ANIMF_TO_BE_DELETED 0u
 #define ANIMF_LOOP_BIT 1u
 
+#define MAX(x, y) (x > y ? x : y)
+#define MIN(x, y) (x < y ? x : y)
+
 class Mesh_Animator;
 
 struct Worker_Mesh_Animator_Info
@@ -80,7 +83,7 @@ void Execute_Mesh_Animator_Animation(void* Parameter);
 class Mesh_Animator
 {
 public:
-	float Time;
+	float Time = 0.0f;
 
 	bool Flags[2] = { false, true };
 
@@ -88,9 +91,9 @@ public:
 
 	void Handle_Update(Model_Vertex_Buffer* Mesh)
 	{
-		size_t Keyframe_Index = Time * Animation->Tickrate; // Automatically rounds down during integre conversion
+		size_t Keyframe_Index = MIN(Time * Animation->Tickrate, Animation->Keyframes.size() - 2);
 
-		float Time_Scalar = Time * Animation->Tickrate - ((float)Keyframe_Index);
+		float Time_Scalar = MIN(Time * Animation->Tickrate, Animation->Keyframes.size() - 1) - ((float)Keyframe_Index);
 
 		// Time_Scalar /= Animation->Tickrate;
 
@@ -107,9 +110,9 @@ public:
 
 	void Handle_Update_Threaded(Model_Vertex_Buffer* Mesh)
 	{
-		size_t Keyframe_Index = Time * Animation->Tickrate;
+		size_t Keyframe_Index = MIN(Time * Animation->Tickrate, Animation->Keyframes.size() - 2);
 
-		float Time_Scalar = Time * Animation->Tickrate - ((float)Keyframe_Index);
+		float Time_Scalar = MIN(Time * Animation->Tickrate, Animation->Keyframes.size() - 1) - ((float)Keyframe_Index);
 
 		// Mesh->Update_Vertices();
 
@@ -119,14 +122,23 @@ public:
 		// Execute_Mesh_Animator_Animation(new Worker_Mesh_Animator_Info(this, Mesh, NUMBER_OF_WORKERS - 1, Keyframe_Index, Time_Scalar));
 	}
 
-	void Animate_Mesh(Model_Vertex_Buffer* Mesh, bool Threaded = false, bool Update_Mesh = true) /*	You're able to tell the engine *not* to update the mesh once the animation is incremented. This can be done to save processing time when the object is offscreen for example */
+	bool Animate_Mesh(Model_Vertex_Buffer* Mesh, float Increment, bool Threaded = false, bool Update_Mesh = true) /*	You're able to tell the engine *not* to update the mesh once the animation is incremented. This can be done to save processing time when the object is offscreen for example */
 	{
 		// Since it gives a keyframe every tick, we can use a kind of array indexing to get the keyframe indices quickly
 
-		Time += Tick;
+		bool Loop_Flag = false;
 
-		if (Time * Animation->Tickrate >= (Animation->Duration - 2) && Flags[ANIMF_LOOP_BIT])
-			Time = 0;
+		Time += Increment;
+
+		if (Time * Animation->Tickrate >= (Animation->Duration) || Time < 0)
+		{
+			if (Flags[ANIMF_LOOP_BIT] || Time < 0)
+				Time = 0;
+			else
+				Time = (Animation->Duration) / Animation->Tickrate;
+
+			Loop_Flag = true;
+		}
 
 		if (Update_Mesh)
 		{
@@ -135,6 +147,8 @@ public:
 			else
 				Handle_Update(Mesh);
 		}
+
+		return Loop_Flag;
 	}
 };
 

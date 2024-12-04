@@ -2,6 +2,7 @@
 #define VISION_ENGINE_SHADER_ETC_INITIALISATION
 
 #include "..\Engine_Loop_Includes.h"
+#include "Items_Declarations.h"
 
 void Init_Player_Physics_Object()
 {

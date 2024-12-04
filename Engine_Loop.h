@@ -29,6 +29,8 @@ void Render_All()
 		Scene_Models[W]->Render(Scene_Object_Shader);
 	}
 
+	Makarov_Pistol.Render_Viewmodel();
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(GL_FALSE);
@@ -110,19 +112,31 @@ void End_Of_Frame()
 	glfwPollEvents();
 }
 
+void Handle_Tick()
+{
+	double Current_Time = glfwGetTime();
+	Tick = (Current_Time - Last_Time);
+	Last_Time = Current_Time;
+
+	if (Tick > 0.15f)
+	{
+		Tick = 0.0f;
+	}
+}
+
 void Engine_Loop()
 {
 	Last_Time = glfwGetTime();
 
 	while (!glfwWindowShouldClose(Window))
 	{
-		double Current_Time = glfwGetTime();
-		Tick = (Current_Time - Last_Time);
-		Last_Time = Current_Time;
+		Handle_Tick();
 
 		Receive_Inputs();
 
 		Player_Movement();
+
+		Makarov_Pistol.Handle_Viewmodel_States();
 
 		//
 
@@ -166,11 +180,11 @@ void Engine_Loop()
 
 		// double Start_Timer = glfwGetTime();
 
-		Render_All();
-
 		glDisable(GL_DEPTH_TEST);
 
 		Physics::Resolve_Collisions();
+
+		Render_All();
 
 		Handle_UI(); // We're able to handle all of the UI whilst the collisions are resolving!
 

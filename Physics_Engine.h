@@ -115,7 +115,8 @@ namespace Physics
 
 				Impulse = J * Collision->Collision.Collision_Normal + Perpendicular_Velocity * B_Friction * Friction * (1 - expf(J));
 
-				Forces += Impulse;
+				if(!(std::isnan(Impulse.x) || std::isnan(Impulse.y) || std::isnan(Impulse.z)))
+					Forces += Impulse;
 
 				// Billboard_Smoke_Particles.Particles.Spawn_Particle(Collision->Collision.Collision_Position, glm::vec3(0.0f, 0.0f, 0.0f));
 			}
@@ -211,6 +212,11 @@ namespace Physics
 
 			for(size_t W = 0; W < Object->Hitboxes.size(); W++)
 				Object->Hitboxes[W]->Update_Hitbox();
+
+			//Forces.y += Gravity * Mass;
+
+			if (std::isnan(Forces.x) || std::isnan(Forces.y) || std::isnan(Forces.z))		// This only happens in really rare situations such as physics engine race conditions
+				Forces = glm::vec3(0.0f);
 
 			Forces *= Inv_Mass * 0.5;
 
