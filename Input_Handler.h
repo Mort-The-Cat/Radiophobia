@@ -240,7 +240,7 @@ void Controller_Player_Movement()
 
 	glfwGetGamepadState(GLFW_JOYSTICK_1, &Controller_Inputs);
 
-	if (Controller_Inputs.buttons[Gamepad_Controls::Pause])
+	if (Controller_Inputs.buttons[Gamepad_Controls::Pause] || Window_Width == 0)
 	{
 		Cursor_Reset = false;
 		UI_Loop();
@@ -328,7 +328,7 @@ void Player_Movement()
 
 	Player_Object_Spawn_Timer -= Tick;
 
-	if (Inputs[Controls::Pause] && Cursor_Reset)
+	if (Inputs[Controls::Pause] && Cursor_Reset || Window_Width == 0)
 	{
 		Cursor_Reset = false;
 		UI_Loop();

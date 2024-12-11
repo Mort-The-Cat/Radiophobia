@@ -97,7 +97,9 @@ namespace Post_Processor
 		//
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
 			std::cout << " >> Framebuffer is not complete!" << std::endl;
+		}
 	}
 
 	void Initialise_Post_Processor()	// Only call this once. In order to merely update the post-processor, call the update function
