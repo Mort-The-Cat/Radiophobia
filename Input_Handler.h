@@ -176,7 +176,7 @@ void Shoot_Fire(float Angle)
 	{
 		Fire_Sound->setVolume(1);
 
-		Scene_Lights.push_back(new Lightsource(Info.Collision_Position - Info.Collision_Normal * glm::vec3(0.3), glm::vec3(RNG() * 1 + 2, RNG() + 1, RNG()), Info.Collision_Normal, 360, 1, 0.0f));
+		Scene_Lights.push_back(new Lightsource(Info.Collision_Position - Info.Collision_Normal * glm::vec3(0.3), glm::vec3(RNG() * 1 + 2, RNG() + 1, RNG()), Info.Collision_Normal, 360, 1, 0.35f));
 		Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
 		Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
 		
@@ -448,7 +448,7 @@ void Player_Movement()
 
 	if (Inputs[Controls::Auxilliary])
 	{
-		printf(" >> Player y velocity: %f\n", Player_Physics_Object.Velocity.y);
+		// printf(" >> Player y velocity: %f\n", Player_Physics_Object.Velocity.y);
 
 		//for (size_t W = 0; W < Physics::Scene_Physics_Objects.size(); W++)
 		//{

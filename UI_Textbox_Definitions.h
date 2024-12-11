@@ -222,6 +222,9 @@ public:
 
 	virtual void Update_UI() override
 	{
+		if (Controller != nullptr)
+			Controller->Control_Function(this);
+
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN]);
 
 		bool Hovering = Button_Hover(Coords);
@@ -292,7 +295,7 @@ public:
 		Bind_UI_Uniforms(Text_Shader, Font_Table::Font, Colour);
 #endif
 
-		Render_Text(Coords);
+		Render_Text(Text, Coords);
 	}
 };
 

@@ -106,7 +106,7 @@ vec3 Sampler_Kernel[10] = vec3[](
 	//vec3(0.838148, 0.373252, 0.397733)
 );
 
-float Occlusion = 0.01f; //1f;
+float Occlusion = 1.0f; //1f;
 
 void Generate_TBN()
 {
@@ -122,7 +122,7 @@ void Check_Occlusion(vec3 Point)
 	Screen_Point.xy /= Screen_Point.w;
 	Screen_Point.xy = Screen_Point.xy * 0.5 + 0.5;
 
-	Occlusion -= texture(Position_Texture, Screen_Point.xy).w + 0.01 < Screen_Point.w ? 0.05 : 0;
+	Occlusion -= texture(Position_Texture, Screen_Point.xy).w + 0.01 < Screen_Point.w ? 0.09 : 0;
 
 	// Occlusion -= 0.05 * Smoothing_Function(10 * (Screen_Point.w - texture(Position_Texture, Screen_Point.xy).w - 0.01));
 }
@@ -186,7 +186,7 @@ uint Get_Leaf_Node_Index(uint Node, uint Index)
 
 vec3 Lighting()
 {
-	vec3 Sum_Of_Light = vec3(Occlusion);
+	vec3 Sum_Of_Light = vec3(0.01f);
 
 	uint Leaf_Node_Index = (Traverse_Partition_Nodes() - 63u) << 1u;
 
@@ -219,14 +219,14 @@ vec3 Lighting()
 
 		Handle_Specular(In_FOV, Light_To_Pixel, W);
 
-		float Attenuation_Value = inversesqrt(Light_Colour[W].w + Squared_Distance);
+		float Attenuation_Value = 1.0f / (Light_Colour[W].w + Squared_Distance * 0.3f);
 
 		// Light_Colour[W].w refers to the attenuation value
 
 		Sum_Of_Light += Dot_Normal_Light * Attenuation_Value * Light_Colour[W].xyz;
 	}
 
-	return Sum_Of_Light;
+	return Sum_Of_Light * Occlusion;
 }
 
 //

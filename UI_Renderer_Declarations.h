@@ -13,6 +13,9 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+std::string Current_Language_Setting = "Deutsch"; // This can be set to "English" or "Deutsch" etc and can be changed in settings
+bool Language_Settings_Update_Flag = false;	// This flag is changed if, on a particular frame, it's requested that the language settings be changed
+
 namespace Font_Table
 {
 	struct Character
@@ -95,6 +98,7 @@ namespace Font_Table
 
 Font_Table::Font Font_Georgia;
 Font_Table::Font Font_Gothic;
+Font_Table::Font Font_Console;
 
 #elif
 
@@ -348,6 +352,19 @@ public:
 	}
 };
 
+class UI_Element;
+
+class UI_Controller
+{
+public:
+	UI_Controller() {}
+
+	virtual void Control_Function(UI_Element* Element) 
+	{
+		return;
+	}
+};
+
 class UI_Element // The subclasses hereof will handle things like text, buttons, etc
 {
 public:
@@ -363,13 +380,21 @@ public:
 
 	Texture Image;
 
+	UI_Controller* Controller;
+
 	// X1 and Y1 are the top-left corner of the screen
 
 	// X2 and Y2 are the bottom-right corner of the screen
 
 	UI_Element() {}
 
-	UI_Element(float X1p, float Y1p, float X2p, float Y2p, Texture Imagep = Texture())
+	~UI_Element()
+	{
+		if(Controller != nullptr)	// If there is a controller for this UI element,
+			delete Controller;		// delete it
+	}
+
+	UI_Element(float X1p, float Y1p, float X2p, float Y2p, Texture Imagep = Texture(), UI_Controller* Controllerp = nullptr)
 	{
 		X1 = X1p;
 		Y1 = Y1p;
@@ -379,6 +404,8 @@ public:
 		Image = Imagep;
 
 		Flags[UF_IMAGE] = Image.Texture_Created();
+
+		Controller = Controllerp;
 	}
 
 	bool Button_Hover(UI_Transformed_Coordinates Coords)
@@ -447,6 +474,9 @@ public:
 
 	virtual void Update_UI()
 	{
+		if (Controller != nullptr)
+			Controller->Control_Function(this);
+
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
 
 		Render(Coords);
@@ -455,14 +485,33 @@ public:
 	}
 };
 
+class UI_Auto_Text_Updater : public UI_Controller	// This is used on text_ui_elements in order to handle their text if/when loading from a file
+{
+public:
+	std::string File_Name;
+	bool Local_Language_Settings_Update_Flag = false; // If the global flag and this local flag are different, the UI element's text must be reloaded using the new language
+
+	UI_Auto_Text_Updater(std::string File_Namep)
+	{
+		File_Name = File_Namep;
+	}
+};
 
 class Text_UI_Element : public UI_Element
 {
 public:
+	struct Text_Origin_File_Info
+	{
+		std::string File_Name;
+		bool Local_Language_Settings_Update_Flag = false;
+	} * File_Info;
+
 #ifndef USING_FREETYPE_FONT
 	std::vector<uint32_t> Character_Indices; // These are the indices of the letters in the font
 #else
 	std::string Text;
+
+
 #endif
 
 	float Size;
@@ -477,7 +526,16 @@ public:
 
 	Text_UI_Element() {}
 
-	Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, std::string Textp, glm::vec3 Text_Colourp = glm::vec3(1.0f, 1.0f, 1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
+	~Text_UI_Element()
+	{
+		if (Controller != nullptr)
+			delete Controller;
+
+		if (File_Info != nullptr)
+			delete File_Info;
+	}
+
+	Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, std::string Textp, bool Load_From_File = false, glm::vec3 Text_Colourp = glm::vec3(1.0f, 1.0f, 1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
 	{
 		X1 = X1p;
 		Y1 = Y1p;
@@ -490,6 +548,19 @@ public:
 		Text = Textp;
 #endif
 
+		if (Load_From_File)
+		{
+			File_Info = new Text_Origin_File_Info();
+			File_Info->File_Name = Textp;
+			File_Info->Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
+
+			// Automatically load the stuff
+
+			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
+
+			Text = Get_File_Contents(Directory.c_str());
+		}
+
 		Size = Sizep;
 
 		Italic_Slant = Italic_Slantp;
@@ -499,7 +570,7 @@ public:
 		Font = Fontp;
 	}
 
-	virtual void Render_Text(UI_Transformed_Coordinates Coords)
+	virtual void Render_Text(std::string Text, UI_Transformed_Coordinates Coords) // We'll use "text" as a parameter here to prevent race conditions
 	{
 		// 62 is the character index of the space
 
@@ -590,6 +661,18 @@ public:
 
 	virtual void Render(UI_Transformed_Coordinates Coords) override
 	{
+		if(File_Info != nullptr)
+			if (File_Info->Local_Language_Settings_Update_Flag != Language_Settings_Update_Flag)
+			{
+				File_Info->Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
+
+				// Automatically load the stuff
+
+				std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
+
+				Text = Get_File_Contents(Directory.c_str());
+			}
+
 		UI_Shader.Activate();
 
 		if (Flags[UF_RENDER_BORDER])
@@ -604,7 +687,7 @@ public:
 		Bind_UI_Uniforms(Text_Shader, Font_Table::Font, Colour);
 #endif
 
-		Render_Text(Coords);
+		Render_Text(Text, Coords);
 	}
 };
 
@@ -631,6 +714,9 @@ public:
 
 	virtual void Update_UI() override
 	{
+		if (Controller != nullptr)
+			Controller->Control_Function(this);
+
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
 
 		bool Hovering = Button_Hover(Coords);
@@ -657,7 +743,7 @@ class Button_Text_UI_Element : public Text_UI_Element
 public:
 	void (*Button_Function)(UI_Element*);
 
-	Button_Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, void (*Button_Functionp)(UI_Element*), std::string Textp, glm::vec3 Text_Colourp = glm::vec3(1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
+	Button_Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, void (*Button_Functionp)(UI_Element*), std::string Textp, bool Load_From_File = false, glm::vec3 Text_Colourp = glm::vec3(1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
 	{
 		X1 = X1p;
 		Y1 = Y1p;
@@ -669,6 +755,17 @@ public:
 #else
 		Text = Textp;
 #endif
+
+		if (Load_From_File)
+		{
+			File_Info = new Text_Origin_File_Info();
+			File_Info->File_Name = Text;
+			File_Info->Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
+
+			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
+
+			Text = Get_File_Contents(Directory.c_str());
+		}
 
 		Size = Sizep;
 
@@ -683,6 +780,9 @@ public:
 
 	virtual void Update_UI() override
 	{
+		if (Controller != nullptr)
+			Controller->Control_Function(this);
+
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
 
 		bool Hovering = Button_Hover(Coords);

@@ -184,6 +184,9 @@ void Engine_Loop()
 
 		Physics::Resolve_Collisions();
 
+		if(Player_Physics_Object.Velocity.y >= 0.0f)		// If the player is falling/stationary
+			Player_Physics_Object.Stabilise_On_Ground();	// Stabilise their position
+
 		Render_All();
 
 		Handle_UI(); // We're able to handle all of the UI whilst the collisions are resolving!

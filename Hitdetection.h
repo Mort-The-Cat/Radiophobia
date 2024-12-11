@@ -192,7 +192,17 @@ namespace Collision_Test
 			return Collision_Info();
 	}
 
-	Collision_Info Find_Collision(Hitbox* A, bool (*Should_Compare)(Hitbox*, Hitbox*), Hitbox** Target_Pointer)
+	bool Always_Return(Collision_Info Info)
+	{
+		return true;
+	}
+
+	bool Only_Return_Floor(Collision_Info Info)
+	{
+		return Info.Collision_Normal.y > 0.3; // This is the condition for an object to be a "floor"
+	}
+
+	Collision_Info Find_Collision(Hitbox* A, bool (*Should_Compare)(Hitbox*, Hitbox*), Hitbox** Target_Pointer, bool (*Should_Return)(Collision_Info) = Always_Return)
 	{
 		Collision_Info Info;
 
@@ -202,7 +212,7 @@ namespace Collision_Test
 			{
 				Info = A->Hitdetection(Scene_Hitboxes[W]); // Compare them
 
-				if (Info.Overlap != 0) // If there is an intersection of any kind
+				if (Info.Overlap != 0 && Should_Return(Info)) // If there is an intersection of any kind AND the evaluated function thinks there should be a return
 				{
 					*Target_Pointer = Scene_Hitboxes[W]; // Set the pointer of the hitbox in question
 					return Info;						// and return the collision info that we got

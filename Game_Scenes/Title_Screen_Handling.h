@@ -19,14 +19,13 @@ void Setup_Test_Scene()
 	// UI_Elements.push_back(new Button_UI_Element(-0.75, -0.9, -0.3, -0.3, Return_To_Game_Loop));
 
 	// UI_Elements.push_back(new Button_UI_Element(-1, -1, 1, 1, Return_To_Game_Loop, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture));
-
 	
-	UI_Elements.push_back(new Button_Text_UI_Element(-0.9f, -0.9, 0.8f, -0.3, Return_To_Game_Loop, "Spiel beginnen? Das sieht\nschön aus! Scheiß drauf", glm::vec3(1.0f), &Font_Georgia, 0.1f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.9f, -0.9, 0.8f, -0.3, Return_To_Game_Loop, "Spiel beginnen? Das sieht\nschön aus! Scheiß drauf", false, glm::vec3(1.0f), &Font_Georgia, 0.1f));
 	
 	
 	//UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
 
-	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true; 
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 
 	/*Scene_Models.push_back(new Model({MF_ACTIVE}));
 	Scene_Models.back()->Position = glm::vec3(0, -0.8, 0);
@@ -102,6 +101,18 @@ void Setup_Test_Scene()
 		Create_Model(Pull_Mesh("Assets/Models/Floor.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Brick1.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Floor.obj").Mesh) });
 	}
 
+	// 1.394211, -4.536097, 0.438914
+
+	// 3.773928, -4.537358, -8.414638
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(3.773928, -3.6, -8.415);
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(1.394211, -3.6, 0.438914);
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+
 	// Scene_Models.push_back(new Model({ MF_SOLID }));
 	// Scene_Models.back()->Position = glm::vec3(0, -5, -5);
 	// Create_Model(Pull_Mesh("Assets/Models/Ramp.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/White.png").Texture, Pull_Texture("Brick").Texture, Scene_Models.back(), new Controller(), { Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Models/Ramp.obj").Mesh) });
@@ -171,14 +182,14 @@ void Create_Title_Screen_Page()
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
 
-	UI_Elements.push_back(new Button_Text_UI_Element(-1.75f, 0.5, 1.75f, 0.9f, Run_Engine_Loop, "Drücken Sie diesen Knopf, um anzufangen", glm::vec3(1.0f), &Font_Gothic, 0.1f, 0.01f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-1.75f, 0.5, 1.75f, 0.9f, Run_Engine_Loop, "Test.txt" /*"Drücken Sie diesen Knopf, um anzufangen"*/, true, glm::vec3(1.0f), &Font_Console, 0.1f, 0.01f));
 	UI_Elements.back()->Image = Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture;
 
 	UI_Elements.back()->Flags[UF_IMAGE] = true;
 
 	//
 
-	UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.75f));
+	UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.55f, 0.1f, 0.0f, &Font_Console));
 
 	Cursor_Reset = false;
 

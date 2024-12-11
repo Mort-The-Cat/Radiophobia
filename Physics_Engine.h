@@ -179,6 +179,49 @@ namespace Physics
 			}
 		}
 
+		void Stabilise_On_Ground()
+		{
+			const float Range = 0.1f; // in both directions
+
+
+			float Min = Object->Position.y - Range, Max = Object->Position.y + Range;
+
+			glm::vec3 Player_Position = Object->Position;
+
+			Collision_Info Info;
+
+			Hitbox* Collided_Hitbox;
+
+			Object->Position.y = Max; // We'll just do a little test with the lowest value to see if the floor is within the player's reach
+
+			Info = Collision_Test::Find_Collision(Object->Hitboxes[0], Collision_Test::Always_Compare, &Collided_Hitbox, Collision_Test::Only_Return_Floor);
+
+			Object->Position.y = Player_Position.y; // There's no worries, just set the player's position back to where it was
+
+			if (Collided_Hitbox != nullptr)
+			{
+				size_t Iterations = 10;
+
+				while (Iterations)
+				{
+					Info = Collision_Test::Find_Collision(Object->Hitboxes[0], Collision_Test::Always_Compare, &Collided_Hitbox, Collision_Test::Only_Return_Floor);
+
+					if (Collided_Hitbox != nullptr) // We must go higher
+						Max = Object->Position.y;
+					else // we can go lower
+						Min = Object->Position.y;
+
+					Object->Position.y = 0.5f * (Min + Max);
+
+					Iterations--;
+				}
+
+				Object->Position.y = Max;
+
+				// Velocity.y = 0.0f;
+			}
+		}
+
 		virtual void Step()
 		{
 			float Gravity = Tick * 4.9;

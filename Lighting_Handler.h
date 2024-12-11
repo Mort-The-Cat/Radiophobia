@@ -113,7 +113,7 @@ void Update_Lighting_Buffer()
 		Light_Uniforms.Colour[W].r = Scene_Lights[W]->Colour.r;
 		Light_Uniforms.Colour[W].g = Scene_Lights[W]->Colour.g;
 		Light_Uniforms.Colour[W].b = Scene_Lights[W]->Colour.b;
-		Light_Uniforms.Colour[W].w = Scene_Lights[W]->Attenuation;			// Attenuation value
+		Light_Uniforms.Colour[W].w = (Scene_Lights[W]->Attenuation);		// Attenuation value
 
 		Light_Uniforms.Direction[W].x = Scene_Lights[W]->Direction.x;
 		Light_Uniforms.Direction[W].y = Scene_Lights[W]->Direction.y;

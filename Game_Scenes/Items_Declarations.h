@@ -155,10 +155,23 @@ public:
 		{
 			Viewmodel_Meshes[W].Position = Player_Camera.Position;
 
-			Viewmodel_Meshes[W].Position.y -= sinf(glfwGetTime() * 0.7f) * 0.025f - 0.025;
-
 			Viewmodel_Meshes[W].Orientation = glm::cross(Camera_Direction, Camera_Up_Direction);
 			Viewmodel_Meshes[W].Orientation_Up = -Camera_Up_Direction;
+
+			if (Inputs[Controls::Down]) // These are the offsets required for when the player is ADS-ing
+			{
+				Viewmodel_Meshes[W].Position -= glm::vec3(0.096437f) * Viewmodel_Meshes[W].Orientation;
+				Viewmodel_Meshes[W].Position += glm::vec3(0.030538f) * Viewmodel_Meshes[W].Orientation_Up;
+
+				Viewmodel_Meshes[W].Position -= glm::vec3(0.05f) * Camera_Direction;
+
+				Player_Camera.FOV = 50.0f;
+			}
+			else
+			{
+				Player_Camera.FOV = 70.0f;
+				Viewmodel_Meshes[W].Position += glm::vec3(sinf(glfwGetTime() * 0.7f) * 0.025f - 0.04) * Viewmodel_Meshes[W].Orientation_Up;
+			}
 
 			Viewmodel_Meshes[W].Mesh.Bind_Buffer();
 			Viewmodel_Meshes[W].Mesh.Update_Vertices();

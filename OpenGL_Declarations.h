@@ -167,14 +167,16 @@ public:
 
 Camera Player_Camera(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 90.0f);
 
-std::string Get_File_Contents(const char* Directory)
+std::string Get_File_Contents(const char* Directory) // IF YOU ARE LOADING TEXT WITH FOREIGN CHARACTERS, MAKE SURE THE FILE IS SAVED USING ANSI ENCODING
 {
 	std::ifstream File(Directory);
 	if (File)
 	{
 		std::string Contents;
+
 		File.seekg(0, std::ios::end);
 		Contents.resize(File.tellg());
+
 		File.seekg(0, std::ios::beg);
 
 		File.read(&Contents[0], Contents.size());
@@ -322,7 +324,22 @@ void Initialise_OpenGL_Window()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-	Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", NULL, NULL);
+	bool Fullscreen = true;
+
+	if (Fullscreen)
+	{
+		Window_Width = 1400;
+
+		Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", glfwGetPrimaryMonitor(), NULL);
+
+		const GLFWvidmode* Screen_Information = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+		Window_Aspect_Ratio = ((float)Screen_Information->height / (float)Screen_Information->width);
+
+		Window_Height = Window_Aspect_Ratio * Window_Width;
+	}
+	else
+		Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", NULL, NULL);
 
 	/*printf(" >> Open in fullscreen? [Y/N]\n\n >> ");
 

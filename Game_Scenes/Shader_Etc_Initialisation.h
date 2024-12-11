@@ -37,6 +37,7 @@ void Initialise_Fonts()
 {
 	Font_Table::Initialise_Font_Texture(&Font_Georgia, 512, "Assets/Font/georgia.ttf");
 	Font_Table::Initialise_Font_Texture(&Font_Gothic, 512, "Assets/Font/COPRGTL.ttf");
+	Font_Table::Initialise_Font_Texture(&Font_Console, 512, "Assets/Font/lucon.ttf");
 }
 
 void Initialise_Particles()
