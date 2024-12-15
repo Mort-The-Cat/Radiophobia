@@ -79,8 +79,8 @@ namespace Shadow_Mapper
 	{
 		for (size_t W = 0; W < NUMBER_OF_SHADOW_MAPS; W++)
 		{
-			glUniform1i(glGetUniformLocation(Shader.Program_ID, "Shadow_Maps"), 1u + W);
-			glActiveTexture(GL_TEXTURE1 + W);
+			glUniform1i(glGetUniformLocation(Shader.Program_ID, "Shadow_Maps"), 5u + W);
+			glActiveTexture(GL_TEXTURE5 + W);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, Shadow_Maps[W].Shadow_Cubemap);
 		}
 	}

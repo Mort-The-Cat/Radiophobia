@@ -324,7 +324,13 @@ void Initialise_OpenGL_Window()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-	bool Fullscreen = true;
+	printf(" >> Open in fullscreen? [Y/N]\n\n >> ");
+
+	char User_Input;
+
+	std::cin >> User_Input;
+
+	bool Fullscreen = std::tolower(User_Input) == 'y';
 
 	if (Fullscreen)
 	{

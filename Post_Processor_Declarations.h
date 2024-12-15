@@ -175,7 +175,7 @@ namespace Post_Processor
 
 		Player_Camera.Bind_Buffers(Camera_Uniform_Locations);
 
-		Test_Cubemap.Parse_Texture(Shader_Program, "Cubemap", 0);
+		Test_Cubemap.Parse_Texture(Shader_Program, "Cubemap", 4);
 		Test_Cubemap.Bind_Texture();
 
 		Shader_Time += Tick;

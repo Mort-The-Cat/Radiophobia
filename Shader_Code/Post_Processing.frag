@@ -71,6 +71,7 @@ vec3 Rotate_Vector(vec3 Vector, vec4 Quaternion)
 }
 
 vec3 Normal;
+vec3 Reflection_Vector;
 
 vec3 Sampler_Kernel[10] = vec3[](
 	vec3(0.702116, 0.406985, 0.584291),
@@ -139,13 +140,13 @@ void Ambient_Occlusion()
 
 //
 
-float Specular_Texture = texture(Material_Texture, Final_UV).x;
+float Specular_Texture = 1.5f * texture(Material_Texture, Final_UV).x;
 
 vec3 Specular_Lighting = vec3(0, 0, 0);
 
 void Handle_Specular(float In_FOV, vec3 Light_To_Pixel, uint Light_Index)
 {
-	float Specular_Value = In_FOV * pow(max(0, dot(reflect(-Light_To_Pixel, Normal), Camera_To_Pixel)), 1 + 124 * Specular_Texture);
+	float Specular_Value = In_FOV * pow(max(0, dot(Reflection_Vector, -Light_To_Pixel)), 1 + 124 * Specular_Texture);
 
 	Specular_Value *= Specular_Texture; // * 1.5;
 
@@ -194,7 +195,9 @@ vec3 Lighting()
 
 	vec3 Light_To_Pixel = Light_Position[0].xyz - Position;
 
-	float Shadow_Check_Result = Shadow_Check(normalize(Light_To_Pixel), sqrt(dot(Light_To_Pixel, Light_To_Pixel)), 0u);
+	float Length_Light_To_Pixel = length(Light_To_Pixel);
+
+	float Shadow_Check_Result = Shadow_Check(Light_To_Pixel * (1.0f / Length_Light_To_Pixel), Length_Light_To_Pixel, 0u);
 
 	for(uint Index = 0; Index < 8; Index++)
 	{
@@ -258,7 +261,9 @@ void main()
 
 	// return;
 
-	vec3 Reflection_Vector = normalize(reflect(Camera_To_Pixel, Normal));
+	Reflection_Vector = normalize(reflect(Camera_To_Pixel, Normal));
+
+	// vec3 Reflection_Vector = normalize(reflect(Camera_To_Pixel, Normal));
 
 	vec3 Light = Lighting();
 
