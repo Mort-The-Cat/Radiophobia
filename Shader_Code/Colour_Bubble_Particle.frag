@@ -34,9 +34,15 @@ void main()
 
 	vec2 Tangential_Difference = Refracted_Vector.xy - Fragment_Vector.xy;
 
-	Tangential_Difference /= (vec2(1.0f) + Refracted_Vector.xy * Fragment_Vector.xy);
+	Tangential_Difference /= (vec2(1.0f) + Refracted_Vector.xy * Fragment_Vector.xy); 
 
 	// Material_Out.zw = Tangential_Difference;
 
-	Out_Colour = vec4(Get_Colour_Of_Bubble_Edge());
+	float Bubble_Shine = Get_Colour_Of_Bubble_Edge();
+
+	Out_Colour = vec4(Bubble_Shine) + vec4(0, Tangential_Difference.yx * 10, Bubble_Shine);
+
+	// vec3 Reflected_Colour = vec3(Bubble_Shine) + vec3(0.25f) * texture(Cubemap, normalize(vec3(Refracted_Vector.xy, sqrt(1 - dot(Refracted_Vector, Refracted_Vector))))).xyz;
+
+	// Out_Colour = vec4(Reflected_Colour, Bubble_Shine);
 }

@@ -141,9 +141,6 @@ C:\Radiophobia\Radiophobia-main\Engine_Loop.h(150,21): warning C4305: 'argument'
 C:\Radiophobia\Radiophobia-main\Engine_Loop.h(150,16): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Engine_Loop.h(153,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  (compiling source file 'Main.cpp')
-  
 C:\Radiophobia\Radiophobia-main\Engine_Loop.h(237,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
@@ -177,7 +174,7 @@ C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(23,71): warn
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(23,59): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(212,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(219,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(55,98): warning C4305: 'argument': truncation from 'double' to 'float'
@@ -242,9 +239,9 @@ C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(81,40): warning C
   
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  3 of 4176 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    39 functions had inline decision re-evaluated but remain unchanged
+  1 of 4214 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    14 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 glfw3.lib(context.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(context.obj)' or at ''; linking object as if no debug info
 glfw3.lib(input.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(input.obj)' or at ''; linking object as if no debug info

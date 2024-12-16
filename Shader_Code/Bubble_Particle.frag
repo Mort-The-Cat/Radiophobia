@@ -3,7 +3,10 @@
 layout(location = 0) out vec4 Out_Colour;
 layout(location = 3) out vec4 Material_Out;
 
+layout(binding = 4) uniform samplerCube Cubemap;
+
 in vec2 Refracted_Vector;
+in vec3 Normal;
 
 uniform vec2 Inv_Window_Dimensions;
 

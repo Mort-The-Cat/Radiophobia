@@ -113,6 +113,13 @@ void Setup_Test_Scene()
 	Scene_Models.back()->Position = glm::vec3(1.394211, -3.6, 0.438914);
 	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
 
+	Volumetric_Cone_Particles.Particles.Spawn_Particle(glm::vec3(3.773928 - 1.0f, -3.6 - 1.0f, -8.415 - 1.0f), glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f)), glm::vec3(0.4, 0.6, 0.8), 2.0f, 30.0f);
+	Scene_Lights.push_back(new Lightsource(glm::vec3(3.773928 - 1.0f, -3.6 - 1.0f, -8.415 - 1.0f), glm::vec3(1, 1.5, 2), glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), 30.0f, 1.0f, 0.6f));
+	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS, MF_SOLID }));
+	Scene_Models.back()->Position = glm::vec3(3.773928 - 1.0f, -3.6 - 1.0f, -8.415 - 1.0f);
+	Create_Model(Pull_Mesh("Assets/Models/Bubble.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_Sphere_Hitbox(*Pull_Mesh("Assets/Models/Bubble.obj").Mesh) });
+
+
 	// Scene_Models.push_back(new Model({ MF_SOLID }));
 	// Scene_Models.back()->Position = glm::vec3(0, -5, -5);
 	// Create_Model(Pull_Mesh("Assets/Models/Ramp.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/White.png").Texture, Pull_Texture("Brick").Texture, Scene_Models.back(), new Controller(), { Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Models/Ramp.obj").Mesh) });

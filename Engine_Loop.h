@@ -150,7 +150,7 @@ void Engine_Loop()
 		glClearColor(0.2, 0.3, 0.2, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Scene_Lights[0]->Blur = 45 + 45 * sinf(glfwGetTime());
+		// Scene_Lights[0]->Blur = 45 + 45 * sinf(glfwGetTime());
 
 		// double Other_Start_Timer = glfwGetTime();
 
