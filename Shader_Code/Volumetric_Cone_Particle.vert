@@ -28,7 +28,7 @@ vec3 Colour = vec3(Particle_Data[Particle_ID + 19], Particle_Data[Particle_ID + 
 uniform mat4 Projection_Matrix;
 uniform vec3 Camera_Position;
 
-flat out float Volume_Out;
+flat out float Volume_Density_Out;
 flat out float C_Out;
 flat out float Cosine_Theta_Squared_Out;
 flat out float Dot_Source_Direction_Out;
@@ -40,7 +40,7 @@ out vec3 Position;
 
 void Particle_Outputs()
 {
-	Volume_Out = Volume_Density;
+	Volume_Density_Out = Volume_Density;
 	C_Out = C;
 	Cosine_Theta_Squared_Out = Cosine_Theta_Squared;
 	Dot_Source_Direction_Out = Dot_Source_Direction;

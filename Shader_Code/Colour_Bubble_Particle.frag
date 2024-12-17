@@ -40,7 +40,7 @@ void main()
 
 	float Bubble_Shine = Get_Colour_Of_Bubble_Edge();
 
-	Out_Colour = vec4(Bubble_Shine) + vec4(0, Tangential_Difference.yx * 10, Bubble_Shine);
+	Out_Colour = vec4(Bubble_Shine) + vec4(0, Tangential_Difference.yx * 7.0f, Bubble_Shine * 0.5f);
 
 	// vec3 Reflected_Colour = vec3(Bubble_Shine) + vec3(0.25f) * texture(Cubemap, normalize(vec3(Refracted_Vector.xy, sqrt(1 - dot(Refracted_Vector, Refracted_Vector))))).xyz;
 

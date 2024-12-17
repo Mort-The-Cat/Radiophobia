@@ -485,15 +485,21 @@ public:
 	}
 };
 
-class UI_Auto_Text_Updater : public UI_Controller	// This is used on text_ui_elements in order to handle their text if/when loading from a file
+class UI_Loading_Screen_Icon_Controller : public UI_Controller
 {
 public:
-	std::string File_Name;
-	bool Local_Language_Settings_Update_Flag = false; // If the global flag and this local flag are different, the UI element's text must be reloaded using the new language
+	float Loading_Bar_Size;
 
-	UI_Auto_Text_Updater(std::string File_Namep)
+	UI_Loading_Screen_Icon_Controller(float Loading_Bar_Sizep)
 	{
-		File_Name = File_Namep;
+		Loading_Bar_Size = Loading_Bar_Sizep;
+	}
+
+	virtual void Control_Function(UI_Element* Element)
+	{
+		// We'll somehow check the progress on the work that needs to be done
+
+		Element->X2 = Element->X1 + ((float)Context_Interface::Loading_Progress / (float)Context_Interface::Loading_Progress_Total) * Loading_Bar_Size;
 	}
 };
 
@@ -678,8 +684,9 @@ public:
 		if (Flags[UF_RENDER_BORDER])
 			Render_Border(Coords);
 
-		Render_Screen_Sprite(Coords.X1o, Coords.Y1o, Coords.X2o, Coords.Y2o,
-			{ 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 0 });
+		if(Flags[UF_RENDER_CONTENTS])
+			Render_Screen_Sprite(Coords.X1o, Coords.Y1o, Coords.X2o, Coords.Y2o,
+				{ 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 0 });
 
 		Text_Shader.Activate();
 
@@ -815,6 +822,12 @@ std::vector<UI_Element*> UI_Elements;
 // Will need some hash tables and functions for handling text rendering
 
 // Get a conversion thingy from character to index into font
+
+void Delete_All_UI()
+{
+	for (size_t W = 0; W < UI_Elements.size(); W++)
+		UI_Elements[W]->Flags[UF_TO_BE_DELETED] = true;
+}
 
 void Handle_UI() // If there are transparent UI elements (pretty likely), then we're gonna want to render this in a final transparent rendering pass
 {

@@ -186,6 +186,9 @@ public:
 
 			Particles_Data[W].Dot_Source_Direction = glm::dot(Alef_Alpha, Particles_Data[W].Cone_Direction);
 
+			if (Particles_Data[W].Dot_Source_Direction * Particles_Data[W].Dot_Source_Direction > Particles_Data[W].Cosine_Theta_Squared * glm::dot(Alef_Alpha, Alef_Alpha))
+			 	Particles_Data[W].Dot_Source_Direction = -1.0f; // This indicates rubbish expected GPU-side values
+
 			Particles_Data[W].C = Particles_Data[W].Dot_Source_Direction * Particles_Data[W].Dot_Source_Direction - Particles_Data[W].Cosine_Theta_Squared * glm::dot(Alef_Alpha, Alef_Alpha);
 		}
 

@@ -25,6 +25,7 @@
 #include<functional>
 #include<unordered_map>
 #include<algorithm>
+#include<mutex>
 
 float Time_Elapsed_Since_FPS_Update = 0;
 
@@ -76,6 +77,32 @@ float Window_Aspect_Ratio = 0.5f; // Height / width
 glm::mat4 Projection_Matrix; // This is the projection matrix of the current camera!
 glm::vec3 Camera_Up_Direction;
 glm::vec3 Camera_Direction;
+
+namespace Context_Interface
+{
+	size_t Loading_Progress, Loading_Progress_Total;
+
+	std::mutex Context_Mutex;
+
+	void Assume_Context()
+	{
+		glfwMakeContextCurrent(Window);
+	}
+
+	void Request_Context()
+	{
+		Context_Mutex.lock();
+		
+		glfwMakeContextCurrent(Window);
+	}
+
+	void Free_Context()
+	{
+		glfwMakeContextCurrent(NULL);
+
+		Context_Mutex.unlock();
+	}
+}
 
 glm::vec3 Random_Perpendicular_Vector(glm::vec3 Vector)
 {

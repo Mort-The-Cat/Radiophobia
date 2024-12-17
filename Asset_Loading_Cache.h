@@ -14,6 +14,8 @@
 #define LOAD_MESH_STORE_CACHE_BIT 8u
 #define LOAD_MESH_CREATE_BUFFERS_CACHE_BIT 16u
 
+#define THREADED true
+
 namespace Cache
 {
 	struct Texture_Cache_Info
@@ -132,6 +134,7 @@ void Load_New_Texture(std::string Directory, Cache::Texture_Cache_Info* Target_I
 	Target_Info->Directory = Directory;
 }
 
+template<bool Is_Threaded = false>
 void Push_Merged_Specular_Reflectivity(const char* T_1, const char* T_2, const char* Material_Name)
 {
 	Cache::Texture_Cache_Info Final_Texture;
@@ -162,14 +165,24 @@ void Push_Merged_Specular_Reflectivity(const char* T_1, const char* T_2, const c
 	for (size_t W = 0; W < 2; W++)
 		stbi_image_free(Textures[W].Pixels);
 
+	if constexpr (Is_Threaded)
+		Context_Interface::Request_Context();
+
 	Final_Texture.Texture.Create_Texture();
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Final_Texture.Texture_Width, Final_Texture.Texture_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, Final_Texture.Pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
+	if constexpr (Is_Threaded)
+	{
+		Context_Interface::Free_Context();
+		Context_Interface::Loading_Progress++;
+	}
+
 	Cache::Texture_Cache.push_back(Final_Texture);
 }
 
+template<bool Is_Threaded = false>
 void Push_Merged_Material(const char* T_1, const char* T_2, const char* T_3, const char* Material_Name)
 {
 	Cache::Texture_Cache_Info Final_Texture;
@@ -206,14 +219,30 @@ void Push_Merged_Material(const char* T_1, const char* T_2, const char* T_3, con
 	for (size_t W = 0; W < 3; W++)
 		stbi_image_free(Textures[W].Pixels);
 
+	//
+
+	if constexpr (Is_Threaded)
+		Context_Interface::Request_Context();
+
+	//
+
 	Final_Texture.Texture.Create_Texture();
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Final_Texture.Texture_Width, Final_Texture.Texture_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, Final_Texture.Pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	Cache::Texture_Cache.push_back(Final_Texture);
+
+	//
+
+	if constexpr (Is_Threaded)
+	{
+		Context_Interface::Free_Context();
+		Context_Interface::Loading_Progress++;
+	}
 }
 
+template<bool Is_Threaded = false>
 Cache::Texture_Cache_Info Pull_Texture(const char* Texture_Directory)
 {
 	Cache::Texture_Cache_Info Cache_Info;
@@ -221,10 +250,24 @@ Cache::Texture_Cache_Info Pull_Texture(const char* Texture_Directory)
 	//if (Flags & LOAD_TEXTURE_SEARCH_CACHE_BIT)
 	//{
 	if (Cache::Search_Texture_Cache(Texture_Directory, &Cache_Info))
+	{
+		if constexpr (Is_Threaded)
+			Context_Interface::Loading_Progress++;
+
 		return Cache_Info;
+	}
 	//}
 
+	if constexpr (Is_Threaded)
+		Context_Interface::Request_Context();
+
 	Load_New_Texture(Texture_Directory, &Cache_Info);
+
+	if constexpr (Is_Threaded)
+	{
+		Context_Interface::Free_Context();
+		Context_Interface::Loading_Progress++;
+	}
 
 	Cache::Texture_Cache.push_back(Cache_Info);
 	return Cache_Info;
@@ -232,16 +275,25 @@ Cache::Texture_Cache_Info Pull_Texture(const char* Texture_Directory)
 
 //
 
+template<bool Is_Threaded = false>
 Cache::Animation_Cache_Info Pull_Animation(const char* Directory)
 {
 	Cache::Animation_Cache_Info Cache_Info;
 
 	if (Cache::Search_Animation_Cache(Directory, &Cache_Info))
+	{
+		if constexpr (Is_Threaded)
+			Context_Interface::Loading_Progress++;
+
 		return Cache_Info;
+	}
 
 	Cache_Info.Animation = new Mesh_Animation();
 
 	Load_Animation_File(Directory, Cache_Info.Animation);
+
+	if constexpr (Is_Threaded)
+		Context_Interface::Loading_Progress++;
 
 	Cache_Info.Directory = Directory;
 
@@ -255,6 +307,7 @@ Cache::Animation_Cache_Info Pull_Animation(const char* Directory)
 #define LOAD_MESH_FBX_BIT 2u
 #define LOAD_MESH_ANIM_BIT 4u
 
+template<bool Is_Threaded = false>
 Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LOAD_MESH_OBJ_BIT)
 {
 	Cache::Mesh_Cache_Info Cache_Info;
@@ -265,10 +318,20 @@ Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LO
 		{
 			Cache_Info.Mesh = new Model_Mesh(Cache_Info.Mesh);	// This should create a copy thereof?
 			Cache_Info.Vertex_Buffer.Mesh = Cache_Info.Mesh;	// Assign mesh to vertex buffer appropriately
+
+			if constexpr (Is_Threaded)
+				Context_Interface::Request_Context();
+
 			Cache_Info.Vertex_Buffer.Create_Buffer();
 			Cache_Info.Vertex_Buffer.Bind_Buffer();
 			Cache_Info.Vertex_Buffer.Update_Buffer();
+
+			if constexpr (Is_Threaded)
+				Context_Interface::Free_Context();
 		}
+
+		if constexpr (Is_Threaded)
+			Context_Interface::Loading_Progress++;
 
 		return Cache_Info;
 	}
@@ -291,6 +354,9 @@ Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LO
 		break;
 	}
 
+	if constexpr (Is_Threaded)
+		Context_Interface::Request_Context();
+
 	Cache_Info.Directory = Directory;
 	Cache_Info.Vertex_Buffer.Create_Buffer();
 	Cache_Info.Vertex_Buffer.Mesh = Cache_Info.Mesh;
@@ -303,6 +369,12 @@ Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LO
 
 	Cache_Info.Vertex_Buffer.Bind_Buffer();
 	Cache_Info.Vertex_Buffer.Update_Buffer();
+
+	if constexpr (Is_Threaded)
+	{
+		Context_Interface::Loading_Progress++;
+		Context_Interface::Free_Context();
+	}
 
 	Cache::Mesh_Cache.push_back(Cache_Info);
 	return Cache_Info;

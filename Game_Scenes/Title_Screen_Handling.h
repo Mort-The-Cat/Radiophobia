@@ -7,12 +7,30 @@
 
 #include "../Light_BVH_Tree_Handler.h"
 
+void Load_Test_Scene_Assets()
+{
+	Context_Interface::Loading_Progress_Total = 7 + 12;
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Test_Normal.png", "Stone");
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Floor_Tile_Spec.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_Tiles_Normal.png", "Floor");
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Floor_2_Tile_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_2_Tile_Normal.png", "NPP_Wall");
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Flat_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Floor_Reflect");
+
+	Initialise_Pistol();
+
+	Pull_Mesh<THREADED>("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Test_Person.obj");
+}
+
 void Setup_Test_Scene()
 {
 	// Scene_Lights.push_back(new Lightsource(glm::vec3(0, 3, -3), glm::vec3(1.5, 1, 1.3), glm::vec3(0, 0, 1), 60, 3));
 	Scene_Lights.push_back(new Lightsource(glm::vec3(0, 3, -3), glm::vec3(1, 1, 1.1), glm::vec3(0, 0, 1), 60, 3, 0.6f));
-
-
 
 	// UI_Elements.push_back(new Button_UI_Element(-0.25, -0.1, 0.55, 0.5, Return_To_Game_Loop));
 
@@ -55,8 +73,6 @@ void Setup_Test_Scene()
 
 
 	//
-
-	Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT);
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
 	Scene_Models.back()->Position = glm::vec3(0, 6, 0);
@@ -107,13 +123,13 @@ void Setup_Test_Scene()
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
 	Scene_Models.back()->Position = glm::vec3(3.773928, -3.6, -8.415);
-	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
 	Scene_Models.back()->Position = glm::vec3(1.394211, -3.6, 0.438914);
-	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
 
-	Volumetric_Cone_Particles.Particles.Spawn_Particle(glm::vec3(3.773928 - 1.0f, -3.6 - 1.0f, -8.415 - 1.0f), glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f)), glm::vec3(0.4, 0.6, 0.8), 2.0f, 30.0f);
+	Volumetric_Cone_Particles.Particles.Spawn_Particle(glm::vec3(3.773928 - 1.0f, -3.6 - 1.0f, -8.415 - 1.0f), glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f)), glm::vec3(0.4, 0.6, 0.8), 0.6f, 30.0f);
 	Scene_Lights.push_back(new Lightsource(glm::vec3(3.773928 - 1.0f, -3.6 - 1.0f, -8.415 - 1.0f), glm::vec3(1, 1.5, 2), glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), 30.0f, 1.0f, 0.6f));
 	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS, MF_SOLID }));
 	Scene_Models.back()->Position = glm::vec3(3.773928 - 1.0f, -3.6 - 1.0f, -8.415 - 1.0f);
@@ -143,16 +159,32 @@ void Setup_Test_Scene()
 	Lighting_BVH::Update_Leaf_Node_Data();
 }
 
-void Run_Engine_Loop(UI_Element* Element) 
+void Run_Engine_Loop(UI_Element* Element)
 { 
-	for (size_t W = 0; W < UI_Elements.size(); W++)
-		UI_Elements[W]->Flags[UF_TO_BE_DELETED] = true;
+	Delete_All_UI();
 
 	//UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
 	//UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	//UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
 
 	Galaxy_Particles.Delete_All_Particles();
+
+	//
+
+	// Load_Test_Scene_Assets();
+
+	bool Finished_Loading = false;
+
+	Context_Interface::Loading_Progress = 1.0f;
+	Context_Interface::Loading_Progress_Total = 1.0f;
+
+	Job_System::Submit_Job(Job_System::Job(Loading_Function, new Loading_Function_Parameters(Load_Test_Scene_Assets, &Finished_Loading)));
+
+	Loading_Screen_Loop(Finished_Loading);
+
+	Delete_All_UI();
+
+	//
 
 	Setup_Test_Scene();
 

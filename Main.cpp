@@ -33,7 +33,7 @@ int main()
 
 	Initialise_Shaders_And_Particle_Emitters();
 
-	Initialise_Pistol(); // This initialises the player items
+	// Initialise_Pistol(); // This initialises the player items
 	
 	Create_Title_Screen_Page();
 

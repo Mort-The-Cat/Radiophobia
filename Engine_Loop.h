@@ -219,6 +219,84 @@ void Engine_Loop()
 
 //
 
+struct Loading_Function_Parameters
+{
+	void (*Function)();
+	bool* Finished_Loading_Flag;
+
+	Loading_Function_Parameters(void (*Functionp)(), bool* Finished_Loading_Flagp)
+	{
+		Function = Functionp;
+		Finished_Loading_Flag = Finished_Loading_Flagp;
+	}
+};
+
+void Loading_Function(void* Data)
+{
+	Loading_Function_Parameters* Parameters = static_cast<Loading_Function_Parameters*>(Data);
+
+	Parameters->Function(); // Runs the given function
+
+	*Parameters->Finished_Loading_Flag = true; // Once finished, lets engine know that the function is complete
+
+	delete Parameters;
+}
+
+void Loading_Screen_Loop(bool& Finished_Loading_Flag)
+{
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -0.25f, 1.0f, 0.25f));
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -0.25f, 1.0f, 0.25f, Pull_Texture("Assets/Textures/White.png").Texture, new UI_Loading_Screen_Icon_Controller(2.0f)));
+	UI_Elements.back()->Colour = glm::vec4(0.15f, 0.3f, 1.0f, 0.75f);
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+
+	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.25f, 1.0f, 0.25f, "Loading.txt", true, glm::vec3(1.0f, 1.0f, 1.0f), &Font_Console, 0.1f));
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	
+	//UI_Elements.back()->Flags[UF_RENDER_CONTENTS]
+
+	Last_Time = glfwGetTime();
+
+	while (!Finished_Loading_Flag && !glfwWindowShouldClose(Window))
+	{
+		{
+			Context_Interface::Request_Context();
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0u);
+
+			glClearColor(0.05f, 0.05f, 0.05f, 0.1f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			Receive_Inputs();
+
+			Context_Interface::Free_Context();
+		}
+
+		Audio::Handle_Audio(Player_Camera);
+
+		{
+			Context_Interface::Request_Context();
+
+			Handle_UI();
+
+			Handle_Deletions();
+
+			// render the loading screen stuff above it
+
+			// There's no way that we need to handle deletions on the loading screen lol
+
+			End_Of_Frame();
+
+			Context_Interface::Free_Context();
+		}
+	}
+
+	Context_Interface::Assume_Context(); // Once the loading is finished, we need the main thread to reassume control until later
+}
+
 void UI_Loop()
 {
 	glDisable(GL_CULL_FACE);

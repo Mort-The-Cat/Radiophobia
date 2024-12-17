@@ -215,8 +215,8 @@ void Initialise_Pistol()
 
 	Makarov_Pistol.Viewmodel_Meshes.resize(2);
 
-	Create_Model(Pull_Mesh("Assets/Models/Test_Makarov.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Arm_Texture_2.png").Texture, Pull_Texture("Black").Texture, &Makarov_Pistol.Viewmodel_Meshes[0], new Controller(), std::vector<Hitbox*>());
-	Create_Model(Pull_Mesh("Assets/Models/Test_Makarov_Shoot.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Gun_Texture.png").Texture, Pull_Texture("NPP_Wall").Texture, &Makarov_Pistol.Viewmodel_Meshes[1], new Controller(), std::vector<Hitbox*>());
+	Create_Model(Pull_Mesh<THREADED>("Assets/Models/Test_Makarov.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture<THREADED>("Assets/Textures/Arm_Texture_2.png").Texture, Pull_Texture("Brick").Texture, &Makarov_Pistol.Viewmodel_Meshes[0], new Controller(), std::vector<Hitbox*>());
+	Create_Model(Pull_Mesh<THREADED>("Assets/Models/Test_Makarov_Shoot.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture<THREADED>("Assets/Textures/Gun_Texture.png").Texture, Pull_Texture("Floor").Texture, &Makarov_Pistol.Viewmodel_Meshes[1], new Controller(), std::vector<Hitbox*>());
 
 	// This loads the models
 

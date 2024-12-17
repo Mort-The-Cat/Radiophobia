@@ -13,7 +13,8 @@ void Init_Player_Physics_Object()
 		Player_Physics_Object.Object = new Model();
 
 		Player_Camera.Position = glm::vec3(
-			2.0f, -4.909266, 10.0f
+			// 2.0f, -4.909266, 10.0f
+			3.773928 - 1.0f, -3.6 - 2.0f, -8.415 - 1.0f
 		);
 
 		Initialise_Physics_Object(&Player_Physics_Object, Player_Physics_Object.Object);
@@ -125,16 +126,6 @@ void Initialise_Shaders_And_Particle_Emitters()
 		"Assets/Cubemap/Test/Cubemap_Back.png",
 		"Assets/Cubemap/Test/Cubemap_Front.png"
 		}, &Test_Cubemap);
-
-	Push_Merged_Material("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
-
-	Push_Merged_Material("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Test_Normal.png", "Stone");
-
-	Push_Merged_Material("Assets/Textures/Floor_Tile_Spec.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_Tiles_Normal.png", "Floor");
-
-	Push_Merged_Material("Assets/Textures/Floor_2_Tile_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_2_Tile_Normal.png", "NPP_Wall");
-
-	Push_Merged_Material("Assets/Textures/Brick_Specular.png", "Assets/Textures/Flat_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Floor_Reflect");
 
 	Push_Merged_Specular_Reflectivity("Assets/Textures/Black.png", "Assets/Textures/Black.png", "Black");
 
