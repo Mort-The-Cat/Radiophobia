@@ -122,6 +122,12 @@
     <ClInclude Include="Game_Scenes\Items_Declarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game_Scenes\Menus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_Scenes\Menus_Declarations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader_Code\Vertex_Test.frag" />

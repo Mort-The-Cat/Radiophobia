@@ -227,6 +227,8 @@ public:
 
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN]);
 
+		Handle_Shadow(Coords);
+
 		bool Hovering = Button_Hover(Coords);
 
 		Colour = glm::vec4(1, 1, 1, 1.0f);
@@ -295,7 +297,12 @@ public:
 		Bind_UI_Uniforms(Text_Shader, Font_Table::Font, Colour);
 #endif
 
-		Render_Text(Text, Coords);
+		float Offset = 0.0f;
+
+		if (Flags[UF_CENTRE_TEXT])
+			Offset = 0.5f * Get_Horizontal_Offset_Of_Character(0, Text.length(), Text, Coords);
+
+		Render_Text(Text, Coords, Offset);
 	}
 };
 

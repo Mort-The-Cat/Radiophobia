@@ -255,6 +255,7 @@ void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 
 	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.25f, 1.0f, 0.25f, "Loading.txt", true, glm::vec3(1.0f, 1.0f, 1.0f), &Font_Console, 0.1f));
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 	
 	//UI_Elements.back()->Flags[UF_RENDER_CONTENTS]
 

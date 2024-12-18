@@ -15,6 +15,8 @@
 
 #include "Particle_System_Declarations.h"
 
+#include "Game_Scenes/Menus_Declarations.h"
+
 Physics::Physics_Object Player_Physics_Object;
 
 namespace Collision_Test
@@ -242,8 +244,9 @@ void Controller_Player_Movement()
 
 	if (Controller_Inputs.buttons[Gamepad_Controls::Pause] || Window_Width == 0)
 	{
-		Cursor_Reset = false;
-		UI_Loop();
+		Open_Pause_Menu();
+		//Cursor_Reset = false;
+		//UI_Loop();
 	}
 
 	if (Controller_Inputs.buttons[Gamepad_Controls::Use])
@@ -330,8 +333,10 @@ void Player_Movement()
 
 	if (Inputs[Controls::Pause] && Cursor_Reset || Window_Width == 0)
 	{
-		Cursor_Reset = false;
-		UI_Loop();
+		Open_Pause_Menu();
+
+		//Cursor_Reset = false;
+		//UI_Loop();
 	}
 
 	if (Inputs[Controls::Use])

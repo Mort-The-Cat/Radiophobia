@@ -5,11 +5,13 @@
 #include "../Engine_Loop.h"
 #include "../UI_Textbox_Definitions.h"
 
+#include "Menus.h"
+
 #include "../Light_BVH_Tree_Handler.h"
 
 void Load_Test_Scene_Assets()
 {
-	Context_Interface::Loading_Progress_Total = 7 + 12;
+	Context_Interface::Loading_Progress_Total = 18;
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
 

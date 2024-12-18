@@ -60,7 +60,7 @@ public:
 		if(Shot_Timer < Time_Between_Shots)
 			Shot_Timer += Tick;
 		else
-			if (Mouse_Fresh_Click(0) && Ammo)
+			if ((Controller_Inputs.axes[Gamepad_Controls::Attack] > 0.35 || Mouse_Fresh_Click(0)) && Ammo)
 			{
 				Ammo--;
 				Shot_Timer = 0.0f;
@@ -93,7 +93,7 @@ public:
 
 			// But, in this state, we can do inputs!
 
-			if (Inputs[Controls::Auxilliary])
+			if (Inputs[Controls::Auxilliary] || Controller_Inputs.axes[Gamepad_Controls::Auxilliary])
 			{
 				Current_State = Reloading;
 				Reload.Time = 0.0f;

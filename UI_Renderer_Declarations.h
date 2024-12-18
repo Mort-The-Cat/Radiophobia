@@ -204,6 +204,8 @@ namespace Font_Table
 #define UF_FILL_SCREEN 4u		// This flag is set for things like backgrounds- useful for title screen
 #define UF_RENDER_CONTENTS 5u	// This flag is set if you only want the UI border to be rendered
 #define UF_CLAMP_RIGHT 6u		// This flag toggles which side of the screen the UI is clamped to
+#define UF_SHADOW_BACKDROP 7u
+#define UF_CENTRE_TEXT 8u
 
 bool UI_Continue_Looping = false;
 
@@ -291,7 +293,7 @@ class UI_Transformed_Coordinates
 
 	void Shift_Left(float* Left_X, float* Right_X)
 	{
-		float Delta = std::max(0.0f, *Right_X - 1.0f);
+		float Delta = std::min(0.0f, *Right_X - 1.0f);
 
 		*Left_X -= Delta;
 		*Right_X -= Delta;
@@ -301,6 +303,8 @@ public:
 	float X1, Y1, X2, Y2; // Bounds
 
 	float X1o, Y1o, X2o, Y2o; // Offset
+
+	UI_Transformed_Coordinates() {}
 	UI_Transformed_Coordinates(float X1p, float Y1p, float X2p, float Y2p, float UI_Border_Size, bool Clamp_To_Side, bool Fill_Screen = false, bool Clamp_Right = false)
 	{
 		if (Clamp_To_Side) // This preserves the horizontal dimensions of the UI element
@@ -310,14 +314,17 @@ public:
 			// if ((X1p + X2p) > 0.0f)
 			if(Clamp_Right)
 			{
-				Shift_Left(&X1p, &X2p);
+				// Shift_Left(&X1p, &X2p);
 
-				X2p = (1.0f / Window_Aspect_Ratio) + (1.0f + X2p);
+				X2p = (1.0f / Window_Aspect_Ratio) - (1.0f - X2p);
 				X1p = X2p - Width;
+
+				// X2p = (1.0f / Window_Aspect_Ratio) + (1.0f + X2p);
+				// X1p = X2p - Width;
 			}
 			else
 			{
-				Shift_Right(&X1p, &X2p);
+				// Shift_Right(&X1p, &X2p);
 
 				X1p = (X1p + 1.0f) - (1.0f / Window_Aspect_Ratio);
 				X2p = X1p + Width;
@@ -370,7 +377,9 @@ class UI_Element // The subclasses hereof will handle things like text, buttons,
 public:
 	float X1, Y1, X2, Y2;
 
-	bool Flags[7] = { false, true, false, false, false, true, false };
+	bool Flags[9] = { false, true, false, false, false, true, false, false, false };
+
+	float Shadow_Distance = 1.0f / 20.0f;
 
 	float UI_Border_Size = 1.0f / 20.0f;
 
@@ -472,12 +481,48 @@ public:
 				{ 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 0 });
 	}
 
+	void Handle_Shadow(UI_Transformed_Coordinates& Coords)
+	{
+		if (Flags[UF_SHADOW_BACKDROP])
+		{
+			glm::vec4 Temp_Colour = Colour;
+
+			Colour = glm::vec4(0.0f, 0.0f, 0.0f, 0.4f);
+
+			Coords.X1 += Shadow_Distance * Window_Aspect_Ratio;
+			Coords.X2 += Shadow_Distance * Window_Aspect_Ratio;
+			Coords.Y1 -= Shadow_Distance;
+			Coords.Y2 -= Shadow_Distance;
+
+			Coords.X1o += Shadow_Distance * Window_Aspect_Ratio;
+			Coords.X2o += Shadow_Distance * Window_Aspect_Ratio;
+			Coords.Y1o -= Shadow_Distance;
+			Coords.Y2o -= Shadow_Distance;
+
+			Render(Coords);
+
+			Coords.X1 -= Shadow_Distance * Window_Aspect_Ratio;
+			Coords.X2 -= Shadow_Distance * Window_Aspect_Ratio;
+			Coords.Y1 += Shadow_Distance;
+			Coords.Y2 += Shadow_Distance;
+
+			Coords.X1o -= Shadow_Distance * Window_Aspect_Ratio;
+			Coords.X2o -= Shadow_Distance * Window_Aspect_Ratio;
+			Coords.Y1o += Shadow_Distance;
+			Coords.Y2o += Shadow_Distance;
+
+			Colour = Temp_Colour;
+		}
+	}
+
 	virtual void Update_UI()
 	{
 		if (Controller != nullptr)
 			Controller->Control_Function(this);
 
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
+
+		Handle_Shadow(Coords);
 
 		Render(Coords);
 
@@ -576,7 +621,46 @@ public:
 		Font = Fontp;
 	}
 
-	virtual void Render_Text(std::string Text, UI_Transformed_Coordinates Coords) // We'll use "text" as a parameter here to prevent race conditions
+	float Get_Horizontal_Offset_Of_Character(size_t Start, size_t Index, std::string Text, UI_Transformed_Coordinates Coords)
+	{
+		float X_Offset;
+
+		float Left_Offset;
+		float Right_Offset;
+
+		for (size_t W = Start; W < Index; W++)
+		{
+			if (Text[W] == '\n')
+			{
+				X_Offset = 0;
+				continue; // We're perfectly happy, skipping to the next iteration
+			}
+
+			if (Text[W] != ' ')
+			{
+				Font_Table::Character Character = Font->Characters[Text[W]];
+
+				Left_Offset = Coords.X1o + (Character.Offset.x + X_Offset) * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space
+					+ Size * Window_Aspect_Ratio * 0.5f;
+
+				Right_Offset = Left_Offset + Character.Size.x * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space;
+
+				X_Offset += Character.Step;
+
+				Right_Offset += Character.Step * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space;
+
+				if (Right_Offset > Coords.X2o - Size * Window_Aspect_Ratio * 0.5f)
+					X_Offset = 0.0f;
+			}
+			else
+				X_Offset += Font->Characters['a'].Step;
+
+		}
+
+		return X_Offset;
+	}
+
+	virtual void Render_Text(std::string Text, UI_Transformed_Coordinates Coords, float Offset) // We'll use "text" as a parameter here to prevent race conditions
 	{
 		// 62 is the character index of the space
 
@@ -608,6 +692,9 @@ public:
 		Letter.Delete_Buffer();
 
 #else
+
+		Coords.X1o += Offset;
+
 		float X_Offset = 0;
 		float Y_Offset = 0;
 
@@ -694,7 +781,12 @@ public:
 		Bind_UI_Uniforms(Text_Shader, Font_Table::Font, Colour);
 #endif
 
-		Render_Text(Text, Coords);
+		float Offset = 0.0f;
+
+		if (Flags[UF_CENTRE_TEXT])
+			Offset = 0.5f * ((Coords.X2o - Coords.X1o) - Size * Window_Aspect_Ratio - Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space * Get_Horizontal_Offset_Of_Character(0, Text.length(), Text, Coords));
+
+		Render_Text(Text, Coords, Offset);
 	}
 };
 
@@ -726,6 +818,8 @@ public:
 
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
 
+		Handle_Shadow(Coords);
+
 		bool Hovering = Button_Hover(Coords);
 
 		Colour = glm::vec4(1, 1, 1, 1.0f);
@@ -735,7 +829,7 @@ public:
 		else
 			Colour.b = 1.0f;
 
-		if (Mouse_Inputs[0])
+		if (Hovering && Mouse_Inputs[0])
 			Colour *= glm::vec4(0.6f, 0.6f, 0.6f, 1.0f);
 
 		Render(Coords);
@@ -791,6 +885,8 @@ public:
 			Controller->Control_Function(this);
 
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
+
+		Handle_Shadow(Coords);
 
 		bool Hovering = Button_Hover(Coords);
 
