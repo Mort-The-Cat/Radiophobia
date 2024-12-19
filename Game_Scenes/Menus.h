@@ -23,6 +23,19 @@ void Close_Game(UI_Element* Element)
 	glfwSetWindowShouldClose(Window, 1);
 }
 
+void Place_Language_Buttons()
+{
+	UI_Elements.push_back(new Button_UI_Element(0.6, 0.65, 0.9, 0.9, Set_Language_English, Pull_Texture("Assets/UI/English.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	UI_Elements.push_back(new Button_UI_Element(0.2, 0.65, 0.5, 0.9, Set_Language_Deutsch, Pull_Texture("Assets/UI/German.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+}
+
 void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI element given to this
 {
 	Delete_All_UI();
@@ -61,15 +74,7 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 
 	//
 
-	UI_Elements.push_back(new Button_UI_Element(0.7, 0.7, 0.9, 0.9, Set_Language_English, Pull_Texture("Assets/UI/English.png").Texture));
-	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
-	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
-	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
-
-	UI_Elements.push_back(new Button_UI_Element(0.4, 0.7, 0.6, 0.9, Set_Language_Deutsch, Pull_Texture("Assets/UI/German.png").Texture));
-	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
-	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
-	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	Place_Language_Buttons();
 
 	UI_Loop();
 
@@ -78,7 +83,15 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 
 void Open_Settings_Menu(UI_Element* Element)
 {
+	Delete_All_UI();
 
+	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Paused.txt", true, glm::vec3(1.0f), &Font_Georgia, 0.225f, 0.025f));
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Shadow_Distance *= 0.25f;
 }
 
 #endif

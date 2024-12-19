@@ -112,6 +112,8 @@ void Initialise_Shaders_And_Particle_Emitters()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);						// Purely additive blending
 
+	Loading_Screen_Spiral_Shader.Create_Shader("Shader_Code/Loading_Screen_Spiral.vert", "Shader_Code/Loading_Screen_Spiral.frag", nullptr);
+
 	Scene_Object_Shader.Create_Shader("Shader_Code/Vertex_Test.vert", "Shader_Code/Vertex_Test.frag", "Shader_Code/Vertex_Test.geom");
 	Scene_Object_Shader.Activate();
 
@@ -128,6 +130,9 @@ void Initialise_Shaders_And_Particle_Emitters()
 		}, &Test_Cubemap);
 
 	Push_Merged_Specular_Reflectivity("Assets/Textures/Black.png", "Assets/Textures/Black.png", "Black");
+
+	Pull_Texture("Assets/UI/Loading_Screen_Screw_Back.png");
+	Pull_Texture("Assets/UI/Loading_Screen_Screw_Front.png");
 
 	// Push_Merged_Material("Assets/Textures/Reddened_Wall_Spec.png", nullptr, "Assets/Textures/Reddened_Wall_Normal.png", "NPP_Wall");
 

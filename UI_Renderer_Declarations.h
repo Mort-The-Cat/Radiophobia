@@ -623,18 +623,18 @@ public:
 
 	float Get_Horizontal_Offset_Of_Character(size_t Start, size_t Index, std::string Text, UI_Transformed_Coordinates Coords)
 	{
-		float X_Offset;
+		float X_Offset = 0.0f;
 
-		float Left_Offset;
-		float Right_Offset;
+		float Left_Offset = 0.0f;
+		float Right_Offset = 0.0f;
 
 		for (size_t W = Start; W < Index; W++)
 		{
-			if (Text[W] == '\n')
-			{
-				X_Offset = 0;
-				continue; // We're perfectly happy, skipping to the next iteration
-			}
+			//if (Text[W] == '\n')
+			//{
+			//	X_Offset = 0;
+			//	continue; // We're perfectly happy, skipping to the next iteration
+			//}
 
 			if (Text[W] != ' ')
 			{
@@ -649,8 +649,8 @@ public:
 
 				Right_Offset += Character.Step * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space;
 
-				if (Right_Offset > Coords.X2o - Size * Window_Aspect_Ratio * 0.5f)
-					X_Offset = 0.0f;
+				//if (Right_Offset > Coords.X2o - Size * Window_Aspect_Ratio * 0.5f)
+				//	X_Offset = 0.0f;
 			}
 			else
 				X_Offset += Font->Characters['a'].Step;
@@ -784,7 +784,7 @@ public:
 		float Offset = 0.0f;
 
 		if (Flags[UF_CENTRE_TEXT])
-			Offset = 0.5f * ((Coords.X2o - Coords.X1o) - Size * Window_Aspect_Ratio - Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space * Get_Horizontal_Offset_Of_Character(0, Text.length(), Text, Coords));
+			Offset = 0.5f * ((Coords.X2o - Coords.X1o) - 1.5 * Size * Window_Aspect_Ratio - Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space * Get_Horizontal_Offset_Of_Character(0, Text.length(), Text, Coords));
 
 		Render_Text(Text, Coords, Offset);
 	}

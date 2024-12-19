@@ -242,29 +242,86 @@ void Loading_Function(void* Data)
 	delete Parameters;
 }
 
+void Render_Loading_Screen_Spiral()
+{
+	glEnable(GL_BLEND);
+
+	Billboard_Vertex_Buffer Big_Spiral(-0.25f, -1.0f, 1.0f, 1.0f);
+
+	Post_Processor::Shader_Time += Tick;
+
+	Loading_Screen_Spiral_Shader.Activate();
+
+	glUniform1f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Time"), Post_Processor::Shader_Time);
+
+	Texture Back_Texture = Pull_Texture("Assets/UI/Titan_Back.png").Texture;
+
+	Back_Texture.Bind_Texture();
+	Back_Texture.Parse_Texture(Loading_Screen_Spiral_Shader, "Albedo", 0u);
+
+	glDrawElements(GL_TRIANGLES, Big_Spiral.Indices_Count, GL_UNSIGNED_INT, 0u);
+
+	// glUniform1f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Time"), Post_Processor::Shader_Time + 10.0f);
+
+	Texture Front_Texture = Pull_Texture("Assets/UI/Titan_Front.png").Texture;
+
+	Front_Texture.Bind_Texture();
+	Front_Texture.Parse_Texture(Loading_Screen_Spiral_Shader, "Albedo", 0u);
+
+	glDrawElements(GL_TRIANGLES, Big_Spiral.Indices_Count, GL_UNSIGNED_INT, 0u);
+
+	//
+
+	Big_Spiral.Delete_Buffer();
+}
+
 void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -0.25f, 1.0f, 0.25f));
+	UI_Elements.push_back(new UI_Element(-0.9f, 0.6f, 1.0f, 0.9f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -0.25f, 1.0f, 0.25f, Pull_Texture("Assets/Textures/White.png").Texture, new UI_Loading_Screen_Icon_Controller(2.0f)));
+	UI_Elements.push_back(new UI_Element(-0.9f, 0.6f, 1.0f, 0.9f, Pull_Texture("Assets/Textures/White.png").Texture, new UI_Loading_Screen_Icon_Controller(1.9f)));
 	UI_Elements.back()->Colour = glm::vec4(0.15f, 0.3f, 1.0f, 0.75f);
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 
-	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.25f, 1.0f, 0.25f, "Loading.txt", true, glm::vec3(1.0f, 1.0f, 1.0f), &Font_Console, 0.1f));
+	UI_Elements.push_back(new Text_UI_Element(-0.9f, 0.6f, 1.0f, 0.9f, "Loading.txt", true, glm::vec3(1.0f, 1.0f, 1.0f), &Font_Console, 0.1f));
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 	
 	//UI_Elements.back()->Flags[UF_RENDER_CONTENTS]
 
+	bool Update_UI = true;
+
 	Last_Time = glfwGetTime();
 
-	while (!Finished_Loading_Flag && !glfwWindowShouldClose(Window))
+	while (!(Finished_Loading_Flag && (Inputs[Controls::Up] || Controller_Inputs.buttons[Gamepad_Controls::Up])) && !glfwWindowShouldClose(Window))
 	{
+		Handle_Tick();
+
 		{
 			Context_Interface::Request_Context();
+
+			if (Update_UI && Finished_Loading_Flag)
+			{
+				Update_UI = false;
+				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
+
+				UI_Elements.push_back(new Text_UI_Element(-0.9f, 0.6f, 1.0f, 0.9f, "Push_Pause_To_Start.txt", true, glm::vec3(1.0f, 1.0f, 1.0f), &Font_Console, 0.1f));
+				UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+				UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+				UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+				UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+
+				Context_Interface::Loading_Progress = Context_Interface::Loading_Progress_Total;
+			}
 
 			glBindFramebuffer(GL_FRAMEBUFFER, 0u);
 
@@ -282,6 +339,8 @@ void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 			Context_Interface::Request_Context();
 
 			Handle_UI();
+
+			Render_Loading_Screen_Spiral();
 
 			Handle_Deletions();
 

@@ -223,14 +223,16 @@ void Create_Title_Screen_Page()
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
 
-	UI_Elements.push_back(new Button_Text_UI_Element(-1.75f, 0.5, 1.75f, 0.9f, Run_Engine_Loop, "Test.txt" /*"Drücken Sie diesen Knopf, um anzufangen"*/, true, glm::vec3(1.0f), &Font_Console, 0.1f, 0.01f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-1.85f, 0.5, 1.1f, 0.9f, Run_Engine_Loop, "Test.txt" /*"Drücken Sie diesen Knopf, um anzufangen"*/, true, glm::vec3(1.0f), &Font_Console, 0.1f, 0.01f));
 	UI_Elements.back()->Image = Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture;
 
 	UI_Elements.back()->Flags[UF_IMAGE] = true;
 
 	//
 
-	UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.55f, 0.1f, 0.0f, &Font_Console));
+	Place_Language_Buttons();
+
+	UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.4f, 0.1f, 0.0f, &Font_Console));
 
 	Cursor_Reset = false;
 
