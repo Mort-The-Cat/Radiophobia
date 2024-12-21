@@ -131,9 +131,6 @@ void Initialise_Shaders_And_Particle_Emitters()
 
 	Push_Merged_Specular_Reflectivity("Assets/Textures/Black.png", "Assets/Textures/Black.png", "Black");
 
-	Pull_Texture("Assets/UI/Loading_Screen_Screw_Back.png");
-	Pull_Texture("Assets/UI/Loading_Screen_Screw_Front.png");
-
 	// Push_Merged_Material("Assets/Textures/Reddened_Wall_Spec.png", nullptr, "Assets/Textures/Reddened_Wall_Normal.png", "NPP_Wall");
 
 	Initialise_Particles();

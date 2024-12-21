@@ -19,7 +19,6 @@ public:
 	// This probably won't be added to the list of scene models, we'll just render them directly from the item. Less worries- less complicated
 };
 
-
 Item* Player_Current_Item; // This is the item the player is currently holding
 Item* Player_Desired_Item; // This is the item that the player is currently trying to switch to.
 

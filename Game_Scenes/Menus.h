@@ -46,7 +46,7 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 
-	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Paused.txt", true, glm::vec3(1.0f), &Font_Georgia, 0.225f, 0.025f));
+	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Paused.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
@@ -54,19 +54,19 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
 	UI_Elements.back()->Shadow_Distance *= 0.25f;
 
-	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, -0.4f, 0.5f, -0.1f, Return_To_Game_Loop, "Resume.txt", true, glm::vec3(1.0f), &Font_Console, 0.1f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, -0.4f, 0.5f, -0.1f, Return_To_Game_Loop, "Resume.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 
-	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, -0.0f, 0.5f, 0.3f, Open_Settings_Menu, "Settings.txt", true, glm::vec3(1.0f), &Font_Console, 0.1f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, -0.0f, 0.5f, 0.3f, Open_Settings_Menu, "Settings.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 
-	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, 0.4f, 0.5f, 0.7f, Close_Game, "Close_Game.txt", true, glm::vec3(1.0f), &Font_Console, 0.1f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, 0.4f, 0.5f, 0.7f, Close_Game, "Close_Game.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
@@ -83,15 +83,19 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 
 void Open_Settings_Menu(UI_Element* Element)
 {
-	Delete_All_UI();
+	// Delete_All_UI();
 
-	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Paused.txt", true, glm::vec3(1.0f), &Font_Georgia, 0.225f, 0.025f));
+	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Paused.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
 	UI_Elements.back()->Shadow_Distance *= 0.25f;
+
+	Place_Language_Buttons();
+
+	UI_Loop();
 }
 
 #endif

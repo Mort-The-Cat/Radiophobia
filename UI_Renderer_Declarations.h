@@ -385,7 +385,7 @@ public:
 
 	float Inv_UI_Border_Size = 20.0f;
 
-	glm::vec4 Colour = glm::vec4(1, 1, 1, 1.0f);
+	glm::vec4 Colour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	Texture Image;
 
@@ -573,7 +573,7 @@ public:
 
 	Font_Table::Font* Font;
 
-	glm::vec3 Text_Colour;
+	glm::vec4 Text_Colour;
 
 	Text_UI_Element() {}
 
@@ -586,7 +586,7 @@ public:
 			delete File_Info;
 	}
 
-	Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, std::string Textp, bool Load_From_File = false, glm::vec3 Text_Colourp = glm::vec3(1.0f, 1.0f, 1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
+	Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, std::string Textp, bool Load_From_File = false, glm::vec4 Text_Colourp = glm::vec4(1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
 	{
 		X1 = X1p;
 		Y1 = Y1p;
@@ -711,7 +711,7 @@ public:
 			{
 				Font_Table::Character Character = Font->Characters[Text[W]];
 
-				Bind_UI_Uniforms(Text_Shader, Character.Glyph, Colour);
+				Bind_UI_Uniforms(Text_Shader, Character.Glyph, Colour * Text_Colour);
 
 				float Left_X_Pos = Coords.X1o + (Character.Offset.x + X_Offset) * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space
 					+ Size * Window_Aspect_Ratio * 0.5f;
@@ -770,6 +770,9 @@ public:
 
 		if (Flags[UF_RENDER_BORDER])
 			Render_Border(Coords);
+
+		if (Flags[UF_IMAGE])
+			Bind_UI_Uniforms(UI_Shader, Image, Colour);
 
 		if(Flags[UF_RENDER_CONTENTS])
 			Render_Screen_Sprite(Coords.X1o, Coords.Y1o, Coords.X2o, Coords.Y2o,
@@ -844,7 +847,7 @@ class Button_Text_UI_Element : public Text_UI_Element
 public:
 	void (*Button_Function)(UI_Element*);
 
-	Button_Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, void (*Button_Functionp)(UI_Element*), std::string Textp, bool Load_From_File = false, glm::vec3 Text_Colourp = glm::vec3(1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
+	Button_Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, void (*Button_Functionp)(UI_Element*), std::string Textp, bool Load_From_File = false, glm::vec4 Text_Colourp = glm::vec4(1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
 	{
 		X1 = X1p;
 		Y1 = Y1p;

@@ -252,6 +252,8 @@ void Render_Loading_Screen_Spiral()
 
 	Loading_Screen_Spiral_Shader.Activate();
 
+	glUniform4f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Colour"), 1.0f, 1.0f, 1.0f, 1.0f);
+
 	glUniform1f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Time"), Post_Processor::Shader_Time);
 
 	Texture Back_Texture = Pull_Texture("Assets/UI/Titan_Back.png").Texture;
@@ -261,12 +263,31 @@ void Render_Loading_Screen_Spiral()
 
 	glDrawElements(GL_TRIANGLES, Big_Spiral.Indices_Count, GL_UNSIGNED_INT, 0u);
 
+	//
+
+	Texture Centre_Texture = Pull_Texture("Assets/UI/Titan_Centre.png").Texture;
+
+	Centre_Texture.Bind_Texture();
+	Centre_Texture.Parse_Texture(Loading_Screen_Spiral_Shader, "Albedo", 0u);
+
+	glUniform1f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Time"), Post_Processor::Shader_Time * 0.9f + 19.0f);
+
+	glUniform4f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Colour"), 0.5f, 0.5f, 1.0f, 1.0f);
+
+	glDrawElements(GL_TRIANGLES, Big_Spiral.Indices_Count, GL_UNSIGNED_INT, 0u);
+
+	//
+
 	// glUniform1f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Time"), Post_Processor::Shader_Time + 10.0f);
 
 	Texture Front_Texture = Pull_Texture("Assets/UI/Titan_Front.png").Texture;
 
 	Front_Texture.Bind_Texture();
 	Front_Texture.Parse_Texture(Loading_Screen_Spiral_Shader, "Albedo", 0u);
+
+	glUniform4f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Colour"), 1.0f, 1.0f, 1.0f, 1.0f);
+
+	glUniform1f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Time"), Post_Processor::Shader_Time);
 
 	glDrawElements(GL_TRIANGLES, Big_Spiral.Indices_Count, GL_UNSIGNED_INT, 0u);
 
@@ -290,7 +311,7 @@ void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 
-	UI_Elements.push_back(new Text_UI_Element(-0.9f, 0.6f, 1.0f, 0.9f, "Loading.txt", true, glm::vec3(1.0f, 1.0f, 1.0f), &Font_Console, 0.1f));
+	UI_Elements.push_back(new Text_UI_Element(-0.9f, 0.6f, 1.0f, 0.9f, "Loading.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
@@ -314,7 +335,7 @@ void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 				Update_UI = false;
 				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
 
-				UI_Elements.push_back(new Text_UI_Element(-0.9f, 0.6f, 1.0f, 0.9f, "Push_Pause_To_Start.txt", true, glm::vec3(1.0f, 1.0f, 1.0f), &Font_Console, 0.1f));
+				UI_Elements.push_back(new Text_UI_Element(-0.9f, 0.6f, 1.0f, 0.9f, "Push_Pause_To_Start.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
 				UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 				UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 				UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;

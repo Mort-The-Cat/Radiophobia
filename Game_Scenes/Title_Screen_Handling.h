@@ -40,7 +40,7 @@ void Setup_Test_Scene()
 
 	// UI_Elements.push_back(new Button_UI_Element(-1, -1, 1, 1, Return_To_Game_Loop, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture));
 	
-	UI_Elements.push_back(new Button_Text_UI_Element(-0.9f, -0.9, 0.8f, -0.3, Return_To_Game_Loop, "Spiel beginnen? Das sieht\nschön aus! Scheiß drauf", false, glm::vec3(1.0f), &Font_Georgia, 0.1f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.9f, -0.9, 0.8f, -0.3, Return_To_Game_Loop, "Spiel beginnen? Das sieht\nschön aus! Scheiß drauf", false, glm::vec4(1.0f), &Font_Georgia, 0.1f));
 	
 	
 	//UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
@@ -214,25 +214,25 @@ void Create_Title_Screen_Page()
 			Galaxy_Particles.Particles.Spawn_Particle(Radius + RNG() * 0.1f, 6.28318f + (W + RNG() * 4.0f) * 3.14159f * 2.0f / (64 * Radius));
 	}
 
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f)); // , Pull_Texture("Assets/UI/Title_Screen.png").Texture));
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+
 	UI_Elements.push_back(new UI_Element(-0.9f, -0.98f, 2.1f, -0.48f, Pull_Texture("Assets/UI/Radiophobia_Title.png").Texture));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
-	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
-	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.push_back(new Button_Text_UI_Element(-1.85f, 0.5, 1.1f, 0.9f, Run_Engine_Loop, "Test.txt" /*"Drücken Sie diesen Knopf, um anzufangen"*/, true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.01f));
+	// UI_Elements.back()->Image = Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture;
 
-	UI_Elements.push_back(new Button_Text_UI_Element(-1.85f, 0.5, 1.1f, 0.9f, Run_Engine_Loop, "Test.txt" /*"Drücken Sie diesen Knopf, um anzufangen"*/, true, glm::vec3(1.0f), &Font_Console, 0.1f, 0.01f));
-	UI_Elements.back()->Image = Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture;
-
-	UI_Elements.back()->Flags[UF_IMAGE] = true;
+	// UI_Elements.back()->Flags[UF_IMAGE] = true;
 
 	//
 
 	Place_Language_Buttons();
 
-	UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.4f, 0.1f, 0.0f, &Font_Console));
+	// UI_Elements.push_back(new Textbox_UI_Element(-1.0f, -0.25f, 1.0f, 0.4f, 0.1f, 0.0f, &Font_Console));
 
 	Cursor_Reset = false;
 
