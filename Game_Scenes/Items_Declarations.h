@@ -22,6 +22,11 @@ public:
 Item* Player_Current_Item; // This is the item the player is currently holding
 Item* Player_Desired_Item; // This is the item that the player is currently trying to switch to.
 
+namespace Pistol_SFX
+{
+	irrklang::ISoundSource *Shoot, *Click, *Draw, *Holster;
+}
+
 class Pistol : public Item
 {
 public:

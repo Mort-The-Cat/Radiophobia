@@ -10,6 +10,9 @@
 
 irrklang::ISoundEngine* Sound_Engine;
 
+float Sound_Effect_Volume = 0.1f;
+float Music_Volume = 0.1f;
+
 irrklang::ISoundSource* Sound_Effect_Source;
 
 irrklang::ISound* Fire_Sound;
@@ -29,7 +32,7 @@ void Initialise_Sound_Engine()
 {
 	Sound_Engine = irrklang::createIrrKlangDevice();
 
-	Sound_Engine->setSoundVolume(0.01);
+	Sound_Engine->setSoundVolume(0.5f);
 
 	Sound_Engine->play2D("Assets/Audio/PC.wav", false);
 

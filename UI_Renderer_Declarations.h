@@ -206,6 +206,7 @@ namespace Font_Table
 #define UF_CLAMP_RIGHT 6u		// This flag toggles which side of the screen the UI is clamped to
 #define UF_SHADOW_BACKDROP 7u
 #define UF_CENTRE_TEXT 8u
+#define UF_BUTTON_OVERRIDE 9u
 
 bool UI_Continue_Looping = false;
 
@@ -377,7 +378,7 @@ class UI_Element // The subclasses hereof will handle things like text, buttons,
 public:
 	float X1, Y1, X2, Y2;
 
-	bool Flags[9] = { false, true, false, false, false, true, false, false, false };
+	bool Flags[10] = { false, true, false, false, false, true, false, false, false, false };
 
 	float Shadow_Distance = 1.0f / 20.0f;
 
@@ -390,6 +391,8 @@ public:
 	Texture Image;
 
 	UI_Controller* Controller;
+
+
 
 	// X1 and Y1 are the top-left corner of the screen
 
@@ -419,7 +422,9 @@ public:
 
 	bool Button_Hover(UI_Transformed_Coordinates Coords)
 	{
-		return Coords.X1 <= Cursor.x && Coords.X2 >= Cursor.x && Coords.Y1 <= Cursor.y && Coords.Y2 >= Cursor.y;
+		return (Coords.X1 <= Cursor.x && Coords.X2 >= Cursor.x && Coords.Y1 <= Cursor.y && Coords.Y2 >= Cursor.y) && !Flags[UF_BUTTON_OVERRIDE];
+
+		// Added extra check for "button override" 
 	}
 
 	virtual void Render_Border(UI_Transformed_Coordinates Coords)
@@ -545,6 +550,27 @@ public:
 		// We'll somehow check the progress on the work that needs to be done
 
 		Element->X2 = Element->X1 + ((float)Context_Interface::Loading_Progress / (float)Context_Interface::Loading_Progress_Total) * Loading_Bar_Size;
+	}
+};
+
+class UI_Settings_Button : public UI_Controller
+{
+public:
+	bool(*Already_Pushed_Condition)();
+	UI_Settings_Button(bool(*Already_Pushed_Conditionp)())
+	{
+		Already_Pushed_Condition = Already_Pushed_Conditionp;
+	}
+
+	virtual void Control_Function(UI_Element* Element)
+	{
+		if (Already_Pushed_Condition())
+		{
+			Element->Colour *= glm::vec4(0.75f, 0.75f, 0.75f, 1.0f);
+			Element->Flags[UF_BUTTON_OVERRIDE] = true;
+		}
+		else
+			Element->Flags[UF_BUTTON_OVERRIDE] = false;
 	}
 };
 
@@ -787,7 +813,7 @@ public:
 		float Offset = 0.0f;
 
 		if (Flags[UF_CENTRE_TEXT])
-			Offset = 0.5f * ((Coords.X2o - Coords.X1o) - 1.5 * Size * Window_Aspect_Ratio - Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space * Get_Horizontal_Offset_Of_Character(0, Text.length(), Text, Coords));
+			Offset = 0.5f * ((Coords.X2o - Coords.X1o) - 1 * Size * Window_Aspect_Ratio - Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space * Get_Horizontal_Offset_Of_Character(0, Text.length(), Text, Coords));
 
 		Render_Text(Text, Coords, Offset);
 	}
@@ -816,8 +842,12 @@ public:
 
 	virtual void Update_UI() override
 	{
+		glm::vec4 Temp_Colour = Colour;
+
 		if (Controller != nullptr)
 			Controller->Control_Function(this);
+
+		// Colour = glm::vec4(1, 1, 1, 1.0f);
 
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
 
@@ -825,17 +855,15 @@ public:
 
 		bool Hovering = Button_Hover(Coords);
 
-		Colour = glm::vec4(1, 1, 1, 1.0f);
-
 		if (Hovering)
-			Colour.b = 0.75f;
-		else
-			Colour.b = 1.0f;
+			Colour.b *= 0.75f;
 
 		if (Hovering && Mouse_Inputs[0])
 			Colour *= glm::vec4(0.6f, 0.6f, 0.6f, 1.0f);
 
 		Render(Coords);
+
+		Colour = Temp_Colour;
 
 		if (Hovering && Mouse_Unclick(0)) // If we're hovering over the button and the mouse just unclicked, 
 			Button_Function(this);		// run the button-function
@@ -884,6 +912,8 @@ public:
 
 	virtual void Update_UI() override
 	{
+		glm::vec4 Temp_Colour = Colour;
+
 		if (Controller != nullptr)
 			Controller->Control_Function(this);
 
@@ -893,17 +923,17 @@ public:
 
 		bool Hovering = Button_Hover(Coords);
 
-		Colour = glm::vec4(1, 1, 1, 1.0f);
+		// Colour = glm::vec4(1, 1, 1, 1.0f);
 
 		if (Hovering)
-			Colour.b = 0.75f;
-		else
-			Colour.b = 1.0f;
+			Colour.b *= 0.75f;
 
 		if (Hovering && Mouse_Inputs[0])
 			Colour *= glm::vec4(0.6f, 0.6f, 0.6f, 1.0f);
 
 		Render(Coords);
+
+		Colour = Temp_Colour;
 
 		if (Hovering && Mouse_Unclick(0)) // If we're hovering over the button and the mouse just unclicked, 
 			Button_Function(this);		// run the button-function

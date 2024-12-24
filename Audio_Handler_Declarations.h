@@ -152,6 +152,7 @@ namespace Audio
 
 	void Handle_Audio(Camera& Listener)
 	{
+		Sound_Engine->setSoundVolume(Sound_Effect_Volume);
 		Sound_Engine->update();
 
 		 for (size_t W = 0; W < Audio_Sources.size(); W++)
