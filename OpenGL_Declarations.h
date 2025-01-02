@@ -323,32 +323,38 @@ void Bind_Screen_Dimensions(Shader Shader_Program)
 Shader Scene_Object_Shader;
 Shader Loading_Screen_Spiral_Shader;
 
+bool Fullscreen = false;
+
 namespace Post_Processor
 {
 	void Delete_Buffers();
 	void Create_Buffers();
 }
 
+void Update_Window_Width_Height()
+{
+	const GLFWvidmode* Screen_Information = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+	Window_Aspect_Ratio = (static_cast<float>(Screen_Information->height) / static_cast<float>(Screen_Information->width));
+
+	// Window_Width = Screen_Information->width;
+
+	Window_Height = Window_Aspect_Ratio * Window_Width;
+}
+
 void Framebuffer_Resize_Callback(GLFWwindow* Window, int Width, int Height)
 {
+	Window_Aspect_Ratio = static_cast<float>(Height) / static_cast<float>(Width);
+
+	printf(" >> Window resized!!\n	w: %d\n	h: %d\n", Width, Height);
+
 	glViewport(0, 0, Width, Height);
 
 	Window_Width = Width;
 	Window_Height = Height;
 
-	Window_Aspect_Ratio = static_cast<float>(Height) / static_cast<float>(Width);
-
 	Post_Processor::Delete_Buffers();
 	Post_Processor::Create_Buffers();
-}
-
-void Update_Window_Width_Height()
-{
-	const GLFWvidmode* Screen_Information = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-	Window_Aspect_Ratio = ((float)Screen_Information->height / (float)Screen_Information->width);
-
-	Window_Height = Window_Aspect_Ratio * Window_Width;
 }
 
 void Initialise_OpenGL_Window()
@@ -365,7 +371,7 @@ void Initialise_OpenGL_Window()
 
 	std::cin >> User_Input;
 
-	bool Fullscreen = std::tolower(User_Input) == 'y';
+	Fullscreen = std::tolower(User_Input) == 'y';
 
 	if (Fullscreen)
 	{
@@ -374,6 +380,10 @@ void Initialise_OpenGL_Window()
 		Update_Window_Width_Height();
 
 		Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", glfwGetPrimaryMonitor(), NULL);
+
+		glfwGetWindowSize(Window, &Window_Width, &Window_Height);
+
+		// Update_Window_Width_Height(); // This sets the parameters for window creation
 	}
 	else
 		Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", NULL, NULL);

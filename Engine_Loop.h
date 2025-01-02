@@ -128,6 +128,10 @@ void Engine_Loop()
 {
 	Last_Time = glfwGetTime();
 
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+
 	while (!glfwWindowShouldClose(Window))
 	{
 		Handle_Tick();
@@ -300,6 +304,10 @@ void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 
 	UI_Elements.push_back(new UI_Element(-0.9f, 0.6f, 1.0f, 0.9f));
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
