@@ -342,6 +342,15 @@ void Framebuffer_Resize_Callback(GLFWwindow* Window, int Width, int Height)
 	Post_Processor::Create_Buffers();
 }
 
+void Update_Window_Width_Height()
+{
+	const GLFWvidmode* Screen_Information = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+	Window_Aspect_Ratio = ((float)Screen_Information->height / (float)Screen_Information->width);
+
+	Window_Height = Window_Aspect_Ratio * Window_Width;
+}
+
 void Initialise_OpenGL_Window()
 {
 	glfwInit();
@@ -362,13 +371,9 @@ void Initialise_OpenGL_Window()
 	{
 		Window_Width = 1400;
 
+		Update_Window_Width_Height();
+
 		Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", glfwGetPrimaryMonitor(), NULL);
-
-		const GLFWvidmode* Screen_Information = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-		Window_Aspect_Ratio = ((float)Screen_Information->height / (float)Screen_Information->width);
-
-		Window_Height = Window_Aspect_Ratio * Window_Width;
 	}
 	else
 		Window = glfwCreateWindow(Window_Width, Window_Height, "Vision engine test!", NULL, NULL);
