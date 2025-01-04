@@ -81,7 +81,7 @@ namespace Post_Processor
 		Create_Buffer(Frame_Buffer_Texture, GL_COLOR_ATTACHMENT0, GL_RGBA8, GL_UNSIGNED_BYTE);
 		Create_Buffer(Position_Buffer_Texture, GL_COLOR_ATTACHMENT1, GL_RGBA32F, GL_FLOAT);
 		Create_Buffer(Normal_Buffer_Texture, GL_COLOR_ATTACHMENT2, GL_RGBA32F, GL_FLOAT);
-		Create_Buffer(Material_Buffer_Texture, GL_COLOR_ATTACHMENT3, GL_RGBA8, GL_UNSIGNED_BYTE);
+		Create_Buffer(Material_Buffer_Texture, GL_COLOR_ATTACHMENT3, GL_RGBA32F, GL_FLOAT);
 
 		//
 

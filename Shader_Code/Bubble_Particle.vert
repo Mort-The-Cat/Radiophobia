@@ -8,6 +8,8 @@ uniform mat4 Projection_Matrix;
 
 uniform float Particle_Data[2400]; // We know that the smoke particle has 8 floats in it total
 
+uniform vec2 Inv_Window_Dimensions;
+
 int Particle_Index = gl_InstanceID * 8;
 
 vec3 Particle_Position = vec3(Particle_Data[Particle_Index], Particle_Data[Particle_Index + 1], Particle_Data[Particle_Index + 2]);
@@ -39,5 +41,5 @@ void main()
 
 	Transformed_Position = Projection_Matrix * Transformed_Position;
 
-	Refracted_Vector = Transformed_Position.xy / Transformed_Position.w;
+	Refracted_Vector = (Transformed_Position.xy / Transformed_Position.w);
 }

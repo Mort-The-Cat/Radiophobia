@@ -208,7 +208,7 @@ void Engine_Loop()
 			{
 				glm::vec3 Position, Velocity;
 
-				Position = glm::vec3(RNG() - 3.0f, RNG() - 4.4f, RNG() - 3.0f);
+				Position = glm::vec3(2 * RNG() - 4.0f, RNG() - 4.4f, 4 * RNG() - 3.0f);
 
 				Velocity = glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f);
 

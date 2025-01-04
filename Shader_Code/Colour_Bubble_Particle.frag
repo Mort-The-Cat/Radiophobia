@@ -25,7 +25,7 @@ float Get_Colour_Of_Bubble_Edge()
 
 	// this gives us "Cos_Theta" = sin(x)^4
 
-	return Cos_Theta * 0.5f;
+	return Cos_Theta * 0.35f;
 }
 
 void main()
