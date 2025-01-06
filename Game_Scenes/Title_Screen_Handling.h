@@ -149,7 +149,7 @@ void Setup_Test_Scene()
 
 	for (size_t W = 0; W < 20; W++)
 	{
-		Scene_Lights.push_back(new Lightsource(glm::vec3(RNG() * 10 - 5, -4.1, RNG() * 10 - 5), glm::vec3(RNG(), RNG(), RNG()), glm::vec3(0, 0, 0), 360.0f, 1.0f, 0.6f));
+		Scene_Lights.push_back(new Lightsource(glm::vec3(RNG() * 10 - 5, -4.8 /*-4.1*/, RNG() * 10 - 5), glm::vec3(RNG(), RNG(), RNG()), glm::vec3(0, 0, 0), 360.0f, 1.0f, 0.6f));
 	}
 
 	Scene_Lights.push_back(new Lightsource(glm::vec3(2.310351, -4.430879, 9.878356), glm::vec3(RNG(), RNG(), RNG()), glm::vec3(0, 0, 0), 360.0f, 1.0f, 0.6f));
