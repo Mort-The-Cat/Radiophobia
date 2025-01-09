@@ -182,7 +182,12 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 
 	std::vector<Light_Occluder> Light_Occluders;
 
-	void Add_Light_Occluders()
+	void Add_Intro_Level_Light_Occluders()
+	{
+
+	}
+
+	void Add_Test_Scene_Light_Occluders()
 	{
 		Light_Occluders.clear();
 

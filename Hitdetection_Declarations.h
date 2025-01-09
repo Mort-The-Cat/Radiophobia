@@ -57,6 +57,12 @@ class AABB_Hitbox : public Hitbox
 {
 public:
 	glm::vec3 A = glm::vec3(999,999,999), B = glm::vec3(-999,-999,-999);
+
+	bool operator==(AABB_Hitbox* Other)
+	{
+		return A == Other->A && B == Other->B;
+	}
+
 	virtual Collision_Info Hitdetection(Hitbox* Other) override
 	{
 		return Other->AABB_Hitdetection(this);
@@ -128,6 +134,60 @@ public:
 };
 
 std::vector<Hitbox*> Scene_Hitboxes; // The first n objects (where n = Scene_Physics_Objects.size()) are always physics objects
+
+void Remove_Duplicate_AABB_Hitbox(std::vector<Hitbox*>* Hitboxes)
+{
+	AABB_Hitbox* Most_Recent = reinterpret_cast<AABB_Hitbox*>(Hitboxes->back());
+
+	for (size_t W = 0; W < Hitboxes->size() - 1; W++)
+	{
+		if (*Most_Recent == reinterpret_cast<AABB_Hitbox*>(Hitboxes->at(W)))
+		{
+			delete Most_Recent;
+			Hitboxes->pop_back();
+
+			return;
+		}
+
+		// We don't have to do anything!
+	}
+}
+
+std::vector<Hitbox*> Wrap_AABB_Hitboxes(Model_Mesh& Mesh)
+{
+	std::vector<Hitbox*> Hitboxes;
+
+	std::array<glm::vec3, 6> Points;
+
+	for (size_t W = 0; W < Mesh.Indices.size(); W += 3)
+	{
+		for (size_t V = 0; V < 3; V++)
+		{
+			Model_Vertex Vertex = Mesh.Vertices[Mesh.Indices[W + V]];
+			Points[V] = Vertex.Position;
+			Points[V + 3] = Vertex.Position - glm::vec3(0.0625f) * Vertex.Normal;
+		}
+
+		AABB_Hitbox* Box = new AABB_Hitbox();
+
+		for (size_t V = 0; V < 6; V++)
+		{
+			Box->A.x = std::fminf(Box->A.x, Points[V].x);
+			Box->A.y = std::fminf(Box->A.y, Points[V].y);
+			Box->A.z = std::fminf(Box->A.z, Points[V].z);
+
+			Box->B.x = std::fmaxf(Box->B.x, Points[V].x);
+			Box->B.y = std::fmaxf(Box->B.y, Points[V].y);
+			Box->B.z = std::fmaxf(Box->B.z, Points[V].z);
+		}
+
+		Hitboxes.push_back(Box);
+
+		Remove_Duplicate_AABB_Hitbox(&Hitboxes);
+	}
+
+	return Hitboxes;
+}
 
 std::vector<Hitbox*> Generate_AABB_Hitboxes(std::string File_Name)
 {
@@ -213,6 +273,8 @@ std::vector<Hitbox*> Generate_AABB_Hitboxes(std::string File_Name)
 
 	return Return;
 }*/
+
+
 
 AABB_Hitbox* Generate_AABB_Hitbox(Model_Mesh& Mesh)
 {

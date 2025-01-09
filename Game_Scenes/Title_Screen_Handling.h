@@ -25,8 +25,69 @@ void Load_Test_Scene_Assets()
 
 	Initialise_Pistol();
 
-	Pull_Mesh<THREADED>("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT);
+	// Pull_Mesh<THREADED>("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT);
 	Pull_Mesh<THREADED>("Assets/Models/Test_Person.obj");
+}
+
+void Setup_Intro_Level()
+{
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT).Mesh));
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Test_Intro_Level_Floor.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), Generate_AABB_Hitboxes("Assets/Hitboxes/Intro_Level/Intro_Level_Floor_Hitbox.obj"));
+
+	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Intro_Level_Stairs.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Intro_Level_Stairs_Rubble_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh) });
+
+
+	//
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(3.773928, 0.0f, -8.415);
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(1.394211, 0.0f, 0.438914);
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+
+	Volumetric_Cone_Particles.Particles.Spawn_Particle(glm::vec3(3.773928 - 1.0f, 0.0f - 1.0f, -8.415 - 1.0f), glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f)), glm::vec3(0.4, 0.6, 0.8), 0.6f, 30.0f);
+	Scene_Lights.push_back(new Lightsource(glm::vec3(3.773928 - 1.0f, 0.0f - 1.0f, -8.415 - 1.0f), glm::vec3(1, 1.5, 2), glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), 30.0f, 1.0f, 0.6f));
+	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS, MF_SOLID }));
+	Scene_Models.back()->Position = glm::vec3(3.773928 - 1.0f, 0.0f - 1.0f, -8.415 - 1.0f);
+	Create_Model(Pull_Mesh("Assets/Models/Bubble.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_Sphere_Hitbox(*Pull_Mesh("Assets/Models/Bubble.obj").Mesh) });
+
+	//
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 8.27f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 360.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 8.27f), glm::vec3(0.008f, 0.0065f, 0.0065f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 4.413f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(0.0793f, -1.23f, 7.73f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(0.4622f, -1.23f, 2.66f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(8.68f, -1.23f, 2.93f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(6.443f, -1.23f, -2.2f), glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+	// Scene_Lights.push_back(new Lightsource(glm::vec3(8.68f, -1.23f, 2.93f), glm::vec3(1.1f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 60.0f, 0.6f, 0.6f));
+
+
+
+	//
+
+	Lighting_BVH::Add_Intro_Level_Light_Occluders();
+	Lighting_BVH::Generate_Light_BVH_Tree();
+
+	Lighting_BVH::Update_Leaf_Node_Data();
 }
 
 void Setup_Test_Scene()
@@ -77,8 +138,9 @@ void Setup_Test_Scene()
 	//
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
-	Scene_Models.back()->Position = glm::vec3(0, 6, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Generate_AABB_Hitboxes("Assets/Hitboxes/Level_2_Map.obj"));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
 	//
 
@@ -154,7 +216,7 @@ void Setup_Test_Scene()
 
 	Scene_Lights.push_back(new Lightsource(glm::vec3(2.310351, -4.430879, 9.878356), glm::vec3(RNG(), RNG(), RNG()), glm::vec3(0, 0, 0), 360.0f, 1.0f, 0.6f));
 
-	Lighting_BVH::Add_Light_Occluders();
+	Lighting_BVH::Add_Test_Scene_Light_Occluders();
 
 	Lighting_BVH::Generate_Light_BVH_Tree();
 
@@ -188,7 +250,7 @@ void Run_Engine_Loop(UI_Element* Element)
 
 	//
 
-	Setup_Test_Scene();
+	Setup_Intro_Level();
 
 	Cursor_Reset = true;
 

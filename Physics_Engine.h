@@ -285,6 +285,28 @@ namespace Physics
 	std::mutex Threads_Working_Count_Mutex;
 	char Threads_Working_On_Physics = 0;
 
+	bool Check_Duplicate_Collisions(Physics::Physics_Object* Object, glm::vec3 Collision_Normal) // This function assumes that the recorded impulses mutex is already locked
+	{
+		bool Duplicate = false;
+
+		for (size_t W = 0; W < Recorded_Impulses.size(); W++)
+		{
+			/*if (Recorded_Impulses[W].B == nullptr &&
+				Recorded_Impulses[W].A == Object && 
+				Recorded_Impulses[W].Collision.Collision_Normal == Collision_Normal)
+			{
+				return true;
+			}*/
+
+			Duplicate |=
+				Recorded_Impulses[W].B == nullptr &&
+				Recorded_Impulses[W].A == Object &&
+				Recorded_Impulses[W].Collision.Collision_Normal == Collision_Normal;
+		}
+
+		return Duplicate;
+	}
+
 	void Job_Record_Collisions(void* Data)
 	{
 		size_t* Offset = (size_t*)Data;
@@ -336,7 +358,14 @@ namespace Physics
 				if (Impulse.Collision.Overlap != 0)
 				{
 					Recorded_Impulses_Mutex.lock();
-					Recorded_Impulses.push_back(Impulse);
+
+					// We'll add basic checks here to make sure that physics objects don't collide with "the same" object twice in a row so to speak.
+					// Hitboxes can overlap, causing the physics engine to apply a repulsive force multiple times, ruining the physics.
+
+					
+					if(!Check_Duplicate_Collisions(Impulse.A, Impulse.Collision.Collision_Normal)) // This ensures that the impulse is only recorded if it's not a duplicate.
+						Recorded_Impulses.push_back(Impulse);
+
 					Recorded_Impulses_Mutex.unlock();
 				}
 			}
