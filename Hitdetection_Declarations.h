@@ -214,7 +214,7 @@ std::vector<Hitbox*> Generate_AABB_Hitboxes(std::string File_Name)
 			Buffer >> Prefix;
 
 			if (Prefix == "o" || Prefix == "g" ||
-				(Count == 8)) // This signals that a new hitbox object needs to be created
+				(Count > 8)) // This signals that a new hitbox object needs to be created
 			{
 				Return.push_back(new AABB_Hitbox());
 

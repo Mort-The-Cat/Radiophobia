@@ -182,6 +182,44 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 
 	std::vector<Light_Occluder> Light_Occluders;
 
+	void Add_Light_Occluders(std::vector<Hitbox*> Occluders)
+	{
+		Light_Occluders.clear();
+
+		float Delta_X, Delta_Z;
+		float Middle_X, Middle_Z;
+
+		// Only care about x and z values
+
+		for (size_t W = 0; W < Occluders.size(); W++)
+		{
+			AABB_Hitbox* Occluder = (AABB_Hitbox*)Occluders[W];
+
+			Delta_X = Occluder->B.x - Occluder->A.x;
+			Delta_Z = Occluder->B.z - Occluder->A.z;
+
+			Middle_X = 0.5f * (Occluder->B.x + Occluder->A.x);
+			Middle_Z = 0.5f * (Occluder->B.z + Occluder->A.z);
+
+			if (Delta_X > Delta_Z)
+			{
+				// The axis position will be Middle_Z
+
+				Light_Occluders.push_back(Light_Occluder(false, Middle_Z, Occluder->A.x - 10, Occluder->B.x + 10));
+			}
+			else
+			{
+				// The axis position will be Middle_X
+
+				Light_Occluders.push_back(Light_Occluder(true, Middle_X, Occluder->A.z - 10, Occluder->B.z + 10));
+			}
+
+			delete Occluder;
+		}
+
+		Occluders.clear();
+	}
+
 	void Add_Intro_Level_Light_Occluders()
 	{
 
@@ -249,7 +287,7 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 				Index_Data[V].Index = V;
 				Index_Data[V].Distance = squaref(Scene_Lights[V]->Position.x - Leaf_Nodes_Info[W].Position.x) + squaref(Scene_Lights[V]->Position.z - Leaf_Nodes_Info[W].Position.y);
 
-				Index_Data[V].Distance += 999999.0f * Is_Occluded(Leaf_Nodes_Info[W].Position, glm::vec2(Scene_Lights[V]->Position.x, Scene_Lights[V]->Position.z));
+				// Index_Data[V].Distance += 999999.0f * Is_Occluded(Leaf_Nodes_Info[W].Position, glm::vec2(Scene_Lights[V]->Position.x, Scene_Lights[V]->Position.z));
 				
 				// If the light is occluded, it can be treated as though it is much lower priority than it is
 			}
@@ -311,6 +349,7 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 				Scene_Lights[W]->Position.x < Volume.Max_X &&
 				Scene_Lights[W]->Position.z > Volume.Min_Y &&
 				Scene_Lights[W]->Position.z < Volume.Max_Y)
+				// && glm::length(Scene_Lights[W]->Position - Player_Camera.Position) < 20.0f)
 				List_Of_Lights.push_back(Scene_Lights[W]);
 
 		return List_Of_Lights;

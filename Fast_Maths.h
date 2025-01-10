@@ -25,6 +25,14 @@ namespace Fast
 
 #define DTR_Constant 48934896u
 
+	float Approach(float Value, float Target, float Delta)
+	{
+		float Difference = Target - Value;
+		float Deltas[] = { Difference, copysignf(Delta, Difference) };
+
+		return Value + Deltas[fabsf(Difference) > Delta];
+	}
+
 	float Add_Epsilon(float Value, int Epsilon)
 	{
 		uint32_t Long = *(uint32_t*)&Value;

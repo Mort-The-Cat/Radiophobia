@@ -346,6 +346,14 @@ void Player_Movement()
 
 	float Speed = -18.5 * Tick;
 
+	if (Inputs[Controls::Down])
+	{
+		Speed *= 0.75f; // You move 25% slower when crouched
+		reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y = Fast::Approach(reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y, 0.5f, 1.25f * Tick);
+	}
+	else
+		reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y = Fast::Approach(reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y, 0.9f, 0.75f * Tick);
+
 	float Angle = -DTR * Player_Camera.Orientation.x;
 
 	float Movement_X = sin(Angle) * Speed;

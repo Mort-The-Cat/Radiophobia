@@ -230,6 +230,8 @@ namespace Collision_Test
 		return true;
 	}
 
+	bool Not_Against_Player_Compare(Hitbox* A, Hitbox* B);
+
 	Collision_Info Raycast(glm::vec3 Origin, glm::vec3 Velocity, size_t Max_Step, bool (*Should_Compare)(Hitbox*, Hitbox*), Hitbox** Target_Pointer) // A raycast only receives 1 hitbox
 	{
 		Sphere_Hitbox Particle;

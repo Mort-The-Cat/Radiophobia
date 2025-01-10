@@ -165,6 +165,7 @@
     <ClInclude Include="Engine_Loop.h" />
     <ClInclude Include="Fast_Maths.h" />
     <ClInclude Include="Float_Text_Encoder.h" />
+    <ClInclude Include="Game_Scenes\Interactable_Declarations.h" />
     <ClInclude Include="Game_Scenes\Items_Declarations.h" />
     <ClInclude Include="Game_Scenes\Menus.h" />
     <ClInclude Include="Game_Scenes\Menus_Declarations.h" />

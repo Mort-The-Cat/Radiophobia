@@ -14,7 +14,7 @@ void Handle_Deletions()
 {
 	Wait_On_Physics();
 
-	while (Physics::Threads_Working_On_Physics) { ; }
+	while (Physics::Threads_Working_On_Physics > 0) { ; }
 
 	for (size_t W = 0; W < Scene_Lights.size(); W++)
 	{

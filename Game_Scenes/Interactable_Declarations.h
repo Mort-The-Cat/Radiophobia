@@ -1,0 +1,77 @@
+#ifndef RADIOPHOBIA_INTERACTABLE_DECLARATIONS
+#define RADIOPHOBIA_INTERACTABLE_DECLARATIONS
+
+#include "..\OpenGL_Declarations.h"
+#include "..\Mesh_Animator_Declarations.h"
+#include "..\Job_System_Declarations.h"
+#include "..\Asset_Loading_Cache.h"
+#include "..\Hitdetection.h"
+#include "..\Audio_Declarations.h"
+
+irrklang::ISoundSource* Door_Opening_Sound;
+irrklang::ISoundSource* Door_Finished_Opening_Sound;
+
+class Door_Controller : public Controller
+{
+	std::string Animation_Name;
+
+	bool Opened = false;
+
+public:
+	Mesh_Animator Animator;
+
+	Audio::Audio_Source* Opening_Sound;
+
+	Door_Controller(const char* Directory)
+	{
+		Animation_Name = Directory;
+	}
+
+	virtual void Control_Function() override
+	{
+		if (Opened)
+		{
+			Object->Flags[MF_UPDATE_MESH] = !Animator.Animate_Mesh(&Object->Mesh, Tick, true);
+			// Object->Flags[MF_UPDATE_MESH] = true;
+
+			Object->Flags[MF_ACTIVE] &= Object->Flags[MF_UPDATE_MESH];
+
+			/*if (!Object->Flags[MF_UPDATE_MESH])
+			{
+				Opening_Sound->Play_Sound(Door_Finished_Opening_Sound);
+			}*/
+		}
+		else
+		{
+			Hitbox* Collided;
+			Collision_Info Info = Collision_Test::Raycast(Player_Camera.Position, Camera_Direction, 3, Collision_Test::Not_Against_Player_Compare, &Collided);
+
+			if (Collided == Object->Hitboxes[0])
+			{
+				Opening_Sound->Position = reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A;
+				// Player interacted with the door!
+
+				// This'll basically remove any collision that the object has
+				reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.y += 9999.0f;
+				reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.y += 9999.0f;
+
+				Opened = true;
+
+				Opening_Sound->Play_Sound(Door_Opening_Sound);
+			}
+		}
+	}
+
+	virtual void Initialise_Control(Model* Objectp) override
+	{
+		Object = Objectp;
+
+		Animator.Animation = Pull_Animation(Animation_Name.c_str()).Animation;
+		Animator.Time = 0.0f;
+		Animator.Flags[ANIMF_LOOP_BIT] = false;
+
+		Opening_Sound = Audio::Create_Audio_Source(Object->Position, 1.0f);
+	}
+};
+
+#endif
