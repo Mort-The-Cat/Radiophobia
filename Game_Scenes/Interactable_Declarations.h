@@ -22,6 +22,11 @@ public:
 
 	Audio::Audio_Source* Opening_Sound;
 
+	~Door_Controller()
+	{
+		Opening_Sound->Flags[ASF_TO_BE_DELETED] = true;
+	}
+
 	Door_Controller(const char* Directory)
 	{
 		Animation_Name = Directory;
@@ -44,7 +49,7 @@ public:
 		else
 		{
 			Hitbox* Collided;
-			Collision_Info Info = Collision_Test::Raycast(Player_Camera.Position, Camera_Direction, 3, Collision_Test::Not_Against_Player_Compare, &Collided);
+			Collision_Info Info = Collision_Test::Raycast(Player_Camera.Position, glm::vec3(0.25f) * Camera_Direction, 3, Collision_Test::Not_Against_Player_Compare, &Collided);
 
 			if (Collided == Object->Hitboxes[0])
 			{
@@ -65,6 +70,8 @@ public:
 	virtual void Initialise_Control(Model* Objectp) override
 	{
 		Object = Objectp;
+
+		Object->Hitboxes.push_back(Generate_AABB_Hitbox(*Object->Mesh.Mesh));
 
 		Animator.Animation = Pull_Animation(Animation_Name.c_str()).Animation;
 		Animator.Time = 0.0f;
