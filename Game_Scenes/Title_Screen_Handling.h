@@ -115,6 +115,15 @@ void Setup_Intro_Level()
 	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Door_2.obj", LOAD_MESH_OBJ_BIT | LOAD_MESH_ANIM_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Door_Texture.png").Texture, Pull_Texture("Door").Texture, Scene_Models.back(), new Door_Controller("Assets/Animations/Intro_Level/Door_2_Open.anim"), std::vector<Hitbox*>{ /*Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Door_2.obj", LOAD_MESH_OBJ_BIT).Mesh)*/ });
 
+	Scene_Models.push_back(new Model({ MF_ACTIVE, MF_SOLID, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Door_3.obj", LOAD_MESH_OBJ_BIT | LOAD_MESH_ANIM_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Door_Texture.png").Texture, Pull_Texture("Door").Texture, Scene_Models.back(), new Door_Controller("Assets/Animations/Intro_Level/Door_3_Open.anim"), std::vector<Hitbox*>{ /*Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Door_2.obj", LOAD_MESH_OBJ_BIT).Mesh)*/ });
+
+	Scene_Models.push_back(new Model({  }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Door_4.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Door_Texture.png").Texture, Pull_Texture("Door").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+
 	//
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
@@ -363,7 +372,12 @@ void Create_Title_Screen_Page()
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 
-	UI_Elements.push_back(new Button_Text_UI_Element(-1.85f, 0.5, 1.1f, 0.9f, Run_Engine_Loop, "Test.txt" /*"Drücken Sie diesen Knopf, um anzufangen"*/, true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.01f));
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.9f, 0.5, 1.4f, 0.9f, Run_Engine_Loop, "Test.txt" /*"Drücken Sie diesen Knopf, um anzufangen"*/, true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.01f));
+	// UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	// UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	
 	// UI_Elements.back()->Image = Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture;
 
 	// UI_Elements.back()->Flags[UF_IMAGE] = true;
