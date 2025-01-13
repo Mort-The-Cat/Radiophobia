@@ -25,6 +25,11 @@ namespace Collision_Test
 	{
 		return B != Player_Physics_Object.Object->Hitboxes[0];
 	}
+
+	bool Not_Wall_Return(Collision_Info Info)
+	{
+		return fabsf(Info.Collision_Normal.y) > 0.6f;
+	}
 }
 
 void UI_Loop();
@@ -216,7 +221,7 @@ bool Check_Feet_Touching_Ground(glm::vec3 Forward_Vector, glm::vec3* Perpendicul
 
 	Hitbox* Collided_Hitbox;
 
-	Collision_Info Collision = Collision_Test::Find_Collision(&Foot_Hitbox, Collision_Test::Always_Compare, &Collided_Hitbox);
+	Collision_Info Collision = Collision_Test::Find_Collision(&Foot_Hitbox, Collision_Test::Not_Against_Player_Compare, &Collided_Hitbox);
 
 	if (Collided_Hitbox != nullptr)
 		if(Collision.Collision_Normal.y > 0.3)
@@ -233,6 +238,22 @@ bool Check_Feet_Touching_Ground(glm::vec3 Forward_Vector, glm::vec3* Perpendicul
 
 float Jump_Timer = 0.0f;
 #define Time_Between_Jumps 0.1f
+
+bool Can_Player_Uncrouch()
+{
+	glm::vec3 Position = Player_Physics_Object.Object->Position;
+	AABB_Hitbox Head_Hitbox;
+
+	Head_Hitbox.Position = &Position;
+	Head_Hitbox.A = reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->A - glm::vec3(0.0f, 0.25f, 0.0f);
+	Head_Hitbox.B = reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B - glm::vec3(0.0f, 0.25f, 0.0f);
+
+	Hitbox* Collided_Hitbox;
+	
+	Collision_Test::Find_Collision(&Head_Hitbox, Collision_Test::Not_Against_Player_Compare, &Collided_Hitbox, Collision_Test::Not_Wall_Return);
+
+	return Collided_Hitbox == nullptr;
+}
 
 void Controller_Player_Movement()
 {
@@ -346,7 +367,7 @@ void Player_Movement()
 
 	float Speed = -18.5 * Tick;
 
-	if (Inputs[Controls::Down])
+	if (Inputs[Controls::Down] || (reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y < 0.6f && !Can_Player_Uncrouch()))
 	{
 		Speed *= 0.75f; // You move 25% slower when crouched
 		reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y = Fast::Approach(reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y, 0.5f, 1.25f * Tick);

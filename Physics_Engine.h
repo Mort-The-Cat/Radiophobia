@@ -200,7 +200,7 @@ namespace Physics
 
 			if (Collided_Hitbox != nullptr)
 			{
-				size_t Iterations = 10;
+				size_t Iterations = 12;
 
 				while (Iterations)
 				{

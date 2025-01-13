@@ -191,6 +191,9 @@ void Engine_Loop()
 		if(Player_Physics_Object.Velocity.y >= 0.0f)		// If the player is falling/stationary
 			Player_Physics_Object.Stabilise_On_Ground();	// Stabilise their position
 
+		// while (Job_System::Still_Working())
+		// 	Job_System::Part_Time_Work();
+
 		Render_All();
 
 		Handle_UI(); // We're able to handle all of the UI whilst the collisions are resolving!
@@ -300,6 +303,8 @@ void Render_Loading_Screen_Spiral()
 	Big_Spiral.Delete_Buffer();
 }
 
+void Fade_From_Colour(glm::vec4 Colour, float Speed);
+
 void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 {
 	glDisable(GL_CULL_FACE);
@@ -367,9 +372,9 @@ void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 		{
 			Context_Interface::Request_Context();
 
-			Handle_UI();
-
 			Render_Loading_Screen_Spiral();
+
+			Handle_UI();
 
 			Handle_Deletions();
 

@@ -216,7 +216,7 @@ vec3 Lighting()
 
 		float Angle = 57 * acos(dot(Light_To_Pixel, -Light_Direction[W].xyz));
 
-		float In_FOV = min(1, Light_Position[W].w * max(0, 1.0f - (Angle - Light_Direction[W].w))) * max(Shadow_Check_Result, float(W > 0u));
+		float In_FOV = min(1, Light_Position[W].w * max(0.0f, 1.0f - (Angle - Light_Direction[W].w))) * max(Shadow_Check_Result, float(W > 0u));
 
 		Dot_Normal_Light *= In_FOV;
 

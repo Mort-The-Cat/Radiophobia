@@ -535,6 +535,42 @@ public:
 	}
 };
 
+class UI_Fade_Out_Effect_Controller : public UI_Controller
+{
+public:
+	float Opacity = 1.0f;
+	float Speed = 3.0f;
+
+	UI_Fade_Out_Effect_Controller(float Speedp)
+	{
+		Speed = Speedp;
+	}
+
+	virtual void Control_Function(UI_Element* Element)
+	{
+		Element->Colour.w = Opacity;
+		Opacity -= Tick * Speed;
+
+		Element->Flags[UF_TO_BE_DELETED] = Opacity < 0.0f;
+	}
+};
+
+class UI_Fade_Effect_Controller : public UI_Controller
+{
+public:
+	float Opacity = 0.0f;
+
+	UI_Fade_Effect_Controller(float Opacityp)
+	{
+		Opacity = Opacityp;
+	}
+
+	virtual void Control_Function(UI_Element* Element)
+	{
+		Element->Colour.w = Opacity; // This is all we care about
+	}
+};
+
 class UI_Loading_Screen_Icon_Controller : public UI_Controller
 {
 public:

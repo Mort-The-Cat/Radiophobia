@@ -13,7 +13,7 @@
 
 void Load_Test_Scene_Assets()
 {
-	Context_Interface::Loading_Progress_Total = 18;
+	Context_Interface::Loading_Progress_Total = 25;
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
 
@@ -37,7 +37,16 @@ void Load_Test_Scene_Assets()
 	Push_Merged_Material<THREADED>("Assets/Textures/Ceiling_Specular.png", nullptr, "Assets/Textures/Ceiling_Normal.png", "Ceiling");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Wall_Specular.png", nullptr, "Assets/Textures/Wall_Normal.png", "Wall");
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Metal_Specular.png", nullptr, "Assets/Textures/Metal_Normal_Texture.png", "Metal");
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Vent_Duct.png", nullptr, "Assets/Textures/Vent_Normal.png", "Vent");
+
+
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_0_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_1_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_2_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_3_Open.anim");
 
 	Initialise_Pistol();
 
@@ -66,6 +75,14 @@ void Setup_Intro_Level()
 	Scene_Models.push_back(new Model({  }));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Ceiling_Tiles.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Ceiling_Texture.png").Texture, Pull_Texture("Ceiling").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+
+	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Vents.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Metal_Specular.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+
+	Scene_Models.push_back(new Model({ MF_SOLID }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Vent_Duct.png").Texture, Pull_Texture("Vent").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Models/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
@@ -168,6 +185,9 @@ void Setup_Intro_Level()
 	Scene_Lights.push_back(new Lightsource(glm::vec3(0.65f, -1.72f, -3.09f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
 
 	//
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(1.13f, -1.34f, -7.55f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
 
 	// Lighting_BVH::Add_Light_Occluders(Generate_AABB_Hitboxes("Assets/Hitboxes/Intro_Level/Occluders.obj"));
 

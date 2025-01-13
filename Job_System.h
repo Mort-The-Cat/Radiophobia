@@ -85,6 +85,16 @@ namespace Job_System
 		return false;
 	}
 
+	/*bool Currently_Working[NUMBER_OF_WORKERS];
+	bool Still_Working()
+	{
+		for (size_t W = 0; W < NUMBER_OF_WORKERS; W++)
+			if (Currently_Working[W])
+				return true;
+
+		return false;
+	}*/
+
 	void Begin_Work(Worker* Worker)
 	{
 		while (!Working);
@@ -99,6 +109,8 @@ namespace Job_System
 
 			while (!Workers[W].Job_Pool.size()) // If this job pool doesn't have spare jobs?
 			{
+				// Currently_Working[Worker->Worker_Index] = false;
+
 				Workers[W].Job_Pool_Lock.unlock(); // We can unlock this current job pool because we won't be using it
 				W++;
 				W %= NUMBER_OF_WORKERS;
@@ -108,6 +120,8 @@ namespace Job_System
 			Selected_Job = Workers[W].Job_Pool.back();	// Load up a job!
 			Workers[W].Job_Pool.pop_back();				// This is our job now- we can remove it from the list
 			Workers[W].Job_Pool_Lock.unlock();			// We don't need this job pool anymore right now- unlock it!
+
+			// Currently_Working[Worker->Worker_Index] = true;
 
 			Selected_Job.Job_Function(Selected_Job.Parameters); // This executes the selected task
 

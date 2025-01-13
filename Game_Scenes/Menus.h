@@ -17,6 +17,73 @@ enum class Difficulty
 
 Difficulty Selected_Difficulty = Difficulty::Medium;
 
+#define FADE_TO_COLOUR true
+#define FADE_FROM_COLOUR false
+
+#define SHOULD_INCLUDE_FADE_EFFECT false
+
+void Fade_From_Colour(glm::vec4 Colour, float Speed)
+{
+#if(!SHOULD_INCLUDE_FADE_EFFECT) // If we don't want the fade effect,
+	return;						// just don't bother
+#endif
+
+	// Speed = 30.0f;
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f, Texture(), new UI_Fade_Out_Effect_Controller(Speed)));
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Colour = Colour;
+}
+
+template<const bool To_Colour_Flag = FADE_TO_COLOUR>
+void Fade_Colour(glm::vec4 Colour, float Speed)
+{
+#if(!SHOULD_INCLUDE_FADE_EFFECT) // If we don't want the fade effect,
+	return;						// just don't bother
+#endif
+
+	// Speed = 30.0f;
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f, Texture(), new UI_Fade_Effect_Controller(0.0f)));
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Colour = Colour;
+
+	float* Opacity = &reinterpret_cast<UI_Fade_Effect_Controller*>(UI_Elements.back()->Controller)->Opacity;
+
+	if constexpr (!To_Colour_Flag)
+		*Opacity = 1.0f;
+
+	Receive_Inputs();
+
+	bool Condition = false;
+
+	do
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0u);
+		
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		Handle_Tick();
+
+		if constexpr(To_Colour_Flag)
+		{
+			*Opacity += Tick * Speed;
+			Condition = *Opacity < 1.0f;
+		}
+		else
+		{
+			*Opacity -= Tick * Speed;
+			Condition = *Opacity > 0.0f;
+		}
+
+		Handle_UI();
+
+		Handle_Deletions();
+
+		End_Of_Frame();
+	} while (Condition);
+}
+
 void Set_Difficulty_Easy(UI_Element* Element)
 {
 	Selected_Difficulty = Difficulty::Easy;
@@ -69,6 +136,8 @@ void Place_Language_Buttons()
 
 void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI element given to this
 {
+	Fade_Colour(glm::vec4(0.0f), 10.0f);
+
 	Delete_All_UI();
 
 	Cursor_Reset = false;
@@ -107,13 +176,50 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 
 	Place_Language_Buttons();
 
+	Fade_From_Colour(glm::vec4(0.0f), 10.0f);
+
 	UI_Loop();
 
 	Delete_All_UI();
 }
 
+void Open_Settings_Menu(UI_Element* Element);
+
+void Open_Controls_Menu(UI_Element* Element)
+{
+	Fade_Colour<FADE_TO_COLOUR>(glm::vec4(0.0f), 10.0f);
+
+	Delete_All_UI();
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+
+	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 5.0f, -0.5f, "Controls.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Shadow_Distance *= 0.25f;
+
+	Place_Language_Buttons();
+
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, 0.4f, 0.725f, 0.7f, Open_Settings_Menu, "Back.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+
+	Fade_From_Colour(glm::vec4(0.0f), 10.0f);
+
+	UI_Loop();
+}
+
 void Open_Settings_Menu(UI_Element* Element)
 {
+	Fade_Colour<FADE_TO_COLOUR>(glm::vec4(0.0f), 10.0f); // Fades to black
+
 	Delete_All_UI();
 
 	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
@@ -159,6 +265,14 @@ void Open_Settings_Menu(UI_Element* Element)
 
 	//
 
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, 0.0f, 0.725f, 0.3f, Open_Controls_Menu, "Controls.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+
+	//
+
 	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, 0.4f, 0.725f, 0.7f, Open_Pause_Menu, "Back_To_Pause_Menu.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
@@ -166,6 +280,10 @@ void Open_Settings_Menu(UI_Element* Element)
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 
 	Place_Language_Buttons();
+
+	Fade_From_Colour(glm::vec4(0.0f), 10.0f);
+
+	// Fade_Colour<FADE_FROM_COLOUR>(glm::vec4(0.0f), 6.0f); // Fades to black
 
 	UI_Loop();
 }
