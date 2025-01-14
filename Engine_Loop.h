@@ -188,7 +188,7 @@ void Engine_Loop()
 
 		Physics::Resolve_Collisions();
 
-		if(Player_Physics_Object.Velocity.y >= 0.0f)		// If the player is falling/stationary
+		if (Player_Physics_Object.Velocity.y >= 0.0f)		// If the player is falling/stationary
 			Player_Physics_Object.Stabilise_On_Ground();	// Stabilise their position
 
 		// while (Job_System::Still_Working())

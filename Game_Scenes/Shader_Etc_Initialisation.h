@@ -10,6 +10,7 @@ void Init_Player_Physics_Object()
 	if (Player_Physics_Object.Object == nullptr)
 	{
 		Player_Physics_Object.Flags[PF_NO_ROTATION] = true;
+		Player_Physics_Object.Flags[PF_PLAYER_OBJECT] = true;
 		
 		Player_Physics_Object.Object = new Model();
 

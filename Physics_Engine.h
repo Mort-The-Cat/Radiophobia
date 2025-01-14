@@ -28,6 +28,8 @@ namespace Physics
 
 		glm::vec3 A_Rotation_Vector, B_Rotation_Vector;
 
+		Hitbox* B_Hitbox;
+
 		Physics_Object* A = nullptr;
 		Physics_Object* B = nullptr;
 		Collision_Info Collision;
@@ -35,6 +37,7 @@ namespace Physics
 
 #define PF_TO_BE_DELETED 0u
 #define PF_NO_ROTATION 1u
+#define PF_PLAYER_OBJECT 2u
 
 	class Physics_Object
 	{
@@ -58,7 +61,7 @@ namespace Physics
 
 		float Friction = 0.9f; // The product of two objects friction and the perpendicular velocity is equal and opposite to the force created by friction.
 
-		bool Flags[2] = { false, false };
+		bool Flags[3] = { false, false, false };
 
 		glm::vec3 Get_Rotational_Velocity_Tangent(Quaternion::Quaternion Object_Rotation, glm::vec3 Object_Position, Impulse_Object* Collision)
 		{
@@ -115,7 +118,7 @@ namespace Physics
 
 				Impulse = J * Collision->Collision.Collision_Normal + Perpendicular_Velocity * B_Friction * Friction * (1 - expf(J));
 
-				if(!(std::isnan(Impulse.x) || std::isnan(Impulse.y) || std::isnan(Impulse.z)))
+				if (!(std::isnan(Impulse.x) || std::isnan(Impulse.y) || std::isnan(Impulse.z)))
 					Forces += Impulse;
 
 				// Billboard_Smoke_Particles.Particles.Spawn_Particle(Collision->Collision.Collision_Position, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -183,7 +186,6 @@ namespace Physics
 		{
 			const float Range = 0.1f; // in both directions
 
-
 			float Min = Object->Position.y - Range, Max = Object->Position.y + Range;
 
 			glm::vec3 Player_Position = Object->Position;
@@ -220,6 +222,23 @@ namespace Physics
 
 				// Velocity.y = 0.0f;
 			}
+
+			//
+
+			/*Info = Collision_Test::Find_Collision(Object->Hitboxes[0], Collision_Test::Always_Compare, &Collided_Hitbox);
+
+			size_t Simple_Check = 6;
+
+			while (Collided_Hitbox != nullptr && Simple_Check)
+			{
+				Object->Position += Info.Collision_Normal * Info.Overlap;
+
+				Velocity -= Info.Collision_Normal * glm::dot(Info.Collision_Normal, Velocity);
+				
+				Info = Collision_Test::Find_Collision(Object->Hitboxes[0], Collision_Test::Always_Compare, &Collided_Hitbox);
+
+				Simple_Check--;
+			}*/
 		}
 
 		virtual void Step()
@@ -265,7 +284,7 @@ namespace Physics
 
 			Velocity += Forces;
 			Velocity.y += Gravity;
-
+			
 			Object->Position += Velocity * abs(Tick);
 
 			Velocity += Forces;
@@ -307,6 +326,32 @@ namespace Physics
 		return Duplicate;
 	}
 
+	void Force_Object_Delta_Resolve(Impulse_Object* Collision)
+	{
+		Collision_Info Info = Collision->A->Object->Hitboxes[0]->Hitdetection(Collision->B_Hitbox);
+
+		if (Info.Overlap < 0.0f)
+		{
+			// printf("Forcing object overlap! %f\n", Info.Overlap);
+
+			glm::vec3 Delta = Info.Collision_Normal * Info.Overlap;
+
+			if (Collision->B != nullptr)
+			{
+				Delta *= 0.5f;
+
+				Collision->A->Object->Position += Delta;
+				Collision->B->Object->Position -= Delta;
+			}
+			else
+			{
+				Collision->A->Object->Position += Delta;
+			}
+
+			Force_Object_Delta_Resolve(Collision);
+		}
+	}
+
 	void Job_Record_Collisions(void* Data)
 	{
 		size_t* Offset = (size_t*)Data;
@@ -318,6 +363,8 @@ namespace Physics
 				Impulse_Object Impulse;
 
 				Impulse.Collision = Scene_Physics_Objects[W]->Object->Hitboxes[0]->Hitdetection(Scene_Physics_Objects[V]->Object->Hitboxes[0]);
+				
+				Impulse.B_Hitbox = Scene_Hitboxes[V];
 
 				Impulse.A = Scene_Physics_Objects[W];
 				Impulse.B = Scene_Physics_Objects[V];
@@ -341,9 +388,14 @@ namespace Physics
 
 			for (size_t V = *Offset + Scene_Physics_Objects.size(); V < Scene_Hitboxes.size(); V += NUMBER_OF_WORKERS)
 			{
+				//if (Scene_Physics_Objects[W]->Flags[PF_PLAYER_OBJECT])
+				//	continue;
+
 				Impulse_Object Impulse;
 
 				Impulse.Collision = Scene_Physics_Objects[W]->Object->Hitboxes[0]->Hitdetection(Scene_Hitboxes[V]);
+
+				Impulse.B_Hitbox = Scene_Hitboxes[V];
 
 				Impulse.A = Scene_Physics_Objects[W];
 				Impulse.B = nullptr;
@@ -405,6 +457,9 @@ namespace Physics
 
 		Recorded_Impulses.clear(); // I'm so dumb XD I forgot to include this!
 
+		for (size_t W = 0; W < Scene_Physics_Objects.size(); W++)
+			Scene_Physics_Objects[W]->Step();
+
 		for (size_t W = 0; W < NUMBER_OF_WORKERS; W++)
 			Job_System::Submit_Job(Job_System::Job(Job_Record_Collisions, new size_t(W)));
 	}
@@ -413,17 +468,21 @@ namespace Physics
 	{
 		Wait_On_Physics();
 
-		//Threads_Working_Count_Mutex.lock();
+		Threads_Working_Count_Mutex.lock();
 		Threads_Working_On_Physics = NUMBER_OF_WORKERS;
-		//Threads_Working_Count_Mutex.unlock();
+		Threads_Working_Count_Mutex.unlock();
 
 		for (size_t W = 0; W < NUMBER_OF_WORKERS; W++)
 			Job_System::Submit_Job(Job_System::Job(Job_Resolve_Collisions, new size_t(W)));
 
 		Wait_On_Physics();
 
-		for (size_t W = 0; W < Scene_Physics_Objects.size(); W++)
-			Scene_Physics_Objects[W]->Step();
+		// Then we'll do one last thing to resolve the collisions thoroughly
+
+		// for (size_t W = 0; W < Recorded_Impulses.size(); W++)
+		//	Force_Object_Delta_Resolve(&Recorded_Impulses[W]);
+
+		// printf("Number of impulses: %d\n", Recorded_Impulses.size());
 	}
 }
 
@@ -477,12 +536,12 @@ void Wait_On_Physics()
 
 	while (Job_System::Part_Time_Work()) { ; }
 
-	//do
-	//{
-	//	Physics::Threads_Working_Count_Mutex.lock();
-	//	Still_Working = Physics::Threads_Working_On_Physics;
-	//	Physics::Threads_Working_Count_Mutex.unlock();
-	//} while (Still_Working);
+	do
+	{
+		Physics::Threads_Working_Count_Mutex.lock();
+		Still_Working = Physics::Threads_Working_On_Physics > 0;
+		Physics::Threads_Working_Count_Mutex.unlock();
+	} while (Still_Working);
 }
 
 #endif
