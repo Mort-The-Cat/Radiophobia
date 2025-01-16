@@ -20,7 +20,7 @@ Difficulty Selected_Difficulty = Difficulty::Medium;
 #define FADE_TO_COLOUR true
 #define FADE_FROM_COLOUR false
 
-#define SHOULD_INCLUDE_FADE_EFFECT false
+#define SHOULD_INCLUDE_FADE_EFFECT true
 
 void Fade_From_Colour(glm::vec4 Colour, float Speed)
 {

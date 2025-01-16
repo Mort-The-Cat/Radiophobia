@@ -75,6 +75,18 @@ public:
 				Last_Shot_Hand.Time = 0.0f;
 
 				Current_State = Ammo ? Shooting : Firing_Last;
+
+				Scene_Models.push_back(new Model({  }));
+				Scene_Models.back()->Position = Viewmodel_Meshes[0].Position;
+				Create_Model(Pull_Mesh("Assets/Models/Makarov_Shell.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Shell_Texture.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+
+				Scene_Models.back()->Position += glm::vec3(0.3688f) * Camera_Direction;
+				Scene_Models.back()->Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
+
+				Scene_Models.back()->Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
+
+				Scene_Models.back()->Orientation = Viewmodel_Meshes[0].Orientation;
+				Scene_Models.back()->Orientation_Up = Viewmodel_Meshes[0].Orientation_Up;
 			}
 
 		bool Loop_Flag = false;

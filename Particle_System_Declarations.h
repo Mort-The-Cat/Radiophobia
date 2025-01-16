@@ -20,6 +20,8 @@ struct Volumetric_Cone_Particle
 	glm::vec3 Colour;
 };
 
+
+
 struct Smoke_Particle
 {
 	glm::vec4 Position; // .w is age
