@@ -131,6 +131,9 @@
     <ClInclude Include="Game_Scenes\Interactable_Declarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game_Scenes\Particle_Effect_Controller_Declarations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader_Code\Vertex_Test.frag" />

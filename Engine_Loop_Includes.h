@@ -14,6 +14,7 @@
 #include "Deletion_Handler.h"
 #include "Mesh_Animator_Declarations.h"
 #include "Particle_System_Declarations.h"
+#include "Game_Scenes/Particle_Effect_Controller_Declarations.h"
 
 #include "Audio_Handler_Declarations.h"
 

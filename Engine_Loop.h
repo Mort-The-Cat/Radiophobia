@@ -31,6 +31,9 @@ void Render_All()
 
 	Makarov_Pistol.Render_Viewmodel();
 
+	Pistol_Shell_Particles.Shader.Activate();
+	Pistol_Shell_Particles.Render();
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(GL_FALSE);
@@ -168,6 +171,8 @@ void Engine_Loop()
 		Billboard_Smoke_Particles.Update();
 		Billboard_Fire_Particles.Update();
 		Volumetric_Cone_Particles.Update();
+
+		Pistol_Shell_Particles.Update();
 
 		Bubble_Particles.Update();
 		Colour_Bubble_Particles.Update();

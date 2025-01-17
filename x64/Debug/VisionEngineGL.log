@@ -114,36 +114,39 @@ C:\Radiophobia\Radiophobia-main\Shadow_Map_Renderer_Declarations.h(83,32): warni
 C:\Radiophobia\Radiophobia-main\Audio_Handler_Declarations.h(65,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Physics_Engine.h(227,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Physics_Engine.h(246,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Physics_Engine.h(236,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Physics_Engine.h(255,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Physics_Engine.h(237,55): warning C4244: 'argument': conversion from 'double' to 'irrklang::ik_f32', possible loss of data
+C:\Radiophobia\Radiophobia-main\Physics_Engine.h(256,55): warning C4244: 'argument': conversion from 'double' to 'irrklang::ik_f32', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(175,101): warning C4305: 'argument': truncation from 'double' to 'T'
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(175,101): warning C4305:         with
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(175,101): warning C4305:         [
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(175,101): warning C4305:             T=float
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(175,101): warning C4305:         ]
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(180,101): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(180,101): warning C4305:         with
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(180,101): warning C4305:         [
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(180,101): warning C4305:             T=float
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(180,101): warning C4305:         ]
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(181,102): warning C4305: 'argument': truncation from 'double' to 'T'
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(181,102): warning C4305:         with
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(181,102): warning C4305:         [
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(181,102): warning C4305:             T=float
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(181,102): warning C4305:         ]
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(186,102): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(186,102): warning C4305:         with
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(186,102): warning C4305:         [
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(186,102): warning C4305:             T=float
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(186,102): warning C4305:         ]
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(257,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(278,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(347,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(368,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\UI_Renderer_Declarations.h(53,31): warning C4267: 'argument': conversion from 'size_t' to 'FT_UInt', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Particle_Effect_Controller_Declarations.h(36,33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Post_Processor_Declarations.h(135,26): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
@@ -155,50 +158,56 @@ C:\Radiophobia\Radiophobia-main\Post_Processor_Declarations.h(135,21): warning C
 C:\Radiophobia\Radiophobia-main\Post_Processor_Declarations.h(135,16): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(177,66): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(206,66): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(177,83): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(177,83): warning C4244:         with
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(177,83): warning C4244:         [
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(177,83): warning C4244:             T=float
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(177,83): warning C4244:         ]
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(206,83): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(206,83): warning C4244:         with
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(206,83): warning C4244:         [
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(206,83): warning C4244:             T=float
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Items_Declarations.h(206,83): warning C4244:         ]
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Engine_Loop.h(118,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Engine_Loop.h(121,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Engine_Loop.h(154,26): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Radiophobia\Radiophobia-main\Engine_Loop.h(157,26): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Engine_Loop.h(154,21): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Radiophobia\Radiophobia-main\Engine_Loop.h(157,21): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Engine_Loop.h(154,16): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Radiophobia\Radiophobia-main\Engine_Loop.h(157,16): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Engine_Loop.h(404,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Engine_Loop.h(416,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(59,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(53,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(59,57): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(68,3): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(59,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,62): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(59,46): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,57): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(64,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,51): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(64,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(64,46): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(131,62): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file 'Main.cpp')
+  
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(131,51): warning C4305: 'argument': truncation from 'double' to 'float'
+  (compiling source file 'Main.cpp')
+  
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(131,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(232,51): warning C4305: 'argument': truncation from 'double' to 'float'
@@ -225,81 +234,78 @@ C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(238,52): warning C4305:
 C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(287,27): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(164,71): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(211,71): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(164,59): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(211,59): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(302,40): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(349,40): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(303,46): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(350,46): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(377,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(429,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(61,98): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(62,98): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(61,92): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(62,92): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(61,86): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(62,86): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(61,79): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(62,79): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(68,91): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(69,91): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(68,86): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(69,86): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(68,81): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(69,81): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(68,75): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(69,75): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(75,93): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(76,93): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(75,88): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(76,88): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(75,83): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(76,83): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(75,77): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(76,77): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(246,83): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(248,83): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   (compiling source file 'Main.cpp')
-  C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(246,83):
+  C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(248,83):
   the template instantiation context (the oldest one first) is
-  	C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(274,71):
-  	see reference to class template instantiation 'Particle_Renderer<Volumetric_Cone_Particle_Info,Model_Vertex_Buffer>' being compiled
-  	C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(221,8):
-  	while compiling class template member function 'void Particle_Renderer<Volumetric_Cone_Particle_Info,Model_Vertex_Buffer>::Render(void)'
-  		C:\Radiophobia\Radiophobia-main\Engine_Loop.h(75,34):
-  		see the first reference to 'Particle_Renderer<Volumetric_Cone_Particle_Info,Model_Vertex_Buffer>::Render' in 'Render_All'
+  	C:\Radiophobia\Radiophobia-main\Game_Scenes\Particle_Effect_Controller_Declarations.h(161,68):
+  	see reference to class template instantiation 'Particle_Renderer<Pistol_Shell_Particle_Info,Model_Vertex_Buffer>' being compiled
+  	C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(223,8):
+  	while compiling class template member function 'void Particle_Renderer<Pistol_Shell_Particle_Info,Model_Vertex_Buffer>::Render(void)'
+  		C:\Radiophobia\Radiophobia-main\Engine_Loop.h(35,31):
+  		see the first reference to 'Particle_Renderer<Pistol_Shell_Particle_Info,Model_Vertex_Buffer>::Render' in 'Render_All'
   
-C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(81,40): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(83,40): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   (compiling source file 'Main.cpp')
-  C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(81,40):
+  C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(83,40):
   the template instantiation context (the oldest one first) is
-  	C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(141,46):
-  	see reference to class template instantiation 'Particle_Info<Volumetric_Cone_Particle>' being compiled
-  	C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(78,9):
-  	while compiling class template member function 'size_t Particle_Info<Volumetric_Cone_Particle>::Parse_Values(size_t)'
-  		C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(244,18):
-  		see the first reference to 'Particle_Info<Volumetric_Cone_Particle>::Parse_Values' in 'Particle_Renderer<Volumetric_Cone_Particle_Info,Model_Vertex_Buffer>::Render'
-  		C:\Radiophobia\Radiophobia-main\Engine_Loop.h(75,34):
-  		see the first reference to 'Particle_Renderer<Volumetric_Cone_Particle_Info,Model_Vertex_Buffer>::Render' in 'Render_All'
+  	C:\Radiophobia\Radiophobia-main\Game_Scenes\Particle_Effect_Controller_Declarations.h(31,43):
+  	see reference to class template instantiation 'Particle_Info<Shell_Particle>' being compiled
+  	C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(80,9):
+  	while compiling class template member function 'size_t Particle_Info<Shell_Particle>::Parse_Values(size_t)'
+  		C:\Radiophobia\Radiophobia-main\Particle_System_Declarations.h(246,18):
+  		see the first reference to 'Particle_Info<Shell_Particle>::Parse_Values' in 'Particle_Renderer<Pistol_Shell_Particle_Info,Model_Vertex_Buffer>::Render'
+  		C:\Radiophobia\Radiophobia-main\Engine_Loop.h(35,31):
+  		see the first reference to 'Particle_Renderer<Pistol_Shell_Particle_Info,Model_Vertex_Buffer>::Render' in 'Render_All'
   
-C:\Radiophobia\Radiophobia-main\OpenGL_Declarations.h(214): warning C4715: 'Get_File_Contents': not all control paths return a value
-C:\Radiophobia\Radiophobia-main\Hitdetection_Declarations.h(252): warning C4715: 'Generate_AABB_Hitboxes': not all control paths return a value
-  VisionEngineGL.vcxproj -> C:\Radiophobia\Radiophobia-main\VisionEngineGL.exe

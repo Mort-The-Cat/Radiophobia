@@ -169,6 +169,7 @@
     <ClInclude Include="Game_Scenes\Items_Declarations.h" />
     <ClInclude Include="Game_Scenes\Menus.h" />
     <ClInclude Include="Game_Scenes\Menus_Declarations.h" />
+    <ClInclude Include="Game_Scenes\Particle_Effect_Controller_Declarations.h" />
     <ClInclude Include="Game_Scenes\Shader_Etc_Initialisation.h" />
     <ClInclude Include="Game_Scenes\Title_Screen_Handling.h" />
     <ClInclude Include="Hitdetection.h" />

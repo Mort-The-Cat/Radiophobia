@@ -61,6 +61,10 @@ public:
 
 	void Handle_Viewmodel_States()
 	{
+		// 2.2f, -1.23f, 8.24f
+		// if(Inputs[Controls::Lean_Left])
+		//	Pistol_Shell_Particles.Particles.Spawn_Particle(glm::vec3(2.2f, -1.23f, 8.24f), glm::vec4(0, 0, -0.1f, 0.0f), Player_Camera.Position.y + reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y - 0.3f);
+
 		if(Shot_Timer < Time_Between_Shots)
 			Shot_Timer += Tick;
 		else
@@ -76,7 +80,7 @@ public:
 
 				Current_State = Ammo ? Shooting : Firing_Last;
 
-				Scene_Models.push_back(new Model({  }));
+				/*Scene_Models.push_back(new Model({}));
 				Scene_Models.back()->Position = Viewmodel_Meshes[0].Position;
 				Create_Model(Pull_Mesh("Assets/Models/Makarov_Shell.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Shell_Texture.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
 
@@ -86,7 +90,26 @@ public:
 				Scene_Models.back()->Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
 
 				Scene_Models.back()->Orientation = Viewmodel_Meshes[0].Orientation;
-				Scene_Models.back()->Orientation_Up = Viewmodel_Meshes[0].Orientation_Up;
+				Scene_Models.back()->Orientation_Up = Viewmodel_Meshes[0].Orientation_Up;*/
+
+				glm::vec3 Position = Viewmodel_Meshes[0].Position;
+
+				Position += glm::vec3(0.3688f) * Camera_Direction;
+				Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
+
+				Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
+
+				glm::vec3 Velocity = glm::vec3(0.0f);
+
+				Velocity += glm::vec3(RNG() + 0.5f) * Viewmodel_Meshes[0].Orientation;
+				Velocity += glm::vec3(RNG() + 1.5f) * Viewmodel_Meshes[0].Orientation_Up;
+				Velocity += glm::vec3(0.25f * RNG()) * Camera_Direction;
+
+				Velocity += Player_Physics_Object.Velocity;
+
+				glm::vec4 Parsed_Velocity = glm::vec4(Velocity.x, Velocity.y, Velocity.z, -atan2f(Camera_Direction.z, Camera_Direction.x));
+
+				Pistol_Shell_Particles.Particles.Spawn_Particle(Position, Parsed_Velocity, Player_Camera.Position.y + reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y - 0.02f);
 			}
 
 		bool Loop_Flag = false;
@@ -241,6 +264,20 @@ void Initialise_Pistol()
 
 	Makarov_Pistol.Time_Between_Shots = 0.15f;
 	Makarov_Pistol.Shot_Timer = Makarov_Pistol.Time_Between_Shots;
+
+	//
+
+	{
+		Context_Interface::Request_Context();
+
+		Shader Shell_Bounce_Shader;
+		Shell_Bounce_Shader.Create_Shader("Shader_Code/Shell_Bounce_Particle.vert", "Shader_Code/Vertex_Test.frag", "Shader_Code/Vertex_Test.geom");
+
+		Create_Particle_Renderer(Shell_Bounce_Shader, Pull_Mesh("Assets/Models/Makarov_Shell.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Shell_Texture.png").Texture, Pull_Texture("Metal").Texture, &Pistol_Shell_Particles);
+
+		Context_Interface::Free_Context();
+
+	}
 
 	// This sets some stats for the pistol
 }
