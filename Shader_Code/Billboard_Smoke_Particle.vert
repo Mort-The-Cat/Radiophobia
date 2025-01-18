@@ -15,6 +15,9 @@ out DATA
 	float Vertex_Transparency;
 } data_out;
 
+out vec2 UV;
+out float Vertex_Transparency;
+
 uniform float Particle_Data[2400]; // We know that the smoke particle has 8 floats in it total
 
 uniform vec3 Camera_Position;
@@ -29,7 +32,7 @@ vec3 Particle_Position = vec3(Particle_Data[Particle_Index], Particle_Data[Parti
 vec3 Particle_Velocity = vec3(Particle_Data[Particle_Index + 4], Particle_Data[Particle_Index + 5], Particle_Data[Particle_Index + 6]);
 
 float Particle_Age = Particle_Data[Particle_Index + 3];
-float Particle_Gravity = -0.2; // Particle_Data[Particle_Index + 7];
+float Particle_Gravity = -0.051; // Particle_Data[Particle_Index + 7];
 
 float Natural_Delta_Time = log(1 + Particle_Age * 5) * 0.2;
 
@@ -63,13 +66,15 @@ void main()
 	Transformed_Position.xyz -= Camera_Right_Direction * Rotated.x;
 	Transformed_Position.xyz += Camera_Up_Direction * Rotated.y;
 
-	gl_Position = Transformed_Position;
+	gl_Position = Projection_Matrix * Transformed_Position;
 
-	data_out.Normal = normalize(Camera_Position - Transformed_Position.xyz);
-	data_out.UV = In_UV;
-	data_out.Projection_Matrix = Projection_Matrix;
+	//data_out.Normal = normalize(Camera_Position - Transformed_Position.xyz);
+	UV = In_UV;
+	//data_out.Projection_Matrix = Projection_Matrix;
 
-	data_out.Lighting_Transparency = 0.5;
+	//data_out.Lighting_Transparency = 0.5;
 	
-	data_out.Vertex_Transparency = 1.0 / (Particle_Age * 1 + 1);
+	Vertex_Transparency = 0.5f * max(0.0f, 0.5f - 0.0142857142857f * (Particle_Age * Particle_Age));
+	
+	//1.0 / (Particle_Age * 1 + 1);
 }

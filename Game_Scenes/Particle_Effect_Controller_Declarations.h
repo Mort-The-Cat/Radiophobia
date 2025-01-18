@@ -4,6 +4,82 @@
 #include "..\Particle_System_Declarations.h"
 #include "..\OpenGL_Declarations.h"
 
+Particle_Renderer<Smoke_Particle_Info, Billboard_Vertex_Buffer> Vent_Smoke_Particles;
+
+class Vent_Smoke_Controller : public Controller
+{
+    enum Directions;
+
+    struct Vent_Info;
+
+    std::vector<Vent_Info> Vents;
+
+    std::vector<float> Vent_Timers;
+
+public:
+    enum Directions
+    {
+        North,
+        South,
+        East,
+        West,
+
+        Up,
+        Down
+    };
+
+    struct Vent_Info
+    {
+        glm::vec3 Position;
+        Directions Direction;
+    };
+
+    Vent_Smoke_Controller(std::vector<Vent_Info> Ventsp)
+    {
+        Vents = Ventsp;
+
+        Vent_Timers.resize(Vents.size());
+    }
+
+    virtual void Initialise_Control(Model* Objectp) override
+    {
+        Object = Objectp;
+
+        for (size_t W = 0; W < Vent_Timers.size(); W++)
+            Vent_Timers[W] = RNG();
+    }
+
+    virtual void Control_Function() override
+    {
+        for (size_t W = 0; W < Vents.size(); W++)
+        {
+            Vent_Timers[W] -= Tick;
+
+            if (Vent_Timers[W] < 0.0f)
+            {
+                Vent_Timers[W] = RNG() * 0.4 + 0.3f;
+
+                const float S = 1.0f;
+
+                glm::vec3 Direction_Vectors[] =
+                {
+                    glm::vec3(0.0f, 0.0f, -S),
+                    glm::vec3(0.0f, 0.0f, S),
+                    glm::vec3(S, 0.0f, 0.0f),
+                    glm::vec3(-S, 0.0f, 0.0f),
+
+                    glm::vec3(0.0f, -S, 0.0f),
+                    glm::vec3(0.0f, S, 0.0f)
+                };
+
+                glm::vec3 Delta = glm::vec3(0.25f) * glm::vec3(RNG() - 0.5f, RNG() - 0.5f, RNG() - 0.5f);
+
+                Vent_Smoke_Particles.Particles.Spawn_Particle(Vents[W].Position + Delta, Direction_Vectors[Vents[W].Direction]);
+            }
+        }
+    }
+};
+
 struct Shell_Particle
 {
 	alignas(0) glm::vec4 Position; // .w is age
@@ -159,5 +235,4 @@ public:
 };
 
 Particle_Renderer<Pistol_Shell_Particle_Info, Model_Vertex_Buffer> Pistol_Shell_Particles;
-
 #endif

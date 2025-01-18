@@ -26,5 +26,5 @@ void main()
 {
 	// Out_Colour = vec4(0.4, 0.25, 0.8, (1.0f - 2.0f * length(UV - vec2(0.5f))) );
 	
-	Out_Colour = texture(Albedo, UV) * vec4(vec3(Vertex_Transparency), 1.0f);
+	Out_Colour = texture(Albedo, UV) * vec4(vec3(1.0f), Vertex_Transparency); //vec4(vec3(Vertex_Transparency), 1.0f);
 }

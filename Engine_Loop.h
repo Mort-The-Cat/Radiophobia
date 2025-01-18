@@ -65,11 +65,12 @@ void Render_All()
 
 	//
 
-	Billboard_Smoke_Particles.Shader.Activate();
+	Vent_Smoke_Particles.Shader.Activate();
 
-	Test_Cubemap.Parse_Texture(Billboard_Smoke_Particles.Shader, "Cubemap", 0);
-	Test_Cubemap.Bind_Texture();
-	Billboard_Smoke_Particles.Render();
+	//Test_Cubemap.Parse_Texture(Billboard_Smoke_Particles.Shader, "Cubemap", 0);
+	//Test_Cubemap.Bind_Texture();
+	
+	Vent_Smoke_Particles.Render();
 
 	glEnable(GL_DEPTH_CLAMP);
 	Volumetric_Cone_Particles.Shader.Activate();
@@ -168,7 +169,7 @@ void Engine_Loop()
 		Handle_Scene();
 
 		Smoke_Particles.Update();
-		Billboard_Smoke_Particles.Update();
+		Vent_Smoke_Particles.Update();
 		Billboard_Fire_Particles.Update();
 		Volumetric_Cone_Particles.Update();
 

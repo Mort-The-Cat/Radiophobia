@@ -259,7 +259,7 @@ void Initialise_Pistol()
 
 	// This loads the models
 
-	Makarov_Pistol.Max_Ammo = 7;
+	Makarov_Pistol.Max_Ammo = 18;
 	Makarov_Pistol.Ammo = Makarov_Pistol.Max_Ammo;
 
 	Makarov_Pistol.Time_Between_Shots = 0.15f;

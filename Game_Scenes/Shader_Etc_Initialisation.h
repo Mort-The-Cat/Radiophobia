@@ -57,10 +57,14 @@ void Initialise_Particles()
 	Create_Particle_Renderer(Smoke_Particle_Shader, Pull_Mesh("Assets/Models/Smoke.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke_Noise.png").Texture, Pull_Texture("Black").Texture, &Smoke_Particles);
 
 	Shader Billboard_Particle_Shader;
-	Billboard_Particle_Shader.Create_Shader("Shader_Code/Billboard_Smoke_Particle.vert", "Shader_Code/Particle.frag", "Shader_Code/Vertex_Test.geom");
+	Billboard_Particle_Shader.Create_Shader("Shader_Code/Billboard_Smoke_Particle.vert", "Shader_Code/Lightless_Particle.frag", nullptr);
 
 	Create_Particle_Renderer(Billboard_Particle_Shader, Billboard_Vertex_Buffer(-0.05, -0.05, 0.05, 0.05), Pull_Texture("Assets/Textures/Smoke.png").Texture, Pull_Texture("Black").Texture, &Billboard_Smoke_Particles);
 
+
+	{
+		Create_Particle_Renderer(Billboard_Particle_Shader, Billboard_Vertex_Buffer(-0.2, -0.2, 0.2, 0.2), Pull_Texture("Assets/Textures/Smoke.png").Texture, Pull_Texture("Black").Texture, &Vent_Smoke_Particles);
+	}
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE); // We'll be using purely additive blending for the fire particles
 	Shader Billboard_Fire_Shader;

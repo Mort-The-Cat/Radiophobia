@@ -52,8 +52,8 @@ float Bounce()
 
 vec3 Rotated_Point(vec3 Point)
 {
-	float X_Direction = Initial_X_Direction + Smoothed_Particle_Age * 3 * sin(Random_Value * 10);
-	float Y_Direction = Smoothed_Particle_Age * 3 * cos(Random_Value * 15);
+	float X_Direction = Initial_X_Direction + (Smoothed_Particle_Age * 3) * sin(Random_Value * 10);
+	float Y_Direction = exp(-L) * (Smoothed_Particle_Age * 3 * cos(Random_Value * 15));
 
 	float X_Cos = cos(X_Direction);
 	float X_Sin = sin(X_Direction);

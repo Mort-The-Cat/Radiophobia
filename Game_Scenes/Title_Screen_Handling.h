@@ -76,9 +76,22 @@ void Setup_Intro_Level()
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Ceiling_Tiles.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Ceiling_Texture.png").Texture, Pull_Texture("Ceiling").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
 
-	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS }));
+	Scene_Models.push_back(new Model({  }));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Vents.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Metal_Specular.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Fire_Extinguishers.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Fire_Extinguisher.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+
+	Scene_Models.push_back(new Model({  }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Fire_Extinguisher_Signs.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Fire_Extinguisher_Sign.jpg").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+
+	Scene_Models.push_back(new Model({ MF_ACTIVE, MF_CAST_SHADOWS }));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Vents.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Metal_Specular.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), 
+		new Vent_Smoke_Controller(std::vector<Vent_Smoke_Controller::Vent_Info>{
+			{ glm::vec3(3.1434f, -1.0362, 7.3434f), Vent_Smoke_Controller::Directions::West },
+			{ glm::vec3(3.958f, -0.38284, 1.8101f), Vent_Smoke_Controller::Directions::South },
+	}
+	), std::vector<Hitbox*>{});
 
 	Scene_Models.push_back(new Model({ MF_SOLID }));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
