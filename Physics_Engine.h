@@ -8,6 +8,8 @@
 
 #include "Audio_Handler_Declarations.h"
 
+#include "Hitdetection_Blockmap_Declarations.h"
+
 #include "Particle_System_Declarations.h"
 
 void Wait_On_Physics();
@@ -386,39 +388,79 @@ namespace Physics
 				}
 			}
 
-			for (size_t V = *Offset + Scene_Physics_Objects.size(); V < Scene_Hitboxes.size(); V += NUMBER_OF_WORKERS)
+			if constexpr (Should_Use_Blockmap)
 			{
-				//if (Scene_Physics_Objects[W]->Flags[PF_PLAYER_OBJECT])
-				//	continue;
+				std::vector<Hitbox*> Nearby_Hitboxes = Blockmap::Read_Blockmap(Scene_Physics_Objects[W]->Object->Position);
 
-				Impulse_Object Impulse;
-
-				Impulse.Collision = Scene_Physics_Objects[W]->Object->Hitboxes[0]->Hitdetection(Scene_Hitboxes[V]);
-
-				Impulse.B_Hitbox = Scene_Hitboxes[V];
-
-				Impulse.A = Scene_Physics_Objects[W];
-				Impulse.B = nullptr;
-
-				Impulse.A_Position = Scene_Physics_Objects[W]->Object->Position;
-				Impulse.B_Position = *Scene_Hitboxes[V]->Position;
-
-				Impulse.A_Velocity = Scene_Physics_Objects[W]->Velocity;
-				
-				Impulse.A_Rotation_Vector = Scene_Physics_Objects[W]->Rotation_Vector;
-				
-				if (Impulse.Collision.Overlap != 0)
+				for (size_t V = *Offset; V < Nearby_Hitboxes.size(); V += NUMBER_OF_WORKERS)
 				{
-					Recorded_Impulses_Mutex.lock();
+					Impulse_Object Impulse;
 
-					// We'll add basic checks here to make sure that physics objects don't collide with "the same" object twice in a row so to speak.
-					// Hitboxes can overlap, causing the physics engine to apply a repulsive force multiple times, ruining the physics.
+					Impulse.Collision = Scene_Physics_Objects[W]->Object->Hitboxes[0]->Hitdetection(Nearby_Hitboxes[V]);
 
-					
-					if(!Check_Duplicate_Collisions(Impulse.A, Impulse.Collision.Collision_Normal)) // This ensures that the impulse is only recorded if it's not a duplicate.
-						Recorded_Impulses.push_back(Impulse);
+					Impulse.B_Hitbox = Nearby_Hitboxes[V];
 
-					Recorded_Impulses_Mutex.unlock();
+					Impulse.A = Scene_Physics_Objects[W];
+					Impulse.B = nullptr;
+
+					Impulse.A_Position = Scene_Physics_Objects[W]->Object->Position;
+					Impulse.B_Position = *Nearby_Hitboxes[V]->Position;
+
+					Impulse.A_Velocity = Scene_Physics_Objects[W]->Velocity;
+
+					Impulse.A_Rotation_Vector = Scene_Physics_Objects[W]->Rotation_Vector;
+
+					if (Impulse.Collision.Overlap != 0)
+					{
+						Recorded_Impulses_Mutex.lock();
+
+						// We'll add basic checks here to make sure that physics objects don't collide with "the same" object twice in a row so to speak.
+						// Hitboxes can overlap, causing the physics engine to apply a repulsive force multiple times, ruining the physics.
+
+
+						if (!Check_Duplicate_Collisions(Impulse.A, Impulse.Collision.Collision_Normal)) // This ensures that the impulse is only recorded if it's not a duplicate.
+							Recorded_Impulses.push_back(Impulse);
+
+						Recorded_Impulses_Mutex.unlock();
+					}
+				}
+			}
+			else
+			{
+				for (size_t V = *Offset + Scene_Physics_Objects.size(); V < Scene_Hitboxes.size(); V += NUMBER_OF_WORKERS)
+				{
+					//if (Scene_Physics_Objects[W]->Flags[PF_PLAYER_OBJECT])
+					//	continue;
+
+					Impulse_Object Impulse;
+
+					Impulse.Collision = Scene_Physics_Objects[W]->Object->Hitboxes[0]->Hitdetection(Scene_Hitboxes[V]);
+
+					Impulse.B_Hitbox = Scene_Hitboxes[V];
+
+					Impulse.A = Scene_Physics_Objects[W];
+					Impulse.B = nullptr;
+
+					Impulse.A_Position = Scene_Physics_Objects[W]->Object->Position;
+					Impulse.B_Position = *Scene_Hitboxes[V]->Position;
+
+					Impulse.A_Velocity = Scene_Physics_Objects[W]->Velocity;
+
+					Impulse.A_Rotation_Vector = Scene_Physics_Objects[W]->Rotation_Vector;
+
+					if (Impulse.Collision.Overlap != 0)
+					{
+						Recorded_Impulses_Mutex.lock();
+
+						// We'll add basic checks here to make sure that physics objects don't collide with "the same" object twice in a row so to speak.
+						// Hitboxes can overlap, causing the physics engine to apply a repulsive force multiple times, ruining the physics.
+
+
+						if (!Check_Duplicate_Collisions(Impulse.A, Impulse.Collision.Collision_Normal)) // This ensures that the impulse is only recorded if it's not a duplicate.
+							Recorded_Impulses.push_back(Impulse);
+
+						Recorded_Impulses_Mutex.unlock();
+					}
 				}
 			}
 		}

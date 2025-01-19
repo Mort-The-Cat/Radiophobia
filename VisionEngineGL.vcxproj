@@ -173,6 +173,8 @@
     <ClInclude Include="Game_Scenes\Shader_Etc_Initialisation.h" />
     <ClInclude Include="Game_Scenes\Title_Screen_Handling.h" />
     <ClInclude Include="Hitdetection.h" />
+    <ClInclude Include="Hitdetection_Blockmap.h" />
+    <ClInclude Include="Hitdetection_Blockmap_Declarations.h" />
     <ClInclude Include="Hitdetection_Declarations.h" />
     <ClInclude Include="Input_Handler.h" />
     <ClInclude Include="Job_System.h" />

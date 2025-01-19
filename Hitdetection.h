@@ -2,6 +2,7 @@
 #define HITDETECTION_VISIONGL
 
 #include "Hitdetection_Declarations.h"
+
 #include <stdexcept>
 #include <array>
 

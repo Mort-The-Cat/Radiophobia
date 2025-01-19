@@ -4,6 +4,8 @@
 #include "OpenGL_Declarations.h"
 #include "Model_Declarations.h"
 
+#include "Hitdetection_Blockmap_Declarations.h"
+
 class Collision_Info
 {
 public:
@@ -32,6 +34,7 @@ class Sphere_Hitbox;
 class Mesh_Hitbox;
 
 #define HF_TO_BE_DELETED 0u
+#define HF_IN_BLOCKMAP 1u
 
 class Hitbox
 {
@@ -39,7 +42,7 @@ public:
 	glm::vec3* Position;
 	Model* Object;
 
-	bool Flags[1] = { false };
+	bool Flags[2] = { false, false };
 
 	Hitbox() {}
 	Hitbox(glm::vec3* Positionp) { Position = Positionp; }
@@ -49,6 +52,8 @@ public:
 	virtual Collision_Info AABB_Hitdetection(AABB_Hitbox* Other) { return Collision_Info(); }
 	virtual Collision_Info Sphere_Hitdetection(Sphere_Hitbox* Other) { return Collision_Info(); }
 	virtual Collision_Info Mesh_Hitdetection(Mesh_Hitbox* Other) { return Collision_Info(); }
+
+	virtual Blockmap_Bounds Get_Bounds() { return { glm::vec3(0.0f), glm::vec3(0.0f) }; };
 
 	virtual void Update_Hitbox() {  }
 };
@@ -71,6 +76,16 @@ public:
 	virtual Collision_Info AABB_Hitdetection(AABB_Hitbox* Other) override;
 	virtual Collision_Info Sphere_Hitdetection(Sphere_Hitbox* Other) override;
 	virtual Collision_Info Mesh_Hitdetection(Mesh_Hitbox* Other) override;
+
+	virtual Blockmap_Bounds Get_Bounds() override
+	{
+		Blockmap_Bounds Bounds;
+		
+		Bounds.A = glm::vec2(A.x, A.z) + glm::vec2(Position->x, Position->z);
+		Bounds.B = glm::vec2(B.x, B.z) + glm::vec2(Position->x, Position->z);
+
+		return Bounds;
+	}
 };
 
 class Sphere_Hitbox : public Hitbox
@@ -86,6 +101,16 @@ public:
 	virtual Collision_Info AABB_Hitdetection(AABB_Hitbox* Other) override;
 	virtual Collision_Info Sphere_Hitdetection(Sphere_Hitbox* Other) override;
 	virtual Collision_Info Mesh_Hitdetection(Mesh_Hitbox* Other) override;
+
+	virtual Blockmap_Bounds Get_Bounds() override
+	{
+		Blockmap_Bounds Bounds;
+
+		Bounds.A = glm::vec2(Position->x - Radius, Position->z - Radius);
+		Bounds.B = glm::vec2(Position->x + Radius, Position->z + Radius);
+
+		return Bounds;
+	}
 };
 
 glm::mat4 Hitbox_Direction_Matrix_Calculate(Model* Object);
@@ -118,6 +143,24 @@ public:
 	virtual Collision_Info Mesh_Hitdetection(Mesh_Hitbox* Other) override;
 	virtual Collision_Info Sphere_Hitdetection(Sphere_Hitbox* Other) override;
 	virtual Collision_Info AABB_Hitdetection(AABB_Hitbox* Other) override;
+
+	virtual Blockmap_Bounds Get_Bounds() override
+	{
+		Blockmap_Bounds Bounds;
+		Bounds.A = glm::vec2(Position->x + Vertices[0].x, Position->z + Vertices[0].z);
+		Bounds.B = Bounds.A;
+
+		for (size_t W = 1; W < Vertices.size(); W++)
+		{
+			Bounds.A.x = MIN(Bounds.A.x, Vertices[W].x + Position->x);
+			Bounds.A.y = MIN(Bounds.A.y, Vertices[W].z + Position->z);
+
+			Bounds.B.x = MAX(Bounds.B.x, Vertices[W].x + Position->x);
+			Bounds.B.y = MAX(Bounds.B.y, Vertices[W].z + Position->z);
+		}
+
+		return Bounds;
+	}
 
 	bool Normal_Already_Included(glm::vec3 Normal)
 	{

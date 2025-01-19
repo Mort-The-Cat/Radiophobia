@@ -11,6 +11,8 @@
 
 #include "Interactable_Declarations.h"
 
+#include "../Hitdetection_Blockmap.h"
+
 void Load_Test_Scene_Assets()
 {
 	Context_Interface::Loading_Progress_Total = 25;
@@ -221,6 +223,7 @@ void Setup_Intro_Level()
 
 	Scene_Lights.push_back(new Lightsource(glm::vec3(1.13f, -1.34f, -7.55f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
 
+	Blockmap::Initialise_Blockmap();
 
 	// Lighting_BVH::Add_Light_Occluders(Generate_AABB_Hitboxes("Assets/Hitboxes/Intro_Level/Occluders.obj"));
 
