@@ -72,6 +72,10 @@ void Initialise_Particles()
 
 	Create_Particle_Renderer(Billboard_Fire_Shader, Billboard_Vertex_Buffer(-0.2, -0.2, 0.2, 0.2), Pull_Texture("Assets/Textures/Fire_2.png").Texture, Pull_Texture("Black").Texture, &Billboard_Fire_Particles);
 
+	Shader Muzzle_Flash_Shader;
+	Muzzle_Flash_Shader.Create_Shader("Shader_Code/Billboard_Muzzle_Flash_Particle.vert", "Shader_Code/Lightless_Particle.frag", nullptr);
+	Create_Particle_Renderer(Muzzle_Flash_Shader, Billboard_Vertex_Buffer(-0.125f, -0.125f, 0.125f, 0.125f), Pull_Texture("Assets/Textures/Fire_2.png").Texture, Pull_Texture("Black").Texture, &Muzzle_Flash_Particles);
+
 	//
 
 	Shader Billboard_Galaxy_Shader;

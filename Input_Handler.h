@@ -202,7 +202,7 @@ void Shoot_Fire(float Angle)
 
 			Control->Time = -1;
 
-			Sound_Engine->play2D(Sound_Effect_Source);
+			Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
 		}
 	}
 }
@@ -296,7 +296,7 @@ void Controller_Player_Movement()
 
 		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Velocity = glm::vec3(4) * glm::vec3(-sin(Angle) * cos(DTR * Player_Camera.Orientation.y), -sin(DTR * Player_Camera.Orientation.y), -cos(Angle) * cos(DTR * Player_Camera.Orientation.y));
 
-		Sound_Engine->play2D(Sound_Effect_Source);
+		Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
 	}
 
 	glm::vec3 Forward_Vector, Right_Vector;
@@ -325,14 +325,14 @@ void Controller_Player_Movement()
 
 	// glfwGetGamepadState(GLFW_JOYSTICK_2, &Controller_Inputs);
 
-	if(Controller_Inputs.axes[Gamepad_Controls::Fire] > 0.5)
+	/*if (Controller_Inputs.axes[Gamepad_Controls::Fire] > 0.5)
 	{
 		// we wanna apply a force onto some objects!
 
 		Shoot_Fire(Angle);
 	}
 	else
-		Fire_Sound->setVolume(0);
+		Fire_Sound->setVolume(0);*/
 
 	Cursor.x += Controller_Inputs.axes[2] * 0.3f;
 	Cursor.y -= Controller_Inputs.axes[3] * 0.3f;
@@ -396,19 +396,19 @@ void Player_Movement()
 
 		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Velocity = glm::vec3(4) * glm::vec3(-sin(Angle) * cos(DTR * Player_Camera.Orientation.y), -sin(DTR * Player_Camera.Orientation.y), -cos(Angle) * cos(DTR * Player_Camera.Orientation.y));
 
-		Sound_Engine->play2D(Sound_Effect_Source);
+		Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
 
 		// Billboard_Smoke_Particles.Particles.Spawn_Particle(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 	}
 
-	if (Mouse_Inputs[0]) // If left-click,
+	/*if (Mouse_Inputs[0]) // If left-click,
 	{
 		// we wanna apply a force onto some objects!
 
 		Shoot_Fire(Angle);
 	}
 	else
-		Fire_Sound->setVolume(0);
+		Fire_Sound->setVolume(0);*/
 
 	glm::vec3 Forward_Vector, Right_Vector;
 

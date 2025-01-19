@@ -18,6 +18,9 @@ void Handle_Deletions()
 
 	for (size_t W = 0; W < Scene_Lights.size(); W++)
 	{
+		Scene_Lights[W]->Flags[LF_TO_BE_DELETED] |= Scene_Lights[W]->Flags[LF_TIMER] && (Scene_Lights[W]->Timer < 0.0f);
+		Scene_Lights[W]->Timer -= Tick;
+
 		if (Scene_Lights[W]->Flags[LF_TO_BE_DELETED])
 		{
 			delete Scene_Lights[W];

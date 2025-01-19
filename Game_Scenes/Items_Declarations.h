@@ -22,11 +22,6 @@ public:
 Item* Player_Current_Item; // This is the item the player is currently holding
 Item* Player_Desired_Item; // This is the item that the player is currently trying to switch to.
 
-namespace Pistol_SFX
-{
-	irrklang::ISoundSource *Shoot, *Click, *Draw, *Holster;
-}
-
 class Pistol : public Item
 {
 public:
@@ -68,49 +63,78 @@ public:
 		if(Shot_Timer < Time_Between_Shots)
 			Shot_Timer += Tick;
 		else
-			if ((Controller_Inputs.axes[Gamepad_Controls::Attack] > 0.35 || Mouse_Fresh_Click(0)) && Ammo)
-			{
-				Ammo--;
-				Shot_Timer = 0.0f;
-				Shoot.Time = 0;
-				Shoot_Hand.Time = 0;
+			if (Controller_Inputs.axes[Gamepad_Controls::Attack] > 0.35 || Mouse_Inputs[0]) // Mouse_Fresh_Click(0))
+				if(Ammo)
+				{
+					Ammo--;
+					Shot_Timer = 0.0f;
+					Shoot.Time = 0;
+					Shoot_Hand.Time = 0;
 
-				Last_Shot.Time = 0.0f;
-				Last_Shot_Hand.Time = 0.0f;
+					Last_Shot.Time = 0.0f;
+					Last_Shot_Hand.Time = 0.0f;
 
-				Current_State = Ammo ? Shooting : Firing_Last;
+					Current_State = Ammo ? Shooting : Firing_Last;
 
-				/*Scene_Models.push_back(new Model({}));
-				Scene_Models.back()->Position = Viewmodel_Meshes[0].Position;
-				Create_Model(Pull_Mesh("Assets/Models/Makarov_Shell.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Shell_Texture.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+					Player_Camera.Orientation.x += 3 * (RNG() - 0.5f);
+					Player_Camera.Orientation.y += 3 * RNG();
 
-				Scene_Models.back()->Position += glm::vec3(0.3688f) * Camera_Direction;
-				Scene_Models.back()->Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
+					/*Scene_Models.push_back(new Model({}));
+					Scene_Models.back()->Position = Viewmodel_Meshes[0].Position;
+					Create_Model(Pull_Mesh("Assets/Models/Makarov_Shell.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Shell_Texture.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
 
-				Scene_Models.back()->Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
+					Scene_Models.back()->Position += glm::vec3(0.3688f) * Camera_Direction;
+					Scene_Models.back()->Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
 
-				Scene_Models.back()->Orientation = Viewmodel_Meshes[0].Orientation;
-				Scene_Models.back()->Orientation_Up = Viewmodel_Meshes[0].Orientation_Up;*/
+					Scene_Models.back()->Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
 
-				glm::vec3 Position = Viewmodel_Meshes[0].Position;
+					Scene_Models.back()->Orientation = Viewmodel_Meshes[0].Orientation;
+					Scene_Models.back()->Orientation_Up = Viewmodel_Meshes[0].Orientation_Up;*/
 
-				Position += glm::vec3(0.3688f) * Camera_Direction;
-				Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
+					Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
 
-				Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
+					glm::vec3 Position = Viewmodel_Meshes[0].Position;
 
-				glm::vec3 Velocity = glm::vec3(0.0f);
+					Position += glm::vec3(0.3688f) * Camera_Direction;
+					Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
 
-				Velocity += glm::vec3(RNG() + 0.5f) * Viewmodel_Meshes[0].Orientation;
-				Velocity += glm::vec3(RNG() + 1.5f) * Viewmodel_Meshes[0].Orientation_Up;
-				Velocity += glm::vec3(0.25f * RNG()) * Camera_Direction;
+					Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
 
-				Velocity += Player_Physics_Object.Velocity;
+					glm::vec3 Velocity = glm::vec3(0.0f);
 
-				glm::vec4 Parsed_Velocity = glm::vec4(Velocity.x, Velocity.y, Velocity.z, -atan2f(Camera_Direction.z, Camera_Direction.x));
+					Velocity += glm::vec3(RNG() + 0.5f) * Viewmodel_Meshes[0].Orientation;
+					Velocity += glm::vec3(RNG() + 1.5f) * Viewmodel_Meshes[0].Orientation_Up;
+					Velocity += glm::vec3(0.25f * RNG()) * Camera_Direction;
 
-				Pistol_Shell_Particles.Particles.Spawn_Particle(Position, Parsed_Velocity, Player_Camera.Position.y + reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y - 0.02f);
-			}
+					Velocity += Player_Physics_Object.Velocity;
+
+					glm::vec4 Parsed_Velocity = glm::vec4(Velocity.x, Velocity.y, Velocity.z, -atan2f(Camera_Direction.z, Camera_Direction.x));
+
+					Position += glm::vec3(0.1f) * Camera_Direction;
+
+					Scene_Lights.push_back(new Lightsource(Position, glm::vec3(0.3f) * glm::vec3(RNG() * 1 + 2, RNG() + 1, RNG()), glm::vec3(1.0f, 0.0f, 0.0f), 360.0f, 1.0f, 0.35f));
+					Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
+					Scene_Lights.back()->Flags[LF_TIMER] = true;
+					Scene_Lights.back()->Timer = 0.02f;
+
+					Position += glm::vec3(0.1f) * Camera_Direction; // +Viewmodel_Meshes[0].Orientation * glm::vec3(0.02f);
+
+					for(size_t W = 0; W < 20; W++)
+						Muzzle_Flash_Particles.Particles.Spawn_Particle(Position + glm::vec3(0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f)));
+
+					Pistol_Shell_Particles.Particles.Spawn_Particle(Position, Parsed_Velocity, Player_Camera.Position.y + reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y - 0.02f);
+				}
+				else if(Current_State != Reloading)
+				{
+					Sound_Engine->play2D(Pull_Audio("Assets/Audio/No_Ammo_Click.wav").Source);
+
+					Shot_Timer = 0.0f;
+
+					Last_Shot.Time = 0.075f;
+					Last_Shot_Hand.Time = 0.075f;
+
+					Current_State = Firing_Last;
+				}
 
 		bool Loop_Flag = false;
 
@@ -137,6 +161,8 @@ public:
 				Current_State = Reloading;
 				Reload.Time = 0.0f;
 				Reload_Hand.Time = 0.0f;
+
+				Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov_Reload.wav").Source);
 			}
 
 			break;
@@ -224,6 +250,10 @@ Pistol Makarov_Pistol;
 
 void Initialise_Pistol()
 {
+	Pull_Audio("Assets/Audio/Makarov.wav");
+	Pull_Audio("Assets/Audio/Makarov_Reload.wav");
+	Pull_Audio("Assets/Audio/No_Ammo_Click.wav");
+
 	Makarov_Pistol.Draw.Animation = Pull_Animation("Assets/Animations/Makarov_Pistol_Draw.anim").Animation;
 	Makarov_Pistol.Draw.Flags[ANIMF_LOOP_BIT] = false;
 	Makarov_Pistol.Draw_Hand.Animation = Pull_Animation("Assets/Animations/Makarov_Hand_Draw.anim").Animation;
@@ -259,10 +289,10 @@ void Initialise_Pistol()
 
 	// This loads the models
 
-	Makarov_Pistol.Max_Ammo = 18;
+	Makarov_Pistol.Max_Ammo = 38;
 	Makarov_Pistol.Ammo = Makarov_Pistol.Max_Ammo;
 
-	Makarov_Pistol.Time_Between_Shots = 0.15f;
+	Makarov_Pistol.Time_Between_Shots = 0.051f;
 	Makarov_Pistol.Shot_Timer = Makarov_Pistol.Time_Between_Shots;
 
 	//

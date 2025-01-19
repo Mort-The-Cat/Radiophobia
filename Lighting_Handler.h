@@ -52,6 +52,7 @@ public:
 #define LF_TO_BE_DELETED 0u
 #define LF_CAST_SHADOWS 1u
 #define LF_EXCLUDE_FROM_BVH 2u // This flag is set if the lights can be ignored entirely from the Light BVH, meaning other light sources can be prioritised
+#define LF_TIMER 3u
 
 class Lightsource
 {
@@ -65,7 +66,9 @@ public:
 
 	float Attenuation; // This is important for things like fire vs things like ordinary lights- it'd be strange if your viewmodel's colour was overexposed the whole game usw.
 
-	bool Flags[3] = { false, false, false };
+	float Timer; // This doesn't necessarily apply
+
+	bool Flags[4] = { false, false, false, false };
 	Lightsource() {}
 
 	Lightsource(glm::vec3 Positionp, glm::vec3 Colourp, glm::vec3 Directionp, float FOVp = 360, float Blurp = 1.0f, float Attenuationp = 0.6f)

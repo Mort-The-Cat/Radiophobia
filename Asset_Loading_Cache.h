@@ -43,9 +43,17 @@ namespace Cache
 		Mesh_Animation* Animation;
 	};
 
+	struct Audio_Cache_Info
+	{
+		alignas(0) std::string Directory;
+		irrklang::ISoundSource* Source;
+	};
+
 	std::vector<Mesh_Cache_Info> Mesh_Cache;
 	std::vector<Texture_Cache_Info> Texture_Cache;
 	std::vector<Animation_Cache_Info> Animation_Cache;
+
+	std::vector<Audio_Cache_Info> Audio_Cache;
 
 	void Clear_Texture_Cache()
 	{
@@ -72,6 +80,15 @@ namespace Cache
 		for (size_t W = 0; W < Animation_Cache.size(); W++)
 			delete Animation_Cache[W].Animation;
 		Animation_Cache.clear();
+	}
+
+	void Clear_Audio_Cache()
+	{
+		for (size_t W = 0; W < Audio_Cache.size(); W++)
+		{
+			Audio_Cache[W].Source->drop();
+		}
+		Audio_Cache.clear();
 	}
 
 	bool Search_Texture_Cache(const char* Directory, Texture_Cache_Info* Target_Info)
@@ -107,6 +124,19 @@ namespace Cache
 			if (strcmp(Directory, Animation_Cache[W].Directory.c_str()) == 0)
 			{
 				*Target_Info = Animation_Cache[W];
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool Search_Audio_Cache(const char* Directory, Audio_Cache_Info* Target_Info)
+	{
+		for (size_t W = 0; W < Audio_Cache.size(); W++)
+		{
+			if (strcmp(Directory, Audio_Cache[W].Directory.c_str()) == 0)
+			{
+				*Target_Info = Audio_Cache[W];
 				return true;
 			}
 		}
@@ -377,6 +407,25 @@ Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LO
 	}
 
 	Cache::Mesh_Cache.push_back(Cache_Info);
+	return Cache_Info;
+}
+
+//
+
+Cache::Audio_Cache_Info Pull_Audio(const char* Directory)
+{
+	Cache::Audio_Cache_Info Cache_Info;
+
+	if (Cache::Search_Audio_Cache(Directory, &Cache_Info))
+	{
+		return Cache_Info;
+	}
+
+	Cache_Info.Directory = Directory;
+	Cache_Info.Source = Sound_Engine->addSoundSourceFromFile(Directory, irrklang::ESM_AUTO_DETECT, true);
+
+	Cache::Audio_Cache.push_back(Cache_Info);
+
 	return Cache_Info;
 }
 

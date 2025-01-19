@@ -83,6 +83,9 @@ void Render_All()
 	Billboard_Fire_Particles.Shader.Activate();
 	Billboard_Fire_Particles.Render();
 
+	Muzzle_Flash_Particles.Shader.Activate();
+	Muzzle_Flash_Particles.Render();
+
 	Colour_Bubble_Particles.Shader.Activate();
 	Colour_Bubble_Particles.Render();
 
@@ -172,6 +175,8 @@ void Engine_Loop()
 		Vent_Smoke_Particles.Update();
 		Billboard_Fire_Particles.Update();
 		Volumetric_Cone_Particles.Update();
+
+		Muzzle_Flash_Particles.Update();
 
 		Pistol_Shell_Particles.Update();
 

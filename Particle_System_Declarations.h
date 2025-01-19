@@ -20,7 +20,11 @@ struct Volumetric_Cone_Particle
 	glm::vec3 Colour;
 };
 
-
+struct Muzzle_Flash_Particle
+{
+	glm::vec4 Position; // .w is age
+	float Angular_Velocity;
+};
 
 struct Smoke_Particle
 {
@@ -108,6 +112,47 @@ public:
 	{
 		for (size_t W = 0; W < Particles_Data.size(); W++)
 			Particles_Data[W].Age += Tick;
+	}
+};
+
+bool Muzzle_Flash_Particle_Remove_If(const Muzzle_Flash_Particle& Particle)
+{
+	return Particle.Position.w > 0.05f;
+}
+
+class Muzzle_Flash_Particle_Info : public Particle_Info<Muzzle_Flash_Particle>
+{
+public:
+	// This has 5 floating point values
+
+	Muzzle_Flash_Particle_Info()
+	{
+		Particles_Per_Call = 60;
+	}
+
+	void Spawn_Particle(glm::vec3 Position)
+	{
+		Muzzle_Flash_Particle New_Particle;
+
+		New_Particle.Position.x = Position.x;
+		New_Particle.Position.y = Position.y;
+		New_Particle.Position.z = Position.z;
+
+		New_Particle.Position.w = 0.0f;
+
+		New_Particle.Angular_Velocity = 30 * (RNG() - 0.5f);
+
+		Particles_Data.push_back(New_Particle);
+	}
+
+	void Update()
+	{
+		for (size_t W = 0; W < Particles_Data.size(); W++)
+			Particles_Data[W].Position.w += Tick;
+
+		auto Particles_To_Remove = std::remove_if(Particles_Data.begin(), Particles_Data.end(), Muzzle_Flash_Particle_Remove_If);
+
+		Particles_Data.erase(Particles_To_Remove, Particles_Data.end());
 	}
 };
 
@@ -277,5 +322,7 @@ Particle_Renderer<Volumetric_Cone_Particle_Info, Model_Vertex_Buffer> Volumetric
 
 Particle_Renderer<Smoke_Particle_Info, Model_Vertex_Buffer> Bubble_Particles;
 Particle_Renderer<Smoke_Particle_Info, Model_Vertex_Buffer> Colour_Bubble_Particles;
+
+Particle_Renderer<Muzzle_Flash_Particle_Info, Billboard_Vertex_Buffer> Muzzle_Flash_Particles;
 
 #endif
