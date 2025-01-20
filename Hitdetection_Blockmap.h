@@ -21,9 +21,12 @@ namespace Blockmap // This is for hitdetection
 
 	std::vector<Hitbox*> Read_Blockmap(const glm::vec3 Reader_Position)
 	{
-		std::vector<Hitbox*> Read_Hitboxes = Blockmap_Data
-			[(Reader_Position.x - Blockmap_A.x) / Block_Size]
-			[(Reader_Position.z - Blockmap_A.y) / Block_Size];
+		int X = (Reader_Position.x - Blockmap_A.x) / Block_Size, Y = (Reader_Position.z - Blockmap_A.y) / Block_Size;
+
+		X = MIN(MAX(0, X), Blockmap_Width - 1);
+		Y = MIN(MAX(0, Y), Blockmap_Height - 1);
+
+		std::vector<Hitbox*> Read_Hitboxes = Blockmap_Data[X][Y];
 
 		for (int W = Scene_Hitboxes.size() - 1; W > 0; W--)
 		{
