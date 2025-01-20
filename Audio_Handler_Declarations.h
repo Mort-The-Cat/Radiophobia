@@ -12,6 +12,8 @@
 #define ASF_TO_BE_DELETED 0u
 #define ASF_WITHOUT_POSITION 1u
 
+#define ASF_DELETE_ONCE_FINISHED 2u
+
 // ASF stands for audio-source-flags lol
 
 // We can modify this later if we really want to
@@ -25,7 +27,7 @@ namespace Audio
 		float Volume = 0;
 		std::mutex Sounds_Mutex;
 		std::vector<irrklang::ISound*> Sounds;
-		bool Flags[2] = { false, false };
+		bool Flags[3] = { false, false, false };
 
 		~Audio_Source()
 		{
@@ -67,13 +69,15 @@ namespace Audio
 			Sounds_Mutex.lock();
 			for (size_t W = 0; W < Sounds.size(); W++)
 			{
-				if(!Flags[ASF_TO_BE_DELETED]) // Some error handling is highly adviced if you're going to use multithreading with this
+				if(!Flags[ASF_TO_BE_DELETED]) // Some error handling is highly advised if you're going to use multithreading with this
 					if (Sounds[W]->isFinished()) // If the sound has completed.
 					{
 						Sounds[W]->stop();
 						Sounds[W]->drop();
 						//delete Sounds[W];
 						Sounds[W] = nullptr;
+
+						Flags[ASF_TO_BE_DELETED] |= Flags[ASF_DELETE_ONCE_FINISHED]; // If we're deleting this once it's finished, flag it for deletion!
 					}
 					else
 					{

@@ -117,11 +117,6 @@ void Initialise_Particles()
 	}*/
 }
 
-void Initialise_Sound_Effects()
-{
-	Door_Opening_Sound = Sound_Engine->addSoundSourceFromFile("Assets/Audio/Door/Door_Open.wav", irrklang::ESM_AUTO_DETECT, true);
-}
-
 void Initialise_Shaders_And_Particle_Emitters()
 {
 	Cursor_Reset = true;
@@ -170,8 +165,6 @@ void Initialise_Shaders_And_Particle_Emitters()
 
 	if (Shadow_Mapper::Shadow_Mapping)
 		Shadow_Mapper::Initialise_Shadow_Mapper();
-
-	Initialise_Sound_Effects();
 }
 
 #endif

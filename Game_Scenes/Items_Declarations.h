@@ -22,6 +22,47 @@ public:
 Item* Player_Current_Item; // This is the item the player is currently holding
 Item* Player_Desired_Item; // This is the item that the player is currently trying to switch to.
 
+void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3 Orientation, float Damage)
+{
+	Hitbox* Collided_Hitbox;
+
+	auto Not_Against_Shooter_Compare{ [Shooter_Hitbox](Hitbox* A, Hitbox* B)->bool {	return B != Shooter_Hitbox;	} };
+
+	Collision_Info Info = Collision_Test::Raycast(Position, glm::vec3(0.05f) * Orientation, 200, Not_Against_Shooter_Compare, &Collided_Hitbox);
+
+	if (Collided_Hitbox == nullptr) // Out of range, we don't do anything!
+		return; 
+
+	if (Collided_Hitbox->Object->Flags[MF_TAKES_DAMAGE]) // If the object takes damage
+	{
+		// we deal damage to it!!
+	}
+	else if (Collided_Hitbox->Object->Flags[MF_PHYSICS_TEST])
+	{
+		Physics_Object_Controller* Control = (Physics_Object_Controller*)Collided_Hitbox->Object->Control;
+
+		Control->Time = -1;
+	}
+
+	// in any case, we wanna spawn some decals and particle effects!
+
+	const char* Audio_Directories[] = {
+		"Assets/Audio/Impact/Metal_Impact_0.wav",
+		"Assets/Audio/Impact/Metal_Impact_1.wav",
+		"Assets/Audio/Impact/Metal_Impact_2.wav"
+
+	};
+
+	Audio::Audio_Source* Impact_Sound_Source = Audio::Create_Audio_Source(Info.Collision_Position, 2.5f);
+	Impact_Sound_Source->Play_Sound(Pull_Audio(Audio_Directories[((size_t)rand()) % 3]).Source);
+	Impact_Sound_Source->Flags[ASF_DELETE_ONCE_FINISHED];
+
+	// I'll need to work on the bullet decals and suchs
+
+	// for(size_t W = 0; W < 10; W++)
+	// Vent_Smoke_Particles.Particles.Spawn_Particle(Info.Collision_Position, -Info.Collision_Normal);
+}
+
 class Pistol : public Item
 {
 public:
@@ -91,7 +132,8 @@ public:
 					Scene_Models.back()->Orientation = Viewmodel_Meshes[0].Orientation;
 					Scene_Models.back()->Orientation_Up = Viewmodel_Meshes[0].Orientation_Up;*/
 
-					Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
+					irrklang::ISound* Sound = Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source, false, false, false, true);
+					Sound->setPlaybackSpeed(0.25f * RNG() + 0.875f);
 
 					glm::vec3 Position = Viewmodel_Meshes[0].Position;
 
@@ -123,6 +165,8 @@ public:
 						Muzzle_Flash_Particles.Particles.Spawn_Particle(Position + glm::vec3(0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f)));
 
 					Pistol_Shell_Particles.Particles.Spawn_Particle(Position, Parsed_Velocity, Player_Camera.Position.y + reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y - 0.02f);
+				
+					Shoot_Bullet_Function(Player_Physics_Object.Object->Hitboxes[0], Player_Physics_Object.Object->Position, Camera_Direction, 1.0f);
 				}
 				else if(Current_State != Reloading)
 				{

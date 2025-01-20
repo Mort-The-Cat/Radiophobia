@@ -8,9 +8,6 @@
 #include "..\Hitdetection.h"
 #include "..\Audio_Declarations.h"
 
-irrklang::ISoundSource* Door_Opening_Sound;
-irrklang::ISoundSource* Door_Finished_Opening_Sound;
-
 class Door_Controller : public Controller
 {
 	std::string Animation_Name;
@@ -62,7 +59,7 @@ public:
 
 				Opened = true;
 
-				Opening_Sound->Play_Sound(Door_Opening_Sound);
+				Opening_Sound->Play_Sound(Pull_Audio("Assets/Audio/Door/Door_Open.wav").Source);
 			}
 		}
 	}

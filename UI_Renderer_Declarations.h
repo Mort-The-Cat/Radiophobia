@@ -436,15 +436,16 @@ public:
 
 		Render_Screen_Sprite(Coords.X2o, Coords.Y1, 
 			Coords.X2, Coords.Y1o,
-			{ 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 });
+			{ 1, 0 }, { 0, 0 }, { 1, 1 }, { 0, 1 });
 
-		Render_Screen_Sprite(Coords.X1, Coords.Y2o, 
+		Render_Screen_Sprite(Coords.X1, Coords.Y2o,
 			Coords.X1o, Coords.Y2,
-			{ 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 });
+			{ 0, 1 }, { 1, 1 }, { 0, 0 }, { 1, 0 });
+			//{ 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 });
 
 		Render_Screen_Sprite(Coords.X2o, Coords.Y2o, 
 			Coords.X2, Coords.Y2,
-			{ 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 });
+			{ 1, 1 }, { 0, 1 }, { 1, 0 }, { 0, 0 });
 
 		//
 
@@ -459,7 +460,7 @@ public:
 
 		Render_Screen_Sprite(Coords.X1o, Coords.Y2o,
 			Coords.X2o, Coords.Y2,
-			{ 0, 0 }, { Delta_X_UV, 0 }, { 0, 1 }, { Delta_X_UV, 1 });
+			{ 0, 1 }, { Delta_X_UV, 1 }, { 0, 0 }, { Delta_X_UV, 0 });
 
 		//
 
@@ -467,7 +468,7 @@ public:
 			{ 0, 0 }, { 0, 1 }, { Delta_Y_UV, 0 }, { Delta_Y_UV, 1 });
 
 		Render_Screen_Sprite(Coords.X2o, Coords.Y1o, Coords.X2, Coords.Y2o,
-			{ 0, 0 }, { 0, 1 }, { Delta_Y_UV, 0 }, { Delta_Y_UV, 1 });
+			{ 0, 1 }, { 0, 0 }, { Delta_Y_UV, 1 }, { Delta_Y_UV, 0 });
 	}
 
 	virtual void Render(UI_Transformed_Coordinates Coords)

@@ -15,7 +15,7 @@
 
 void Load_Test_Scene_Assets()
 {
-	Context_Interface::Loading_Progress_Total = 25;
+	Context_Interface::Loading_Progress_Total = 28;
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
 
@@ -44,13 +44,16 @@ void Load_Test_Scene_Assets()
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Vent_Duct.png", nullptr, "Assets/Textures/Vent_Normal.png", "Vent");
 
-
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_0_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_1_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_2_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_3_Open.anim");
 
 	Initialise_Pistol();
+
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Toilets.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Tables.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Heaters.obj", LOAD_MESH_OBJ_BIT);
 
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT);
 	// Pull_Mesh<THREADED>("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT);
@@ -136,7 +139,7 @@ void Setup_Intro_Level()
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS }));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Intro_Level_Rubble.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Transparent.png").Texture, Pull_Texture("Rubble").Texture, Scene_Models.back(), new Controller(),
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Intro_Level_Rubble.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Rubble.jpg").Texture, Pull_Texture("Rubble").Texture, Scene_Models.back(), new Controller(),
 		std::vector<Hitbox*>{
 			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Rubble_0_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh),
 			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Rubble_0_AABB_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh)

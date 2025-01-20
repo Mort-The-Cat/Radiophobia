@@ -203,7 +203,8 @@ namespace Collision_Test
 		return Info.Collision_Normal.y > 0.3; // This is the condition for an object to be a "floor"
 	}
 
-	Collision_Info Find_Collision(Hitbox* A, bool (*Should_Compare)(Hitbox*, Hitbox*), Hitbox** Target_Pointer, bool (*Should_Return)(Collision_Info) = Always_Return)
+	template<typename Compare = bool(*)(Hitbox*, Hitbox*), typename Return = bool(*)(Collision_Info)>
+	Collision_Info Find_Collision(Hitbox* A, /*bool (*Should_Compare)(Hitbox*, Hitbox*)*/ const Compare& Should_Compare, Hitbox** Target_Pointer, /*bool (*Should_Return)(Collision_Info)*/ const Return& Should_Return = Always_Return)
 	{
 		Collision_Info Info;
 
@@ -233,7 +234,8 @@ namespace Collision_Test
 
 	bool Not_Against_Player_Compare(Hitbox* A, Hitbox* B);
 
-	Collision_Info Raycast(glm::vec3 Origin, glm::vec3 Velocity, size_t Max_Step, bool (*Should_Compare)(Hitbox*, Hitbox*), Hitbox** Target_Pointer) // A raycast only receives 1 hitbox
+	template<typename Compare>
+	Collision_Info Raycast(glm::vec3 Origin, glm::vec3 Velocity, size_t Max_Step, const Compare& Should_Compare/*bool (*Should_Compare)(Hitbox*, Hitbox*)*/, Hitbox** Target_Pointer) // A raycast only receives 1 hitbox
 	{
 		Sphere_Hitbox Particle;
 		Particle.Radius = 0.1;
@@ -252,7 +254,7 @@ namespace Collision_Test
 		{
 			*Particle.Position += Velocity;
 			Step++;
-			Info = Find_Collision(&Particle, Should_Compare, Target_Pointer);
+			Info = Find_Collision<Compare>(&Particle, Should_Compare, Target_Pointer);
 		} while (Step < Max_Step && Info.Overlap == 0);
 
 		Info.Collision_Position = *Particle.Position + Info.Collision_Normal * 0.1f;
