@@ -46,15 +46,15 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 
 	// in any case, we wanna spawn some decals and particle effects!
 
-	const char* Audio_Directories[] = {
+	const char* Audio_Directories[] = 
+	{
 		"Assets/Audio/Impact/Metal_Impact_0.wav",
 		"Assets/Audio/Impact/Metal_Impact_1.wav",
 		"Assets/Audio/Impact/Metal_Impact_2.wav"
-
 	};
 
 	Audio::Audio_Source* Impact_Sound_Source = Audio::Create_Audio_Source(Info.Collision_Position, 2.5f);
-	Impact_Sound_Source->Play_Sound(Pull_Audio(Audio_Directories[((size_t)rand()) % 3]).Source);
+	Impact_Sound_Source->Play_Sound(Pull_Audio(Audio_Directories[((size_t)rand()) % 3u]).Source);
 	Impact_Sound_Source->Flags[ASF_DELETE_ONCE_FINISHED];
 
 	// I'll need to work on the bullet decals and suchs

@@ -2,6 +2,7 @@
 #define ENGINE_LOOP_VISION
 
 #include "Engine_Loop_Includes.h"
+#include "Decal_Projection_Clipper_Declarations.h"
 
 void Render_All()
 {
@@ -33,6 +34,10 @@ void Render_All()
 
 	Pistol_Shell_Particles.Shader.Activate();
 	Pistol_Shell_Particles.Render();
+
+	glDepthMask(GL_FALSE);
+	Decal_Particles.Shader.Activate();
+	Decal_Particles.Render();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);

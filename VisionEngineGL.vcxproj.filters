@@ -140,6 +140,9 @@
     <ClInclude Include="Hitdetection_Blockmap_Declarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Decal_Projection_Clipper_Declarations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader_Code\Vertex_Test.frag" />

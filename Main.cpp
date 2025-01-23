@@ -18,8 +18,12 @@
 
 #include "Game_Scenes/Items_Declarations.h"
 
+#include "Decal_Projection_Clipper_Declarations.h"
+
 int main()
 {
+	// Decal::Debug_Clip_Against_View_Frustum();
+
 	printf(" >> Hello!\n");
 
 	Initialise_OpenGL_Window();

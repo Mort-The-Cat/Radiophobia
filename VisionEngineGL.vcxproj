@@ -161,6 +161,7 @@
     <ClInclude Include="Audio_Declarations.h" />
     <ClInclude Include="Audio_Handler_Declarations.h" />
     <ClInclude Include="Bool_Array.h" />
+    <ClInclude Include="Decal_Projection_Clipper_Declarations.h" />
     <ClInclude Include="Deletion_Handler.h" />
     <ClInclude Include="Engine_Loop.h" />
     <ClInclude Include="Fast_Maths.h" />

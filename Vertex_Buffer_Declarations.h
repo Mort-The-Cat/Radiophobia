@@ -96,6 +96,51 @@ struct Billboard_Mesh
 	std::vector<unsigned int> Indices;
 };
 
+class Decal_Vertex_Buffer : public Base_Vertex_Buffer
+{
+	unsigned int Index_Buffer_ID = Unassigned_Bit_Mask;
+public:
+	unsigned int Indices_Count = 0;
+
+	unsigned int Decal_Placeholder_Triangle_Indices[3] = { 0u, 1u, 2u };
+
+	Decal_Vertex_Buffer() {}
+
+	Decal_Vertex_Buffer(int W)
+	{
+		Create_Buffer();
+		Bind_Buffer();
+		Update_Buffer();
+	}
+
+	void Create_Buffer()
+	{
+		glGenBuffers(1, &Buffer_ID);
+		glGenVertexArrays(1, &Vertex_Array_ID);
+
+		glGenBuffers(1, &Index_Buffer_ID);
+	}
+
+	void Bind_Buffer()
+	{
+		glBindVertexArray(Vertex_Array_ID);
+		glBindBuffer(GL_ARRAY_BUFFER, Buffer_ID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Index_Buffer_ID);
+	}
+
+	void Update_Buffer()
+	{
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Decal_Placeholder_Triangle_Indices), Decal_Placeholder_Triangle_Indices, GL_STATIC_DRAW);
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Decal_Placeholder_Triangle_Indices), Decal_Placeholder_Triangle_Indices, GL_STATIC_DRAW);
+
+		Indices_Count = 3;
+
+		glVertexAttribIPointer(0, 1, GL_UNSIGNED_INT, sizeof(int), (void*)0); // Position
+		glEnableVertexAttribArray(0);
+	}
+};
+
 class Billboard_Vertex_Buffer : public Base_Vertex_Buffer
 {
 	unsigned int Index_Buffer_ID = Unassigned_Bit_Mask;

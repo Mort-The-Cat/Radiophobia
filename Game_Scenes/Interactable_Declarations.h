@@ -34,7 +34,6 @@ public:
 		if (Opened)
 		{
 			Object->Flags[MF_UPDATE_MESH] = !Animator.Animate_Mesh(&Object->Mesh, Tick, true);
-			// Object->Flags[MF_UPDATE_MESH] = true;
 
 			Object->Flags[MF_ACTIVE] &= Object->Flags[MF_UPDATE_MESH];
 

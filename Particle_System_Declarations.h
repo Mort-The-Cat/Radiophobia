@@ -7,6 +7,12 @@
 
 // I want to make a pseudo-volumetric light volume in the engine
 
+struct Decal_Particle
+{
+	glm::vec3 A, B, C;
+	glm::vec2 A_UV, B_UV, C_UV;
+};
+
 struct Volumetric_Cone_Particle
 {
 	float Volume_Density;

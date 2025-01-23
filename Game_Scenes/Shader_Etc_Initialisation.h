@@ -5,6 +5,8 @@
 #include "Items_Declarations.h"
 #include "Interactable_Declarations.h"
 
+#include "..\Decal_Projection_Clipper_Declarations.h"
+
 void Init_Player_Physics_Object()
 {
 	if (Player_Physics_Object.Object == nullptr)
@@ -107,6 +109,13 @@ void Initialise_Particles()
 	Create_Particle_Renderer(Colour_Bubble_Shader, Pull_Mesh("Assets/Models/Bubble.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke_Noise.png").Texture, Pull_Texture("Black").Texture, &Colour_Bubble_Particles);
 	Colour_Bubble_Particles.Bind_Textures = false;
 
+	//
+
+	Shader Decal_Shader;
+	Decal_Shader.Create_Shader("Shader_Code/Decal_Particle.vert", "Shader_Code/Decal_Particle.frag", nullptr);
+
+	Create_Particle_Renderer(Decal_Shader, Decal_Vertex_Buffer(0), Pull_Texture("Assets/Textures/Smoke_Noise.png").Texture, Pull_Texture("Black").Texture, &Decal_Particles);
+
 	/*for (float Radius = 0.3f; Radius < 10.0f; Radius += 0.15f)
 	{
 		for (size_t W = 0; W < 64 * Radius; W++)
@@ -121,6 +130,7 @@ void Initialise_Shaders_And_Particle_Emitters()
 {
 	Cursor_Reset = true;
 
+	glDepthFunc(GL_LEQUAL);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);						// Purely additive blending
 
