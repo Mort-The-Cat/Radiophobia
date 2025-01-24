@@ -235,10 +235,10 @@ namespace Collision_Test
 	bool Not_Against_Player_Compare(Hitbox* A, Hitbox* B);
 
 	template<typename Compare>
-	Collision_Info Raycast(glm::vec3 Origin, glm::vec3 Velocity, size_t Max_Step, const Compare& Should_Compare/*bool (*Should_Compare)(Hitbox*, Hitbox*)*/, Hitbox** Target_Pointer) // A raycast only receives 1 hitbox
+	Collision_Info Raycast(glm::vec3 Origin, glm::vec3 Velocity, size_t Max_Step, const Compare& Should_Compare/*bool (*Should_Compare)(Hitbox*, Hitbox*)*/, Hitbox** Target_Pointer, float Size = 0.1f) // A raycast only receives 1 hitbox
 	{
 		Sphere_Hitbox Particle;
-		Particle.Radius = 0.1;
+		Particle.Radius = Size;
 
 		//AABB_Hitbox Particle;
 		//Particle.A = 0.05f * glm::vec3(1, 1, 1);

@@ -236,8 +236,6 @@ void Setup_Intro_Level()
 	Lighting_BVH::Update_Leaf_Node_Data();
 
 	//
-
-	Add_Some_Test_Decals();
 }
 
 void Setup_Test_Scene()

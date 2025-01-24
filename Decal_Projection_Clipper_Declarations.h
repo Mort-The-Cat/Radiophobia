@@ -17,6 +17,12 @@ namespace Decal
 		Model_Vertex Vertex; // This is the vertex itself
 		glm::vec3 Projected; // This is the projected point
 
+		void Projected_To_Decal_UV()
+		{
+			Projected *= glm::vec3(0.5f); // no longer [-1,1] now [-0.5,0.5]
+			Projected += glm::vec3(0.5f); // no [0,1]
+		}
+
 		void Rotate_Projected_Frustum()
 		{
 			float Temp = Projected.x;
@@ -57,7 +63,7 @@ namespace Decal
 
 		glm::mat3 Inverse_TBN; // Inverse thereof
 
-		Decal_Space_Transform(glm::vec3 Originp, glm::vec3 Orientation)
+		Decal_Space_Transform(glm::vec3 Originp, glm::vec3 Orientation, float Decal_Radius)
 		{
 			Origin = Originp;
 
@@ -67,6 +73,10 @@ namespace Decal
 				));
 
 			glm::vec3 Bitangent = glm::cross(Tangent, Orientation);
+
+			Tangent /= Decal_Radius;
+			Bitangent /= Decal_Radius;
+			Orientation /= Decal_Radius;
 
 			TBN = glm::mat3(Tangent, Bitangent, Orientation); // Orientation should be Z, so T and B can be x and y
 
@@ -252,7 +262,7 @@ public:
 
 	void Spawn_Particle(Decal::Point_Projection A, Decal::Point_Projection B, Decal::Point_Projection C)
 	{
-		const float Bias = 0.0075f;
+		const float Bias = 0.0025f;
 
 		Decal_Particle New_Particle;
 		New_Particle.A = A.Vertex.Position + glm::vec3(Bias) * A.Vertex.Normal;
@@ -275,36 +285,33 @@ public:
 
 Particle_Renderer<Decal_Particle_Info, Decal_Vertex_Buffer> Decal_Particles; // This uses a billboard vertex buffer but it uses the parsed data for the vertex info
 
-void Add_Some_Test_Decals()
+void Create_Bullet_Decal(Model_Mesh* Model,glm::vec3 Position, glm::vec3 Orientation, float Decal_Radius)
 {
-	glm::vec3 Position = glm::vec3(2.2f, -1.23f, 8.27f);
+	Decal::Decal_Space_Transform Transform(Position, Orientation, Decal_Radius);
 
-	/*Decal::Point_Projection A, B, C;
-	A.Vertex.Position = Position + glm::vec3(RNG(), RNG(), RNG());
-	B.Vertex.Position = Position + glm::vec3(RNG(), RNG(), RNG());
-	C.Vertex.Position = Position + glm::vec3(RNG(), RNG(), RNG());
-
-	A.Projected = glm::vec3(0.0f, 0.0f, 1.0f);
-	B.Projected = glm::vec3(1.0f, 0.0f, 1.0f);
-	C.Projected = glm::vec3(0.0f, 1.0f, 1.0f);
-
-	Decal_Particles.Particles.Spawn_Particle(A, B, C);*/
-
-	Decal::Decal_Space_Transform Transform(Position, glm::vec3(0.0f, 1.0f, 0.0f));
-
-	Model_Mesh* Level = Pull_Mesh("Assets/Models/Intro_Level/Test_Intro_Level_Floor.obj", LOAD_MESH_OBJ_BIT).Mesh;
-
-	for (size_t Index = 0; Index < Level->Indices.size(); Index += 3)
+	for (size_t Index = 0; Index < Model->Indices.size(); Index += 3)
 	{
 		std::vector<std::vector<Decal::Point_Projection>> Triangles = Decal::Polygon_To_Triangles(Decal::Clip_Triangle(
 			Transform,
-			Level->Vertices[Level->Indices[Index]],
-			Level->Vertices[Level->Indices[Index + 1]],
-			Level->Vertices[Level->Indices[Index + 2]]
+			Model->Vertices[Model->Indices[Index]],
+			Model->Vertices[Model->Indices[Index + 1]],
+			Model->Vertices[Model->Indices[Index + 2]]
 		));
 
 		for (size_t W = 0; W < Triangles.size(); W++)
+		{
+			Triangles[W][0].Projected_To_Decal_UV();
+			Triangles[W][1].Projected_To_Decal_UV();
+			Triangles[W][2].Projected_To_Decal_UV();
+
+			glm::vec3 Average_Position = Triangles[W][0].Vertex.Position + Triangles[W][1].Vertex.Position + Triangles[W][2].Vertex.Position;
+			Average_Position *= glm::vec3(0.333f);
+
+			if (glm::length(Average_Position - Position) > Decal_Radius * 4)
+				continue;
+
 			Decal_Particles.Particles.Spawn_Particle(Triangles[W][0], Triangles[W][1], Triangles[W][2]);
+		}
 	}
 }
 

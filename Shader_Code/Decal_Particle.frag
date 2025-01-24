@@ -9,5 +9,8 @@ in vec4 Position;
 
 void main()
 {
-	Out_Colour = texture(Albedo, UV);
+	if(texture(Albedo, UV).w < 0.1f)
+		discard;
+
+	Out_Colour = texture(Albedo, UV); // * vec4(1, 1, 1, 0.5f);
 }

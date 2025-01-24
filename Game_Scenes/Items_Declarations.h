@@ -5,6 +5,8 @@
 #include "..\Model_Declarations.h"
 #include "..\Input_Handler.h"
 
+#include "..\Decal_Projection_Clipper_Declarations.h"
+
 namespace Player_Ammo_Count
 {
 	size_t Makarov_Ammo;
@@ -28,7 +30,7 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 
 	auto Not_Against_Shooter_Compare{ [Shooter_Hitbox](Hitbox* A, Hitbox* B)->bool {	return B != Shooter_Hitbox;	} };
 
-	Collision_Info Info = Collision_Test::Raycast(Position, glm::vec3(0.05f) * Orientation, 200, Not_Against_Shooter_Compare, &Collided_Hitbox);
+	Collision_Info Info = Collision_Test::Raycast(Position, glm::vec3(0.02f) * Orientation, 500, Not_Against_Shooter_Compare, &Collided_Hitbox, 0.04f);
 
 	if (Collided_Hitbox == nullptr) // Out of range, we don't do anything!
 		return; 
@@ -56,6 +58,8 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 	Audio::Audio_Source* Impact_Sound_Source = Audio::Create_Audio_Source(Info.Collision_Position, 2.5f);
 	Impact_Sound_Source->Play_Sound(Pull_Audio(Audio_Directories[((size_t)rand()) % 3u]).Source);
 	Impact_Sound_Source->Flags[ASF_DELETE_ONCE_FINISHED];
+
+	Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
 
 	// I'll need to work on the bullet decals and suchs
 

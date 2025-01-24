@@ -36,10 +36,11 @@ void Render_All()
 	Pistol_Shell_Particles.Render();
 
 	glDepthMask(GL_FALSE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	Decal_Particles.Shader.Activate();
 	Decal_Particles.Render();
 
-	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDepthMask(GL_FALSE);
 	Bubble_Particles.Shader.Activate();
