@@ -48,18 +48,62 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 
 	// in any case, we wanna spawn some decals and particle effects!
 
-	const char* Audio_Directories[] = 
+	irrklang::ISoundSource* Sound; // This is set in the following switch statement
+
+	const char* Metal_Audio_Directories[] =
 	{
 		"Assets/Audio/Impact/Metal_Impact_0.wav",
 		"Assets/Audio/Impact/Metal_Impact_1.wav",
 		"Assets/Audio/Impact/Metal_Impact_2.wav"
 	};
 
-	Audio::Audio_Source* Impact_Sound_Source = Audio::Create_Audio_Source(Info.Collision_Position, 2.5f);
-	Impact_Sound_Source->Play_Sound(Pull_Audio(Audio_Directories[((size_t)rand()) % 3u]).Source);
-	Impact_Sound_Source->Flags[ASF_DELETE_ONCE_FINISHED];
+	const char* Wood_Audio_Directories[] =
+	{
+		"Assets/Audio/Impact/Wood_0.wav",
+		"Assets/Audio/Impact/Wood_1.wav",
+		"Assets/Audio/IMpact/Wood_2.wav"
+	};
 
-	Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
+	switch (Collided_Hitbox->Object->Material_Flag)
+	{
+
+	case Object_Material::Barrel:
+	case Object_Material::Metal:
+
+		Sound = Pull_Audio(Metal_Audio_Directories[((size_t)rand()) % 3u]).Source;
+
+		if (Collided_Hitbox->Object->Flags[MF_USE_DECALS])
+			Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
+
+		break;
+
+		//
+
+	case Object_Material::Stone:
+	case Object_Material::Floor_Tiles:
+	case Object_Material::Concrete:
+	default:
+		Sound = Pull_Audio("Assets/Audio/Impact/Concrete_Impact.wav").Source;
+
+		if (Collided_Hitbox->Object->Flags[MF_USE_DECALS])
+			Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
+
+		break;
+
+		//
+
+	case Object_Material::Wood:
+		Sound = Pull_Audio(Wood_Audio_Directories[((size_t)rand()) % 3u]).Source;
+
+		if (Collided_Hitbox->Object->Flags[MF_USE_DECALS])
+			Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
+
+		break;
+	}
+
+	Audio::Audio_Source* Impact_Sound_Source = Audio::Create_Audio_Source(Info.Collision_Position, 2.5f);
+	Impact_Sound_Source->Play_Sound(Sound);
+	Impact_Sound_Source->Flags[ASF_DELETE_ONCE_FINISHED];
 
 	// I'll need to work on the bullet decals and suchs
 
@@ -352,6 +396,13 @@ void Initialise_Pistol()
 		Shell_Bounce_Shader.Create_Shader("Shader_Code/Shell_Bounce_Particle.vert", "Shader_Code/Vertex_Test.frag", "Shader_Code/Vertex_Test.geom");
 
 		Create_Particle_Renderer(Shell_Bounce_Shader, Pull_Mesh("Assets/Models/Makarov_Shell.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Shell_Texture.png").Texture, Pull_Texture("Metal").Texture, &Pistol_Shell_Particles);
+
+		//
+
+		Shader Decal_Shader;
+		Decal_Shader.Create_Shader("Shader_Code/Decal_Particle.vert", "Shader_Code/Decal_Particle.frag", nullptr);
+
+		Create_Particle_Renderer(Decal_Shader, Decal_Vertex_Buffer(0), Pull_Texture("Assets/Textures/Bullet_Decal.png").Texture, Pull_Texture("Metal").Texture, &Decal_Particles);
 
 		Context_Interface::Free_Context();
 

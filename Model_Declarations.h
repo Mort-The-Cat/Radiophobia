@@ -22,6 +22,8 @@
 
 #define MF_TAKES_DAMAGE 6
 
+#define MF_USE_DECALS 7
+
 glm::mat4 Direction_Matrix_Calculate(glm::vec3 Position, glm::vec3 Forward_Vector, glm::vec3 Up_Vector)
 {
 	glm::vec3 Forward = Forward_Vector;
@@ -34,6 +36,30 @@ glm::mat4 Direction_Matrix_Calculate(glm::vec3 Position, glm::vec3 Forward_Vecto
 		Forward.x, Forward.y, Forward.z, 0.0f,
 		Position.x, Position.y, Position.z, 1.0f);
 }
+
+enum Object_Material
+{
+	Metal = 0,			// sparks when shot at grazing angle
+
+	Wood = 1,			// splinters
+
+	Wall = 2,			// decal reveals brick behind wall
+
+	Floor_Tiles = 3,	// 
+
+	Stone = 4,			// kicks up rubble and extra dust
+	Electronics = 5,	// metal sound effect but has zaps as well
+
+	Enemy = 6,
+
+	Glass = 7,
+
+	Concrete = 8,		// This is the concrete-like wall
+
+	Barrel = 9			// Has slightly different metallic sound
+
+	// Cushioned = 7		// Murderer's bed etc
+};
 
 class Model
 {
@@ -54,14 +80,18 @@ public:
 
 	std::vector<Hitbox*> Hitboxes;
 
-	bool Flags[7] = { false, false, false, false, false, false, false }; // Doesn't really matter how many bits we use for this
+	bool Flags[8] = { false, false, false, false, false, false, false, false }; // Doesn't really matter how many bits we use for this
+
+	Object_Material Material_Flag = Object_Material::Concrete;
 
 	Model() {}
 
-	Model(std::vector<size_t> Flagsp) 
+	Model(std::vector<size_t> Flagsp, Object_Material Material_Flagp) 
 	{ 
 		for (size_t W = 0; W < Flagsp.size(); W++)
 			Flags[Flagsp[W]] = true;
+
+		Material_Flag = Material_Flagp;
 	}
 
 	~Model()

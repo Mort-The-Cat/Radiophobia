@@ -147,9 +147,9 @@ void main()
 
 	Reflection_Vector = normalize(reflect(Camera_To_Pixel, Final_Normal));
 	
-	float Reflectivity = texture(Material, UV).g;
+	// float Reflectivity = texture(Material, UV).g;
 
-	float Opacity = texture(Albedo, UV).a * Vertex_Transparency;
+	// float Opacity = texture(Albedo, UV).a * Vertex_Transparency;
 
 	Out_Colour = texture(Albedo, UV);
 	

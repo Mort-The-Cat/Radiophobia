@@ -111,11 +111,6 @@ void Initialise_Particles()
 
 	//
 
-	Shader Decal_Shader;
-	Decal_Shader.Create_Shader("Shader_Code/Decal_Particle.vert", "Shader_Code/Decal_Particle.frag", nullptr);
-
-	Create_Particle_Renderer(Decal_Shader, Decal_Vertex_Buffer(0), Pull_Texture("Assets/Textures/Bullet_Decal.png").Texture, Pull_Texture("Black").Texture, &Decal_Particles);
-
 	/*for (float Radius = 0.3f; Radius < 10.0f; Radius += 0.15f)
 	{
 		for (size_t W = 0; W < 64 * Radius; W++)

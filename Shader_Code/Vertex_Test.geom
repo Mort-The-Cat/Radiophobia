@@ -45,25 +45,6 @@ void main()
 		Edge_B = gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz;
 	}
 
-	/*
-	float B;
-
-	float A;
-	
-	if(UV_A.x == 0)
-	{
-		Edge_A = gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz;
-		Edge_B = gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz;
-
-		UV_A = data_in[2].UV - data_in[0].UV;
-		UV_B = data_in[1].UV - data_in[0].UV;
-	}
-
-	B = -abs(UV_A.y / (UV_B.y * UV_A.x - UV_B.x * UV_A.y));
-	A = abs((1 - B * UV_B.x) / UV_A.x);
-
-	vec3 Tangent = normalize(Edge_A * A + Edge_B * B);*/
-
 	float Inv = 1.0f / (UV_A.x * UV_B.y - UV_B.x * UV_A.y);
 
 	vec3 Tangent = -normalize(Inv * (UV_B.y * Edge_A - UV_A.y * Edge_B));

@@ -274,6 +274,38 @@ public:
 		New_Particle.C = C.Vertex.Position + glm::vec3(Bias) * C.Vertex.Normal;
 		New_Particle.C_UV = glm::vec2(C.Projected.x, C.Projected.y);
 
+		//
+
+		glm::vec2 UV_A = New_Particle.B_UV - New_Particle.A_UV;
+		glm::vec2 UV_B = New_Particle.C_UV - New_Particle.A_UV;
+
+		glm::vec3 Edge_A; // = gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz;
+		glm::vec3 Edge_B; // = gl_in[2].gl_Position.xyz - gl_in[0].gl_Position.xyz;
+
+		if ((UV_A.x * UV_B.y - UV_B.x * UV_A.y) == 0)
+		{
+			UV_A = UV_B;
+			UV_B = New_Particle.B_UV - New_Particle.A_UV;
+
+			Edge_A = New_Particle.C - New_Particle.A;
+			Edge_B = New_Particle.B - New_Particle.A;
+		}
+		else
+		{
+			Edge_A = New_Particle.B - New_Particle.A;
+			Edge_B = New_Particle.C - New_Particle.A;
+		}
+
+		float Inv = 1.0f / (UV_A.x * UV_B.y - UV_B.x * UV_A.y);
+
+		glm::vec3 Tangent = -glm::normalize(Inv * (UV_B.y * Edge_A - UV_A.y * Edge_B));
+
+		New_Particle.Normal = -glm::normalize(glm::cross(B.Vertex.Position - A.Vertex.Position, C.Vertex.Position - A.Vertex.Position));
+		New_Particle.Tangent = Tangent;
+		New_Particle.Bitangent = glm::cross(New_Particle.Tangent, New_Particle.Normal);
+
+		//
+
 		Particles_Data.push_back(New_Particle);
 	}
 

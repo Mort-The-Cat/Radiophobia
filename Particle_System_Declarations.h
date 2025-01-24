@@ -10,6 +10,7 @@
 struct Decal_Particle
 {
 	glm::vec3 A, B, C;
+	glm::vec3 Normal, Bitangent, Tangent;
 	glm::vec2 A_UV, B_UV, C_UV;
 };
 
