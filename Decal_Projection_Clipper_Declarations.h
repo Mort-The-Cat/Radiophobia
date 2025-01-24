@@ -258,7 +258,7 @@ namespace Decal
 class Decal_Particle_Info : public Particle_Info<Decal_Particle>
 {
 public:
-	Decal_Particle_Info() { Particles_Per_Call = 25; }
+	Decal_Particle_Info() { Particles_Per_Call = 50; }
 
 	void Spawn_Particle(Decal::Point_Projection A, Decal::Point_Projection B, Decal::Point_Projection C)
 	{

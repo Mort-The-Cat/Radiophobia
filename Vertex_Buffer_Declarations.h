@@ -136,7 +136,7 @@ public:
 
 		Indices_Count = 3;
 
-		glVertexAttribIPointer(0, 1, GL_UNSIGNED_INT, sizeof(int), (void*)0); // Position
+		glVertexAttribIPointer(0, 1, GL_UNSIGNED_INT, sizeof(int), (void*)0); // Index
 		glEnableVertexAttribArray(0);
 	}
 };

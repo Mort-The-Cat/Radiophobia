@@ -4,7 +4,7 @@ layout(location = 0) in uint Index;
 
 uniform mat4 Projection_Matrix;
 
-uniform float Particle_Data[375]; // Decal has 15 floats
+uniform float Particle_Data[750]; // Decal has 15 floats
 
 int Particle_Index = gl_InstanceID * 15;
 
