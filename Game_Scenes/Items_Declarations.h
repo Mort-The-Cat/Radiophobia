@@ -43,7 +43,7 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 	{
 		Physics_Object_Controller* Control = (Physics_Object_Controller*)Collided_Hitbox->Object->Control;
 
-		Control->Time = -1;
+		Control->Time -= 10;
 	}
 
 	// in any case, we wanna spawn some decals and particle effects!
@@ -64,10 +64,24 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 		"Assets/Audio/IMpact/Wood_2.wav"
 	};
 
+	const char* Barrel_Audio_Directories[] =
+	{
+		"Assets/Audio/Impact/Barrel_0.wav",
+		"Assets/Audio/Impact/Barrel_1.wav",
+		"Assets/Audio/Impact/Barrel_2.wav"
+	};
+
 	switch (Collided_Hitbox->Object->Material_Flag)
 	{
 
 	case Object_Material::Barrel:
+		Sound = Pull_Audio(Barrel_Audio_Directories[((size_t)rand()) % 3u]).Source;
+
+		if (Collided_Hitbox->Object->Flags[MF_USE_DECALS])
+			Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
+
+		break;
+
 	case Object_Material::Metal:
 
 		Sound = Pull_Audio(Metal_Audio_Directories[((size_t)rand()) % 3u]).Source;
@@ -89,7 +103,6 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 			Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
 
 		break;
-
 		//
 
 	case Object_Material::Wood:
@@ -143,6 +156,39 @@ public:
 
 	}
 
+	void Spawn_Bullet_Shell_And_Muzzle_Flash(glm::vec3& Position)
+	{
+		Position += glm::vec3(0.3688f) * Camera_Direction;
+		Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
+
+		Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
+
+		glm::vec3 Velocity = glm::vec3(0.0f);
+
+		Velocity += glm::vec3(RNG() + 0.5f) * Viewmodel_Meshes[0].Orientation;
+		Velocity += glm::vec3(RNG() + 1.5f) * Viewmodel_Meshes[0].Orientation_Up;
+		Velocity += glm::vec3(0.25f * RNG()) * Camera_Direction;
+
+		Velocity += Player_Physics_Object.Velocity;
+
+		glm::vec4 Parsed_Velocity = glm::vec4(Velocity.x, Velocity.y, Velocity.z, -atan2f(Camera_Direction.z, Camera_Direction.x));
+
+		Position += glm::vec3(0.1f) * Camera_Direction;
+
+		Scene_Lights.push_back(new Lightsource(Position, glm::vec3(0.3f) * glm::vec3(RNG() * 1 + 2, RNG() + 1, RNG()), glm::vec3(1.0f, 0.0f, 0.0f), 360.0f, 1.0f, 0.35f));
+		Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
+		Scene_Lights.back()->Flags[LF_TIMER] = true;
+		Scene_Lights.back()->Timer = 0.02f;
+
+		Position += glm::vec3(0.1f) * Camera_Direction; // +Viewmodel_Meshes[0].Orientation * glm::vec3(0.02f);
+
+		for (size_t W = 0; W < 20; W++)
+			Muzzle_Flash_Particles.Particles.Spawn_Particle(Position + glm::vec3(0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f)));
+
+		Pistol_Shell_Particles.Particles.Spawn_Particle(Position, Parsed_Velocity, Player_Camera.Position.y + reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y - 0.02f);
+
+	}
+
 	void Handle_Viewmodel_States()
 	{
 		// 2.2f, -1.23f, 8.24f
@@ -168,52 +214,13 @@ public:
 					Player_Camera.Orientation.x += 3 * (RNG() - 0.5f);
 					Player_Camera.Orientation.y += 3 * RNG();
 
-					/*Scene_Models.push_back(new Model({}));
-					Scene_Models.back()->Position = Viewmodel_Meshes[0].Position;
-					Create_Model(Pull_Mesh("Assets/Models/Makarov_Shell.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Shell_Texture.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
-
-					Scene_Models.back()->Position += glm::vec3(0.3688f) * Camera_Direction;
-					Scene_Models.back()->Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
-
-					Scene_Models.back()->Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
-
-					Scene_Models.back()->Orientation = Viewmodel_Meshes[0].Orientation;
-					Scene_Models.back()->Orientation_Up = Viewmodel_Meshes[0].Orientation_Up;*/
-
 					irrklang::ISound* Sound = Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source, false, false, false, true);
 					Sound->setPlaybackSpeed(0.25f * RNG() + 0.875f);
 
 					glm::vec3 Position = Viewmodel_Meshes[0].Position;
 
-					Position += glm::vec3(0.3688f) * Camera_Direction;
-					Position -= glm::vec3(0.049f) * Viewmodel_Meshes[0].Orientation_Up;
-
-					Position += glm::vec3(0.096f) * Viewmodel_Meshes[0].Orientation;
-
-					glm::vec3 Velocity = glm::vec3(0.0f);
-
-					Velocity += glm::vec3(RNG() + 0.5f) * Viewmodel_Meshes[0].Orientation;
-					Velocity += glm::vec3(RNG() + 1.5f) * Viewmodel_Meshes[0].Orientation_Up;
-					Velocity += glm::vec3(0.25f * RNG()) * Camera_Direction;
-
-					Velocity += Player_Physics_Object.Velocity;
-
-					glm::vec4 Parsed_Velocity = glm::vec4(Velocity.x, Velocity.y, Velocity.z, -atan2f(Camera_Direction.z, Camera_Direction.x));
-
-					Position += glm::vec3(0.1f) * Camera_Direction;
-
-					Scene_Lights.push_back(new Lightsource(Position, glm::vec3(0.3f) * glm::vec3(RNG() * 1 + 2, RNG() + 1, RNG()), glm::vec3(1.0f, 0.0f, 0.0f), 360.0f, 1.0f, 0.35f));
-					Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
-					Scene_Lights.back()->Flags[LF_TIMER] = true;
-					Scene_Lights.back()->Timer = 0.02f;
-
-					Position += glm::vec3(0.1f) * Camera_Direction; // +Viewmodel_Meshes[0].Orientation * glm::vec3(0.02f);
-
-					for(size_t W = 0; W < 20; W++)
-						Muzzle_Flash_Particles.Particles.Spawn_Particle(Position + glm::vec3(0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f), 0.1f * (RNG() - 0.5f)));
-
-					Pistol_Shell_Particles.Particles.Spawn_Particle(Position, Parsed_Velocity, Player_Camera.Position.y + reinterpret_cast<AABB_Hitbox*>(Player_Physics_Object.Object->Hitboxes[0])->B.y - 0.02f);
-				
+					Spawn_Bullet_Shell_And_Muzzle_Flash(Position);
+					
 					Shoot_Bullet_Function(Player_Physics_Object.Object->Hitboxes[0], Player_Physics_Object.Object->Position, Camera_Direction, 1.0f);
 				}
 				else if(Current_State != Reloading)
@@ -403,6 +410,14 @@ void Initialise_Pistol()
 		Decal_Shader.Create_Shader("Shader_Code/Decal_Particle.vert", "Shader_Code/Decal_Particle.frag", nullptr);
 
 		Create_Particle_Renderer(Decal_Shader, Decal_Vertex_Buffer(0), Pull_Texture("Assets/Textures/Bullet_Decal.png").Texture, Pull_Texture("Metal").Texture, &Decal_Particles);
+
+		//
+
+		/*Shader Brick_Decal_Shader;
+		Brick_Decal_Shader.Create_Shader("Shader_Code/Decal_Particle.vert", "Shader_Code/Exposed_Brick_Decal_Particle.frag", nullptr);
+
+		Create_Particle_Renderer(Brick_Decal_Shader, Decal_Vertex_Buffer(0), Pull_Texture("Assets/Textures/Brick1.png").Texture, Pull_Texture("Brick").Texture, &Brick_Decal_Particles);
+		*/
 
 		Context_Interface::Free_Context();
 

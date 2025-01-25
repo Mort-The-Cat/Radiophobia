@@ -1,0 +1,83 @@
+=== INCOMING MESSAGE ===
+>> Executing script "terminal_logs\setup\register.z"
+	["terminal_logs\setup\register.z"]
+		- main()
+		- fopen(".\temp\security\templates\config.csv")
+		- push_session_id()
+		- fclose(unnamed_address), unnamed_address=0x0180E473
+		- verify_session_id()
+		- flush_session_pipeline()
+		- system("close")
+	=== PROGRAM ENDED WITH ERROR CODE 0 ===
+		
+>> Establishing connection...
+>> Pinging internal system network...
+>> unsupported medium: "s_line"
+
+[VANISHED]
+
+>> m_line 1-51 unresponsive; rerouting...
+>> Route cached
+>> Requesting communication parameters
+>> Exchanging 256-key...
+>> Connection established!
+
+=== MESSAGE INTERFACE ===
+
+>> You are on a secure line.
+
+Something came up, and we've got a job for you.
+
+Rheinsberg Nuclear Powerplant
+Kernkraftwerk Rheinsberg (K.K.R.)
+WWER type reactor
+
+Experienced a tear in the tubing of a cooling 
+circuit in sector alpha.
+
+This was noticed quickly and the signal was sent. 
+
+Under normal circumstances, the problem would've 
+been resolved before the public even heard about it.
+
+But there was no response back, and the whole 
+place went up in flames. Sabotage is suspected.
+
+//
+
+Teens and crackheads in the area are getting too 
+curious and exploring areas they're not supposed to.
+
+Although we've lost any visual feed on the 
+facilities, motion sensors are being tripped. 
+
+Most of these are likely false-alarms or just 
+some animal that got lost, but we have reason to 
+believe that outsiders and a number of personnel 
+are still inside.
+
+We've sent the signal to remotely close the doors, 
+but it's only a matter of time before they find 
+their way out.
+
+//
+
+You'll be issued with a standard law 
+enforcement pistol among other things.
+
+>> "Am I to arrest trespassers?"
+>> Message sent
+
+Arrest? No, these people are fucking with actual 
+top-secret facilities. They need to be put down 
+like a rabid dog.
+
+This operation is extremely secretive, so funds 
+are scarce.
+
+However, this facility was extensively stocked 
+in the event of an emergency. You'll find more 
+equipment in these locations.
+
+We heavily advice you to take whatever equipment 
+you can find - anything you think's useful.

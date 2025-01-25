@@ -260,19 +260,31 @@ class Decal_Particle_Info : public Particle_Info<Decal_Particle>
 public:
 	Decal_Particle_Info() { Particles_Per_Call = 50; }
 
+	template<const bool Exposed_Brick = false>
 	void Spawn_Particle(Decal::Point_Projection A, Decal::Point_Projection B, Decal::Point_Projection C)
 	{
 		const float Bias = 0.0025f;
 
 		Decal_Particle New_Particle;
+
+		if constexpr (Exposed_Brick)
+		{
+			New_Particle.A_UV = A.Vertex.UV;
+			New_Particle.B_UV = B.Vertex.UV;
+			New_Particle.C_UV = C.Vertex.UV;
+		}
+		else
+		{
+			New_Particle.A_UV = glm::vec2(A.Projected.x, A.Projected.y);
+			New_Particle.B_UV = glm::vec2(B.Projected.x, B.Projected.y);
+			New_Particle.C_UV = glm::vec2(C.Projected.x, C.Projected.y);
+		}
+
 		New_Particle.A = A.Vertex.Position + glm::vec3(Bias) * A.Vertex.Normal;
-		New_Particle.A_UV = glm::vec2(A.Projected.x, A.Projected.y);
 
 		New_Particle.B = B.Vertex.Position + glm::vec3(Bias) * B.Vertex.Normal;
-		New_Particle.B_UV = glm::vec2(B.Projected.x, B.Projected.y);
 
 		New_Particle.C = C.Vertex.Position + glm::vec3(Bias) * C.Vertex.Normal;
-		New_Particle.C_UV = glm::vec2(C.Projected.x, C.Projected.y);
 
 		//
 
@@ -304,6 +316,13 @@ public:
 		New_Particle.Tangent = Tangent;
 		New_Particle.Bitangent = glm::cross(New_Particle.Tangent, New_Particle.Normal);
 
+		if constexpr (Exposed_Brick)
+		{
+			New_Particle.A_UV = glm::vec2(A.Projected.x, A.Projected.y);
+			New_Particle.B_UV = glm::vec2(B.Projected.x, B.Projected.y);
+			New_Particle.C_UV = glm::vec2(C.Projected.x, C.Projected.y);
+		}
+
 		//
 
 		Particles_Data.push_back(New_Particle);
@@ -316,7 +335,9 @@ public:
 };
 
 Particle_Renderer<Decal_Particle_Info, Decal_Vertex_Buffer> Decal_Particles; // This uses a billboard vertex buffer but it uses the parsed data for the vertex info
+Particle_Renderer<Decal_Particle_Info, Decal_Vertex_Buffer> Brick_Decal_Particles; // This uses a billboard vertex buffer but it uses the parsed data for the vertex info
 
+template<const bool Expose_Bricks = false>
 void Create_Bullet_Decal(Model_Mesh* Model,glm::vec3 Position, glm::vec3 Orientation, float Decal_Radius)
 {
 	Decal::Decal_Space_Transform Transform(Position, Orientation, Decal_Radius);
@@ -342,7 +363,16 @@ void Create_Bullet_Decal(Model_Mesh* Model,glm::vec3 Position, glm::vec3 Orienta
 			if (glm::length(Average_Position - Position) > Decal_Radius * 4)
 				continue;
 
-			Decal_Particles.Particles.Spawn_Particle(Triangles[W][0], Triangles[W][1], Triangles[W][2]);
+			if constexpr (Expose_Bricks)
+			{
+				/*Triangles[W][0].Projected = glm::vec3(Triangles[W][0].Vertex.UV.x, Triangles[W][0].Vertex.UV.y, 0);
+				Triangles[W][1].Projected = glm::vec3(Triangles[W][1].Vertex.UV.x, Triangles[W][1].Vertex.UV.y, 0);
+				Triangles[W][2].Projected = glm::vec3(Triangles[W][2].Vertex.UV.x, Triangles[W][2].Vertex.UV.y, 0);*/
+
+				Brick_Decal_Particles.Particles.Spawn_Particle<true>(Triangles[W][0], Triangles[W][1], Triangles[W][2]);
+			}
+			else
+				Decal_Particles.Particles.Spawn_Particle(Triangles[W][0], Triangles[W][1], Triangles[W][2]);
 		}
 	}
 }

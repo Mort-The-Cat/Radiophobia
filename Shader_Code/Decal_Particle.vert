@@ -31,8 +31,14 @@ out vec3 Normal;
 out vec3 UV_Tangent;
 out vec3 UV_Bitangent;
 
+out vec3 Calculated_Vertices[3];
+
 void main()
 {
+	Calculated_Vertices[0] = Vertices[0];
+	Calculated_Vertices[1] = Vertices[1];
+	Calculated_Vertices[2] = Vertices[2];
+
 	vec4 Transformed_Position = vec4(Vertices[Index], 1);
 
 	Position = Transformed_Position;

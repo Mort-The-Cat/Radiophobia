@@ -228,6 +228,19 @@ void Setup_Intro_Level()
 
 	Blockmap::Initialise_Blockmap();
 
+	//
+
+	{
+		Scene_Models.push_back(new Model({ MF_ACTIVE, MF_SOLID, MF_PHYSICS_TEST, MF_CAST_SHADOWS }, Object_Material::Barrel));
+		Scene_Models.back()->Position = glm::vec3(2.2f, -0.7f, 8.27f);
+		Create_Model(Pull_Mesh("Assets/Models/Barrel.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Barrel_UVs.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Physics_Object_Controller(), { Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Barrel.obj").Mesh) });
+
+		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Elasticity *= 0.25;
+		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Time = 1000;
+		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Mass = 4;
+		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Inv_Mass = 1.0f / 4.0f;
+	}
+
 	// Lighting_BVH::Add_Light_Occluders(Generate_AABB_Hitboxes("Assets/Hitboxes/Intro_Level/Occluders.obj"));
 
 	// Lighting_BVH::Add_Intro_Level_Light_Occluders();

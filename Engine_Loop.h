@@ -36,6 +36,9 @@ void Render_All()
 	Pistol_Shell_Particles.Render();
 
 	glDepthMask(GL_FALSE);
+	//Brick_Decal_Particles.Shader.Activate();
+	//Brick_Decal_Particles.Render();
+
 	Decal_Particles.Shader.Activate();
 	Decal_Particles.Render();
 
