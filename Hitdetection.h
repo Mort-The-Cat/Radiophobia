@@ -208,7 +208,23 @@ namespace Collision_Test
 	{
 		Collision_Info Info;
 
-		for (size_t W = 0; W < Scene_Hitboxes.size(); W++)
+		std::vector<Hitbox*> Hitboxes = (std::vector<Hitbox*>)Blockmap::Read_Blockmap<true>(*A->Position);
+
+		for (size_t W = 0; W < Hitboxes.size(); W++)
+		{
+			if (Should_Compare(A, Hitboxes[W]))
+			{
+				Info = A->Hitdetection(Hitboxes[W]);
+
+				if (Info.Overlap != 0 && Should_Return(Info))
+				{
+					*Target_Pointer = Hitboxes[W];
+					return Info;
+				}
+			}
+		}
+
+		/*for (size_t W = 0; W < Scene_Hitboxes.size(); W++)
 		{
 			if (Should_Compare(A, Scene_Hitboxes[W])) // If we should compare these two hitboxes
 			{
@@ -220,7 +236,7 @@ namespace Collision_Test
 					return Info;						// and return the collision info that we got
 				}
 			}
-		}
+		}*/
 
 		*Target_Pointer = nullptr;
 

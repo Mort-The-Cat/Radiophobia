@@ -54,6 +54,18 @@ public:
 #define LF_EXCLUDE_FROM_BVH 2u // This flag is set if the lights can be ignored entirely from the Light BVH, meaning other light sources can be prioritised
 #define LF_TIMER 3u
 
+enum LG // Light_Group
+{
+	No_Group = 0,
+	Group_One = 1,
+	Group_Two = 2,
+	Group_Three = 3,
+	Group_Four = 4,
+	Group_Five = 5,
+	Group_Six = 6,
+	Group_Seven = 7
+};
+
 class Lightsource
 {
 public:
@@ -69,9 +81,12 @@ public:
 	float Timer; // This doesn't necessarily apply
 
 	bool Flags[4] = { false, false, false, false };
+
+	LG Light_Group = LG::No_Group;
+
 	Lightsource() {}
 
-	Lightsource(glm::vec3 Positionp, glm::vec3 Colourp, glm::vec3 Directionp, float FOVp = 360, float Blurp = 1.0f, float Attenuationp = 0.6f)
+	Lightsource(glm::vec3 Positionp, glm::vec3 Colourp, glm::vec3 Directionp, float FOVp = 360, float Blurp = 1.0f, float Attenuationp = 0.6f, LG Light_Groupp = LG::No_Group)
 	{
 		Position = Positionp;
 		Colour = Colourp;
@@ -79,6 +94,8 @@ public:
 		FOV = FOVp;
 		Blur = Blurp;
 		Attenuation = Attenuationp;
+
+		Light_Group = Light_Groupp;
 	}
 };
 

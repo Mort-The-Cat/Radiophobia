@@ -14,6 +14,7 @@ struct Blockmap_Bounds
 
 namespace Blockmap
 {
+	template<bool Include_Physics_Objects = false>
 	std::vector<Hitbox*> Read_Blockmap(const glm::vec3 Reader_Position);
 
 	void Initialise_Blockmap();

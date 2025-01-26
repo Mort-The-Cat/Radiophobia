@@ -34,7 +34,7 @@
 
 namespace Lighting_BVH // This uses considerably less memory than my previous design of the lighting BVH tree
 {
-#define Boundary_Max_Value 15.0f
+#define Boundary_Max_Value 22.0f
 
 	struct Node_Partition
 	{
@@ -349,7 +349,7 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 				Scene_Lights[W]->Position.x < Volume.Max_X &&
 				Scene_Lights[W]->Position.z > Volume.Min_Y &&
 				Scene_Lights[W]->Position.z < Volume.Max_Y)
-				// && glm::length(Scene_Lights[W]->Position - Player_Camera.Position) < 20.0f)
+				//&& glm::length(Scene_Lights[W]->Position - Player_Camera.Position) < 20.0f)
 				List_Of_Lights.push_back(Scene_Lights[W]);
 
 		return List_Of_Lights;

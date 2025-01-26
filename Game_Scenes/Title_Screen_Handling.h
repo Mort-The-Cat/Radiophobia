@@ -197,14 +197,14 @@ void Setup_Intro_Level()
 
 	//
 
-	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 8.27f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 360.0f, 10.0f, 0.6f));
-	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 8.27f), glm::vec3(0.008f, 0.0065f, 0.0065f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 8.27f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 360.0f, 10.0f, 0.6f, LG::Group_One));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 8.27f), glm::vec3(0.008f, 0.0065f, 0.0065f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f, LG::Group_One));
 
-	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 4.413f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
-	Scene_Lights.push_back(new Lightsource(glm::vec3(0.0793f, -1.23f, 7.73f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
-	Scene_Lights.push_back(new Lightsource(glm::vec3(0.4622f, -1.23f, 2.66f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(2.2f, -1.23f, 4.413f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f, LG::Group_One));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(0.0793f, -1.23f, 7.73f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f, LG::Group_One));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(0.4622f, -1.23f, 2.66f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f, LG::Group_One));
 
-	Scene_Lights.push_back(new Lightsource(glm::vec3(8.68f, -1.23f, 2.93f), glm::vec3(0.6f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f)); // Janitor's closet
+	Scene_Lights.push_back(new Lightsource(glm::vec3(8.68f, -1.23f, 2.93f), glm::vec3(0.6f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f, LG::Group_One)); // Janitor's closet
 
 	Scene_Lights.push_back(new Lightsource(glm::vec3(6.443f, -1.23f, -2.2f), glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
 
@@ -225,6 +225,23 @@ void Setup_Intro_Level()
 	//
 
 	Scene_Lights.push_back(new Lightsource(glm::vec3(1.13f, -1.34f, -7.55f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+	/*
+	New lights
+	*/
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(-0.54536f, -1.2184f, -10.531f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(-2.259f, -1.2184f, -12.531f), glm::vec3(0.5f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(-0.56941f, -1.4234f, -15.793f), glm::vec3(0.5f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 70.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(2.1539f, -1.4234f, -15.793f), glm::vec3(0.5f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 70.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(-3.2601f, -1.4234f, -15.793f), glm::vec3(0.5f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 70.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(5.1f, -1.4234f, -15.793f), glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+	Scene_Lights.push_back(new Lightsource(glm::vec3(8.1276f, -1.385f, -21.05f), glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	Scene_Lights.push_back(new Lightsource(glm::vec3(5.1276f, -2.0f, -21.5f), glm::vec3(0.3f, 0.3f, 0.3f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+
+	//
 
 	Blockmap::Initialise_Blockmap();
 

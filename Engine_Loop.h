@@ -96,6 +96,9 @@ void Render_All()
 	Colour_Bubble_Particles.Shader.Activate();
 	Colour_Bubble_Particles.Render();
 
+	Spark_Particles.Shader.Activate();
+	Spark_Particles.Render();
+
 	//
 
 	// Galaxy_Particles.Shader.Activate();
@@ -189,6 +192,8 @@ void Engine_Loop()
 
 		Bubble_Particles.Update();
 		Colour_Bubble_Particles.Update();
+
+		Spark_Particles.Update();
 
 		// Galaxy_Particles.Update();
 

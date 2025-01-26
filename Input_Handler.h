@@ -401,6 +401,16 @@ void Player_Movement()
 		// Billboard_Smoke_Particles.Particles.Spawn_Particle(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 	}
 
+	/*if (Inputs[Controls::Lean_Right])
+	{
+		for (size_t W = 0; W < Scene_Lights.size(); W++)
+			Scene_Lights[W]->Flags[LF_TO_BE_DELETED] |= Scene_Lights[W]->Light_Group == LG::Group_One;
+
+		Lighting_BVH::Generate_Light_BVH_Tree();
+
+		Lighting_BVH::Update_Leaf_Node_Data();
+	}*/
+
 	/*if (Mouse_Inputs[0]) // If left-click,
 	{
 		// we wanna apply a force onto some objects!

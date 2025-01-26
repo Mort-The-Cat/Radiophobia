@@ -14,6 +14,12 @@ struct Decal_Particle
 	glm::vec2 A_UV, B_UV, C_UV;
 };
 
+struct Spark_Particle
+{
+	glm::vec4 Position;		// .w is time
+	glm::vec4 Orientation;	// .w is a random value (which will be useful for a bunch of things
+};
+
 struct Volumetric_Cone_Particle
 {
 	float Volume_Density;
@@ -63,6 +69,11 @@ bool Smoke_Particle_Remove_If(const Smoke_Particle& A)
 	return A.Position.w > 6; // Smoke disappears after 6 seconds
 }
 
+bool Spark_Particle_Remove_If(const Spark_Particle& A)
+{
+	return A.Position.w > 0.12f;
+}
+
 template<typename Particle>
 class Particle_Info
 {
@@ -96,6 +107,35 @@ public:
 		return Count;
 	}
 
+};
+
+class Spark_Particle_Info : public Particle_Info<Spark_Particle>
+{
+public:
+
+	Spark_Particle_Info() { Particles_Per_Call = 300; }
+
+	void Spawn_Particle(glm::vec3 Position, glm::vec3 Orientation)
+	{
+		Spark_Particle New_Particle;
+
+		Orientation = glm::normalize(Orientation);
+
+		New_Particle.Position = glm::vec4(Position.x, Position.y, Position.z, 0.0f);
+		New_Particle.Orientation = glm::vec4(Orientation.x, Orientation.y, Orientation.z, RNG()); // There's our normalised random value
+
+		Particles_Data.push_back(New_Particle);
+	}
+
+	void Update()
+	{
+		for (size_t W = 0; W < Particles_Data.size(); W++)
+			Particles_Data[W].Position.w += Tick;
+
+		auto Particles_To_Remove = std::remove_if(Particles_Data.begin(), Particles_Data.end(), Spark_Particle_Remove_If);
+
+		Particles_Data.erase(Particles_To_Remove, Particles_Data.end());
+	}
 };
 
 class Galaxy_Particle_Info : public Particle_Info<Galaxy_Test_Particle>
@@ -331,5 +371,7 @@ Particle_Renderer<Smoke_Particle_Info, Model_Vertex_Buffer> Bubble_Particles;
 Particle_Renderer<Smoke_Particle_Info, Model_Vertex_Buffer> Colour_Bubble_Particles;
 
 Particle_Renderer<Muzzle_Flash_Particle_Info, Billboard_Vertex_Buffer> Muzzle_Flash_Particles;
+
+Particle_Renderer<Spark_Particle_Info, Billboard_Vertex_Buffer> Spark_Particles;
 
 #endif

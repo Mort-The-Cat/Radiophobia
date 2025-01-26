@@ -6,6 +6,8 @@
 
 Particle_Renderer<Smoke_Particle_Info, Billboard_Vertex_Buffer> Vent_Smoke_Particles;
 
+
+
 class Vent_Smoke_Controller : public Controller
 {
     enum Directions;

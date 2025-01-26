@@ -19,6 +19,7 @@ namespace Blockmap // This is for hitdetection
 	glm::vec2 Blockmap_A; // This is the blockmap "origin"
 	glm::vec2 Blockmap_B;
 
+	template<bool Include_Physics_Objects>
 	std::vector<Hitbox*> Read_Blockmap(const glm::vec3 Reader_Position)
 	{
 		int X = (Reader_Position.x - Blockmap_A.x) / Block_Size, Y = (Reader_Position.z - Blockmap_A.y) / Block_Size;
@@ -27,6 +28,12 @@ namespace Blockmap // This is for hitdetection
 		Y = MIN(MAX(0, Y), Blockmap_Height - 1);
 
 		std::vector<Hitbox*> Read_Hitboxes = Blockmap_Data[X][Y];
+
+		if(Include_Physics_Objects)
+		{
+			for (size_t W = 0; W < Physics::Scene_Physics_Objects.size(); W++)
+				Read_Hitboxes.push_back(Scene_Hitboxes[W]);
+		}
 
 		for (int W = Scene_Hitboxes.size() - 1; W > 0; W--)
 		{

@@ -80,6 +80,15 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 		if (Collided_Hitbox->Object->Flags[MF_USE_DECALS])
 			Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
 
+		for (size_t W = 0; W < 20; W++)
+		{
+			glm::vec3 Direction = glm::reflect(Orientation, Info.Collision_Normal) + glm::vec3(1.5f) * glm::vec3(RNG() - 0.5f, RNG() - 0.75f, RNG() - 0.5f);
+			glm::vec3 Position = Info.Collision_Position + glm::vec3(0.05f) * glm::vec3(RNG() - 0.5f, RNG() - 0.5f, RNG() - 0.5f);
+
+			for (size_t V = 0; V < 1; V++)
+				Spark_Particles.Particles.Spawn_Particle(Position, Direction);
+		}
+
 		break;
 
 	case Object_Material::Metal:
@@ -89,6 +98,14 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 		if (Collided_Hitbox->Object->Flags[MF_USE_DECALS])
 			Create_Bullet_Decal(Collided_Hitbox->Object->Mesh.Mesh, Info.Collision_Position, Info.Collision_Normal, 0.025f);
 
+		for (size_t W = 0; W < 20; W++)
+		{
+			glm::vec3 Direction = glm::reflect(Orientation, Info.Collision_Normal) + glm::vec3(1.5f) * glm::vec3(RNG() - 0.5f, RNG() - 0.75f, RNG() - 0.5f);
+			glm::vec3 Position = Info.Collision_Position + glm::vec3(0.05f) * glm::vec3(RNG() - 0.5f, RNG() - 0.5f, RNG() - 0.5f);
+
+			for(size_t V = 0; V < 1; V++)
+				Spark_Particles.Particles.Spawn_Particle(Position, Direction);
+		}
 		break;
 
 		//
