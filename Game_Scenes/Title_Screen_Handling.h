@@ -120,7 +120,7 @@ void Setup_Intro_Level()
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Metal));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Vent_Duct.png").Texture, Pull_Texture("Vent").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Models/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Vent_Duct.png").Texture, Pull_Texture("Vent").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Floor_Tiles));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
@@ -142,6 +142,7 @@ void Setup_Intro_Level()
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Intro_Level_Rubble.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Rubble.jpg").Texture, Pull_Texture("Rubble").Texture, Scene_Models.back(), new Controller(),
 		std::vector<Hitbox*>{
 			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Rubble_0_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh),
+			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Rubble_1_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh),
 			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Rubble_0_AABB_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh)
 	});
 
