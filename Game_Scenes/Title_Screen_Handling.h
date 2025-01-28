@@ -101,6 +101,23 @@ void Setup_Intro_Level()
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Fire_Extinguisher_Signs.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Fire_Extinguisher_Sign.jpg").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
 
+	//
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Metal));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Lockers.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Metal_Specular.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), 
+		std::vector<Hitbox*>{
+			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_AABB_0.obj").Mesh),
+			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_AABB_1.obj").Mesh),
+			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_AABB_2.obj").Mesh),
+			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_0.obj").Mesh),
+			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_1.obj").Mesh),
+			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_2.obj").Mesh),
+		}
+	);
+
+	//
+
 	Scene_Models.push_back(new Model({ MF_ACTIVE, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Metal));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Vents.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Metal_Specular.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), 
@@ -182,6 +199,12 @@ void Setup_Intro_Level()
 
 	//
 
+	Scene_Models.push_back(new Model({  }, Object_Material::Wood));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Rutschgefahr.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Rutschgefahr.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+
+	//
+
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Enemy));
 	Scene_Models.back()->Position = glm::vec3(3.773928, 0.0f, -8.415);
 	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
@@ -195,6 +218,10 @@ void Setup_Intro_Level()
 	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS, MF_SOLID, MF_USE_DECALS }, Object_Material::Metal));
 	Scene_Models.back()->Position = glm::vec3(3.773928 - 1.0f, 0.0f - 1.0f, -8.415 - 1.0f);
 	Create_Model(Pull_Mesh("Assets/Models/Bubble.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_Sphere_Hitbox(*Pull_Mesh("Assets/Models/Bubble.obj").Mesh) });
+
+	//
+
+
 
 	//
 
