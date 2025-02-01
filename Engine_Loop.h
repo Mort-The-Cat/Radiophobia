@@ -181,20 +181,6 @@ void Engine_Loop()
 		
 		Handle_Scene();
 
-		Smoke_Particles.Update();
-		Vent_Smoke_Particles.Update();
-		Billboard_Fire_Particles.Update();
-		Volumetric_Cone_Particles.Update();
-
-		Muzzle_Flash_Particles.Update();
-
-		Pistol_Shell_Particles.Update();
-
-		Bubble_Particles.Update();
-		Colour_Bubble_Particles.Update();
-
-		Spark_Particles.Update();
-
 		// Galaxy_Particles.Update();
 
 		Scene_Object_Shader.Activate();
@@ -210,6 +196,20 @@ void Engine_Loop()
 		glDisable(GL_DEPTH_TEST);
 
 		Physics::Resolve_Collisions();
+
+		Smoke_Particles.Update();
+		Vent_Smoke_Particles.Update();
+		Billboard_Fire_Particles.Update();
+		Volumetric_Cone_Particles.Update();
+
+		Muzzle_Flash_Particles.Update();
+
+		Pistol_Shell_Particles.Update();
+
+		Bubble_Particles.Update();
+		Colour_Bubble_Particles.Update();
+
+		Spark_Particles.Update();
 
 		if (Player_Physics_Object.Velocity.y >= 0.0f)		// If the player is falling/stationary
 			Player_Physics_Object.Stabilise_On_Ground();	// Stabilise their position

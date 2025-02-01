@@ -80,7 +80,7 @@ public:
 
 	std::vector<Hitbox*> Hitboxes;
 
-	bool Flags[8] = { false, false, false, false, false, false, false, false }; // Doesn't really matter how many bits we use for this
+	bool Flags[8] = { false, false, false, false, false, false, false, false}; // Doesn't really matter how many bits we use for this
 
 	Object_Material Material_Flag = Object_Material::Concrete;
 

@@ -8,6 +8,42 @@
 
 #include "Mesh_Animator_Declarations.h"
 
+class Damageable_Controller : public Controller
+{
+public:
+	float Health; // This is the health of the object, able to be decreased with the "damage" function
+
+	Damageable_Controller(float Healthp) { Health = Healthp; }
+
+	virtual void Initialise_Control(Model* Objectp) override
+	{
+		Object = Objectp;
+		Object->Flags[MF_TAKES_DAMAGE] = true;
+	}
+
+	virtual void Control_Function() override
+	{
+		Object->Flags[MF_TO_BE_DELETED] |= Health < 0.0f;
+		Object->Hitboxes[0]->Flags[MF_TO_BE_DELETED] |= Health < 0.0f;
+
+		// Then we'll see if we can move in direction of player!
+
+		glm::vec3 To_Player_Vector = glm::vec3(Tick, 0.0f, Tick) * glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f) * (Player_Camera.Position - Object->Position));
+
+		Object->Orientation *= glm::vec3(1.0f - Tick, 0.0f, 1.0f - Tick);
+		Object->Orientation += To_Player_Vector;
+
+		Object->Orientation = glm::normalize(Object->Orientation);
+
+		// This interpolates between the vectors accordingly
+	}
+
+	virtual void Damage(float Delta)
+	{
+		Health -= Delta;
+	}
+};
+
 class Test_Animation_Controller : public Controller
 {
 	std::string Animation_Name;

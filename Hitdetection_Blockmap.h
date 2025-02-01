@@ -29,18 +29,16 @@ namespace Blockmap // This is for hitdetection
 
 		std::vector<Hitbox*> Read_Hitboxes = Blockmap_Data[X][Y];
 
-		if(Include_Physics_Objects)
+		if constexpr(Include_Physics_Objects)
 		{
 			for (size_t W = 0; W < Physics::Scene_Physics_Objects.size(); W++)
 				Read_Hitboxes.push_back(Scene_Hitboxes[W]);
 		}
 
-		for (int W = Scene_Hitboxes.size() - 1; W > 0; W--)
+		for (size_t W = Physics::Scene_Physics_Objects.size(); W < Scene_Hitboxes.size(); W++)
 		{
-			if (Scene_Hitboxes[W]->Flags[HF_IN_BLOCKMAP])
-				return Read_Hitboxes;
-
-			Read_Hitboxes.push_back(Scene_Hitboxes[W]);
+			if (!Scene_Hitboxes[W]->Flags[HF_IN_BLOCKMAP])
+				Read_Hitboxes.push_back(Scene_Hitboxes[W]);
 		}
 
 		return Read_Hitboxes;

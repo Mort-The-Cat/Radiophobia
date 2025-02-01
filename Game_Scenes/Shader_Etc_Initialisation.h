@@ -5,6 +5,8 @@
 #include "Items_Declarations.h"
 #include "Interactable_Declarations.h"
 
+#include "Bullet_Handler.h"
+
 #include "..\Decal_Projection_Clipper_Declarations.h"
 
 void Init_Player_Physics_Object()
