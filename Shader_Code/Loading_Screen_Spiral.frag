@@ -1,5 +1,7 @@
 #version 440
 
+layout(location = 0) out vec4 Out_Colour;
+
 in vec2 UV;
 
 uniform sampler2D Albedo;
@@ -35,7 +37,7 @@ void main()
 	//if(abs(Sampled_Colour.x - 0.27450980392156865f) < 0.01f)	// If background colour,
 	//	discard;
 
-	gl_FragColor = Sampled_Colour; //texture(Albedo, New_UV()); // Very sweet little function
+	Out_Colour = Sampled_Colour; //texture(Albedo, New_UV()); // Very sweet little function
 
 	// gl_FragColor = vec4(1, 1, 1, 1);
 }

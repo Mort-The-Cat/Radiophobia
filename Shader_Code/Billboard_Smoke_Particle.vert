@@ -18,7 +18,7 @@ out DATA
 out vec2 UV;
 out float Vertex_Transparency;
 
-uniform float Particle_Data[2400]; // We know that the smoke particle has 8 floats in it total
+uniform float Particle_Data[600]; // We know that the smoke particle has 8 floats in it total
 
 uniform vec3 Camera_Position;
 uniform vec3 Camera_Up_Direction;

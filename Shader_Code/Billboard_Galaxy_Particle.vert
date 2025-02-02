@@ -24,7 +24,7 @@ uniform vec3 Camera_Direction;
 
 vec3 Camera_Right_Direction = cross(Camera_Direction, Camera_Up_Direction);
 
-uniform float Particle_Data[2400];
+uniform float Particle_Data[600];
 
 // Number of particles per orbit = 32
 

@@ -6,7 +6,7 @@ layout(location = 2) in vec2 In_UV;
 
 uniform mat4 Projection_Matrix;
 
-uniform float Particle_Data[900]; // We know that the smoke particle has 8 floats in it total
+uniform float Particle_Data[450]; // We know that the smoke particle has 8 floats in it total
 
 uniform vec2 Inv_Window_Dimensions;
 

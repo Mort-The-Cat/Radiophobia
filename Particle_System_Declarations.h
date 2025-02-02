@@ -113,7 +113,7 @@ class Spark_Particle_Info : public Particle_Info<Spark_Particle>
 {
 public:
 
-	Spark_Particle_Info() { Particles_Per_Call = 300; }
+	Spark_Particle_Info() { Particles_Per_Call = 75; }
 
 	void Spawn_Particle(glm::vec3 Position, glm::vec3 Orientation)
 	{
@@ -143,7 +143,7 @@ class Galaxy_Particle_Info : public Particle_Info<Galaxy_Test_Particle>
 public:
 	// This has only 2 floating point values
 
-	Galaxy_Particle_Info() { Particles_Per_Call = 800; }
+	Galaxy_Particle_Info() { Particles_Per_Call = 50; }
 
 	void Spawn_Particle(float Radius, float Index) // Radius is all that matters
 	{
@@ -210,7 +210,7 @@ public:
 
 	Smoke_Particle_Info()
 	{
-		Particles_Per_Call = 300;
+		Particles_Per_Call = 75;
 	}
 
 	void Spawn_Particle(glm::vec3 Position, glm::vec3 Velocity)

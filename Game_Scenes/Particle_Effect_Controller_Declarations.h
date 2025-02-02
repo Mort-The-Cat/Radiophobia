@@ -189,7 +189,7 @@ private:
 
 public:
 
-	Pistol_Shell_Particle_Info() { Particles_Per_Call = 50; }
+	Pistol_Shell_Particle_Info() { Particles_Per_Call = 25; }
 
 	void Spawn_Particle(glm::vec3 Position, glm::vec4 Velocity, float Floor_Height) // This function will find out the floor position
 	{
