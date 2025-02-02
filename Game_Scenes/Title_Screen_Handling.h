@@ -30,7 +30,7 @@ void Load_Test_Scene_Assets()
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Rust_Texture.png", "Assets/Textures/Rust_Reflectivity.png", "Assets/Textures/Rust_Normal.png", "Rust");
 
-	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Rubbish_Normal.png", "Rubbish");
+	Push_Merged_Material<THREADED>("Assets/Textures/Rubbish_Bag.jpg", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Rubbish_Normal.png", "Rubbish");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Rubble_Normal.png", "Rubble");
 
@@ -201,7 +201,7 @@ void Setup_Intro_Level()
 
 	//
 
-	Scene_Models.push_back(new Model({  }, Object_Material::Wood));
+	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS }, Object_Material::Wood));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Rutschgefahr.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Rutschgefahr.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
 
@@ -274,10 +274,10 @@ void Setup_Intro_Level()
 
 	// Must add dynamic objects AFTER blockmap is initialised
 
-	Scene_Models.push_back(new Model({ MF_SOLID, MF_ACTIVE, MF_CAST_SHADOWS }, Object_Material::Enemy));
+	Scene_Models.push_back(new Model({MF_SOLID, MF_ACTIVE, MF_CAST_SHADOWS}, Object_Material::Enemy));
 	Scene_Models.back()->Position = glm::vec3(3.773928, -0.05f, -3.415);
 	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Person_Texture_2.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Damageable_Controller(10.0f), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
-
+	
 	//
 
 	{
@@ -299,6 +299,8 @@ void Setup_Intro_Level()
 	Lighting_BVH::Update_Leaf_Node_Data();
 
 	//
+
+	Sound_Engine->play2D(Pull_Audio("Assets/Audio/Music/Ambience_Track.wav").Source, true, false);
 }
 
 void Setup_Test_Scene()

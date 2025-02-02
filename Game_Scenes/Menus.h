@@ -5,17 +5,7 @@
 #include "..\UI_Renderer_Declarations.h"
 #include "..\Engine_Loop.h"
 
-enum class Difficulty
-{
-	Debug_Mode = 0,
-	God_Mode = 1,
-	Easy = 2,
-	Medium = 3,
-	Hard = 4,
-	No_Clip = 5			// I'll implement all of these things later
-};
-
-Difficulty Selected_Difficulty = Difficulty::Medium;
+#include "Menus_Declarations.h"
 
 #define FADE_TO_COLOUR true
 #define FADE_FROM_COLOUR false

@@ -8,6 +8,11 @@
 
 #pragma comment(lib, "irrKlang.lib")
 
+#define ASF_TO_BE_DELETED 0u
+#define ASF_WITHOUT_POSITION 1u
+
+#define ASF_DELETE_ONCE_FINISHED 2u
+
 irrklang::ISoundEngine* Sound_Engine;
 
 float Sound_Effect_Volume = 0.1f;

@@ -8,6 +8,8 @@
 
 #include "Mesh_Animator_Declarations.h"
 
+#include "Audio_Handler_Declarations.h"
+
 class Damageable_Controller : public Controller
 {
 public:
@@ -31,6 +33,15 @@ public:
 	{
 		Object->Flags[MF_TO_BE_DELETED] |= Health < 0.0f;
 		Object->Hitboxes[0]->Flags[MF_TO_BE_DELETED] |= Health < 0.0f;
+
+		if (Health < 0.0f)
+		{
+			Audio::Audio_Source* Ambient_Hit = Audio::Create_Audio_Source(glm::vec3(0.0f), 1.0f);
+
+			Ambient_Hit->Flags[ASF_WITHOUT_POSITION] = true;
+			Ambient_Hit->Flags[ASF_DELETE_ONCE_FINISHED] = true;
+			Ambient_Hit->Play_Sound(Pull_Audio("Assets/Audio/Music/Ambient_Hit.wav").Source);
+		}
 
 		// Then we'll see if we can move in direction of player!
 

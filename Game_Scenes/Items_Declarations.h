@@ -5,6 +5,8 @@
 #include "..\Model_Declarations.h"
 #include "..\Input_Handler.h"
 
+#include "Menus_Declarations.h"
+
 #include "..\Decal_Projection_Clipper_Declarations.h"
 
 namespace Player_Ammo_Count
@@ -123,7 +125,7 @@ public:
 
 					Spawn_Bullet_Shell_And_Muzzle_Flash(Position);
 					
-					Shoot_Bullet_Function(Player_Physics_Object.Object->Hitboxes[0], Player_Physics_Object.Object->Position, Camera_Direction, 2.0f);
+					Shoot_Bullet_Function(Player_Physics_Object.Object->Hitboxes[0], Player_Physics_Object.Object->Position, Camera_Direction, 2.0f - (Selected_Difficulty == Difficulty::Hard));
 				}
 				else if(Current_State != Reloading)
 				{
