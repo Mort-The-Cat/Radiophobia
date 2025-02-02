@@ -14,6 +14,12 @@
 #define LOAD_MESH_STORE_CACHE_BIT 8u
 #define LOAD_MESH_CREATE_BUFFERS_CACHE_BIT 16u
 
+//
+
+#define LOAD_MESH_OBJ_BIT 1u
+#define LOAD_MESH_FBX_BIT 2u
+#define LOAD_MESH_ANIM_BIT 4u
+
 #define THREADED true
 
 namespace Cache
@@ -104,12 +110,15 @@ namespace Cache
 		return false;
 	}
 
-	bool Search_Mesh_Cache(const char* Directory, Mesh_Cache_Info* Target_Info)
+	bool Search_Mesh_Cache(const char* Directory, Mesh_Cache_Info* Target_Info, unsigned char Flags)
 	{
 		for (size_t W = 0; W < Mesh_Cache.size(); W++)
 		{
-			if (strcmp(Directory, Mesh_Cache[W].Directory.c_str()) == 0)
+			if (strcmp(Directory, Mesh_Cache[W].Directory.c_str()) == 0 && ((bool)(Flags & LOAD_MESH_ANIM_BIT) == (Mesh_Cache[W].Vertex_Buffer.Buffer_Storage_Hint == GL_DYNAMIC_DRAW)))
 			{
+				// Even if the directory is the same, whether or not the model was loaded with the LOAD_MESH_ANIM_BIT flag massively changes the vertex data
+				// hence we need to check for that
+
 				*Target_Info = Mesh_Cache[W];
 				return true;
 			}
@@ -333,16 +342,12 @@ Cache::Animation_Cache_Info Pull_Animation(const char* Directory)
 
 //
 
-#define LOAD_MESH_OBJ_BIT 1u
-#define LOAD_MESH_FBX_BIT 2u
-#define LOAD_MESH_ANIM_BIT 4u
-
 template<bool Is_Threaded = false>
 Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LOAD_MESH_OBJ_BIT)
 {
 	Cache::Mesh_Cache_Info Cache_Info;
 
-	if (Cache::Search_Mesh_Cache(Directory, &Cache_Info))
+	if (Cache::Search_Mesh_Cache(Directory, &Cache_Info, Flags))
 	{
 		if (Flags & LOAD_MESH_ANIM_BIT) // If this mesh is an anim mesh, we need it to have a unique vertex buffer
 		{
@@ -351,6 +356,8 @@ Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LO
 
 			if constexpr (Is_Threaded)
 				Context_Interface::Request_Context();
+
+			Cache_Info.Vertex_Buffer.Buffer_Storage_Hint = GL_DYNAMIC_DRAW;
 
 			Cache_Info.Vertex_Buffer.Create_Buffer();
 			Cache_Info.Vertex_Buffer.Bind_Buffer();

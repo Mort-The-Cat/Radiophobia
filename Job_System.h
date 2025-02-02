@@ -11,6 +11,8 @@
 class Damageable_Controller : public Controller
 {
 public:
+	Mesh_Animator Animator;
+
 	float Health; // This is the health of the object, able to be decreased with the "damage" function
 
 	Damageable_Controller(float Healthp) { Health = Healthp; }
@@ -19,6 +21,10 @@ public:
 	{
 		Object = Objectp;
 		Object->Flags[MF_TAKES_DAMAGE] = true;
+
+		Animator.Animation = Pull_Animation("Assets/Animations/Murderer_Idle.anim").Animation;
+		Animator.Time = 0.0f;
+		Animator.Flags[ANIMF_LOOP_BIT] = true;
 	}
 
 	virtual void Control_Function() override
@@ -34,6 +40,10 @@ public:
 		Object->Orientation += To_Player_Vector;
 
 		Object->Orientation = glm::normalize(Object->Orientation);
+
+		Animator.Animate_Mesh(&Object->Mesh, Tick, true);
+
+		Object->Flags[MF_UPDATE_MESH] = true;
 
 		// This interpolates between the vectors accordingly
 	}

@@ -1,5 +1,4 @@
-﻿  glad.c
-  Main.cpp
+﻿  Main.cpp
 C:\Radiophobia\Radiophobia-main\Fast_Maths.h(93,11): warning C4244: '*=': conversion from 'float' to 'uint32_t', possible loss of data
   (compiling source file 'Main.cpp')
   
@@ -55,46 +54,46 @@ C:\Radiophobia\Radiophobia-main\Mesh_Loader.h(239,38): warning C4267:         ]
 C:\Radiophobia\Radiophobia-main\Mesh_Loader.h(300,57): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(198,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(207,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(206,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(215,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(254,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(263,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(268,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(277,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(284,3): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(293,3): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(291,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(300,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(296,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(305,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(315,3): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(324,3): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(325,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(334,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(352,4): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(357,4): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(359,4): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(366,4): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(363,3): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(370,3): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(387,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(394,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(403,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Asset_Loading_Cache.h(410,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Hitdetection.h(98,22): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
@@ -211,7 +210,7 @@ C:\Radiophobia\Radiophobia-main\Engine_Loop.h(171,21): warning C4305: 'argument'
 C:\Radiophobia\Radiophobia-main\Engine_Loop.h(171,16): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Engine_Loop.h(434,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Engine_Loop.h(435,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(53,2): warning C4984: 'if constexpr' is a C++17 language extension
@@ -282,19 +281,19 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(109,26): warning C4244: 
 C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(109,50): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(312,71): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(315,71): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(312,59): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(315,59): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(450,40): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(453,40): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(451,46): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(454,46): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(530,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(533,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(66,98): warning C4305: 'argument': truncation from 'double' to 'float'
@@ -395,10 +394,9 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(28,7): warning C4267: '=
   
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-C:\Radiophobia\Radiophobia-main\OpenGL_Declarations.h(214): warning C4715: 'Get_File_Contents': not all control paths return a value
-C:\Radiophobia\Radiophobia-main\Hitdetection_Declarations.h(295): warning C4715: 'Generate_AABB_Hitboxes': not all control paths return a value
-  All 4990 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  1 of 4991 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    16 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 glfw3.lib(context.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(context.obj)' or at ''; linking object as if no debug info
 glfw3.lib(input.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(input.obj)' or at ''; linking object as if no debug info

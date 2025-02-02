@@ -49,6 +49,8 @@ void Load_Test_Scene_Assets()
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_2_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_3_Open.anim");
 
+	Pull_Animation<THREADED>("Assets/Animations/Murderer_Idle.anim");
+
 	Initialise_Pistol();
 
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Toilets.obj", LOAD_MESH_OBJ_BIT);
@@ -57,7 +59,7 @@ void Load_Test_Scene_Assets()
 
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT);
 	// Pull_Mesh<THREADED>("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT);
-	Pull_Mesh<THREADED>("Assets/Models/Test_Person.obj");
+	// Pull_Mesh<THREADED>("Assets/Models/Test_Person.obj");
 }
 
 void Setup_Intro_Level()
@@ -205,9 +207,10 @@ void Setup_Intro_Level()
 
 	//
 
-	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Enemy));
+	/*Scene_Models.push_back(new Model({MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS}, Object_Material::Enemy));
 	Scene_Models.back()->Position = glm::vec3(1.394211, 0.0f, 0.438914);
 	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+	*/
 
 	Volumetric_Cone_Particles.Particles.Spawn_Particle(glm::vec3(3.773928 - 1.0f, 0.0f - 1.0f, -8.415 - 1.0f), glm::normalize(glm::vec3(-1.0f, -1.0f, -1.0f)), glm::vec3(0.4, 0.6, 0.8), 0.6f, 30.0f);
 	Scene_Lights.push_back(new Lightsource(glm::vec3(3.773928 - 1.0f, 0.0f - 1.0f, -8.415 - 1.0f), glm::vec3(1, 1.5, 2), glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), 30.0f, 1.0f, 0.6f));
@@ -273,7 +276,7 @@ void Setup_Intro_Level()
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_ACTIVE, MF_CAST_SHADOWS }, Object_Material::Enemy));
 	Scene_Models.back()->Position = glm::vec3(3.773928, -0.05f, -3.415);
-	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Person_Texture_2.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Damageable_Controller(10.0f), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Person_Texture_2.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Damageable_Controller(10.0f), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
 
 	//
 

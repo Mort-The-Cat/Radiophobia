@@ -100,7 +100,7 @@ public:
 		if(Shot_Timer < Time_Between_Shots)
 			Shot_Timer += Tick;
 		else
-			if (Controller_Inputs.axes[Gamepad_Controls::Attack] > 0.35 || Mouse_Inputs[0]) // Mouse_Fresh_Click(0))
+			if (Controller_Inputs.axes[Gamepad_Controls::Attack] > 0.35 || Mouse_Fresh_Click(0))
 				if(Ammo)
 				{
 					Ammo--;
@@ -123,7 +123,7 @@ public:
 
 					Spawn_Bullet_Shell_And_Muzzle_Flash(Position);
 					
-					Shoot_Bullet_Function(Player_Physics_Object.Object->Hitboxes[0], Player_Physics_Object.Object->Position, Camera_Direction, 1.0f);
+					Shoot_Bullet_Function(Player_Physics_Object.Object->Hitboxes[0], Player_Physics_Object.Object->Position, Camera_Direction, 2.0f);
 				}
 				else if(Current_State != Reloading)
 				{
@@ -290,10 +290,11 @@ void Initialise_Pistol()
 
 	// This loads the models
 
-	Makarov_Pistol.Max_Ammo = 38;
+	Makarov_Pistol.Max_Ammo = 15;
 	Makarov_Pistol.Ammo = Makarov_Pistol.Max_Ammo;
 
 	Makarov_Pistol.Time_Between_Shots = 0.051f;
+	//Makarov_Pistol.Time_Between_Shots = 0.051f;
 	Makarov_Pistol.Shot_Timer = Makarov_Pistol.Time_Between_Shots;
 
 	//
