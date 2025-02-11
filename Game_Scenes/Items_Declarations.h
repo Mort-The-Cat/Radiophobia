@@ -263,6 +263,7 @@ void Initialise_Pistol()
 	Pull_Audio("Assets/Audio/No_Ammo_Click.wav");
 
 	Makarov_Pistol.Flashlight = new Lightsource(glm::vec3(0, 0, 0), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 30.0f, 3.0f);
+	Makarov_Pistol.Flashlight->Flags[LF_PRIORITY] = true;
 	Scene_Lights.push_back(Makarov_Pistol.Flashlight);
 
 	Makarov_Pistol.Draw.Animation = Pull_Animation("Assets/Animations/Makarov_Pistol_Draw.anim").Animation;
@@ -322,7 +323,7 @@ void Initialise_Pistol()
 		Shader Decal_Shader;
 		Decal_Shader.Create_Shader("Shader_Code/Decal_Particle.vert", "Shader_Code/Decal_Particle.frag", nullptr);
 
-		Create_Particle_Renderer(Decal_Shader, Decal_Vertex_Buffer(0), Pull_Texture("Assets/Textures/Bullet_Decal.png").Texture, Pull_Texture("Metal").Texture, &Decal_Particles);
+		Create_Particle_Renderer(Decal_Shader, Decal_Vertex_Buffer(0), Pull_Texture("Assets/Textures/Bullet_Decal.png").Texture, Pull_Texture("Black").Texture, &Decal_Particles);
 
 		//
 

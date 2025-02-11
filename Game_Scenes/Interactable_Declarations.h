@@ -29,7 +29,7 @@ public:
 	Damageable_Vent_Controller(std::string Directoryp) 
 	{
 		Directory = Directoryp;
-		Health = 5.0f;
+		Health = 8.0f;
 	}
 
 	virtual void Control_Function() override
@@ -37,7 +37,8 @@ public:
 		switch (Current_State)
 		{
 		case State::Damaged:
-			Object->Flags[MF_UPDATE_MESH] = !Damaged_Animation.Animate_Mesh(&Object->Mesh, Tick, true);
+			Object->Flags[MF_UPDATE_MESH] = true;// !Damaged_Animation.Animate_Mesh(&Object->Mesh, Tick, true);
+			Current_State = State::Untouched;
 			break;
 
 		case State::Removed:
@@ -46,6 +47,7 @@ public:
 			break;
 
 		default:
+			Object->Flags[MF_UPDATE_MESH] = false;
 			break;
 		}
 	}
@@ -82,8 +84,11 @@ public:
 
 			Current_State = State::Removed;
 		}
-		else if(Health < 3.0f)
+		else if (Health < 6.5f)
+		{
+			Damaged_Animation.Animate_Mesh(&Object->Mesh, Delta / 60.0f, false);
 			Current_State = State::Damaged;
+		}
 	}
 };
 

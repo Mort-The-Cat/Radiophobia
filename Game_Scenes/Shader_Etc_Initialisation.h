@@ -116,7 +116,7 @@ void Initialise_Particles()
 	Shader Spark_Shader;
 	Spark_Shader.Create_Shader("Shader_Code/Spark_Particle.vert", "Shader_Code/Lightless_Particle.frag", nullptr);
 
-	Create_Particle_Renderer(Spark_Shader, Billboard_Vertex_Buffer(-0.0125f, -0.0125f, 0.0125f, 0.0125f), Pull_Texture("Assets/Textures/Fire.png").Texture, Pull_Texture("Black").Texture, &Spark_Particles);
+	Create_Particle_Renderer(Spark_Shader, Billboard_Vertex_Buffer(-0.0125f, -0.0125f, 0.0125f, 0.0125f), Pull_Texture("Assets/Textures/Fire_2.png").Texture, Pull_Texture("Black").Texture, &Spark_Particles);
 
 	//
 

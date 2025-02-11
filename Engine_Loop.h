@@ -230,12 +230,14 @@ void Engine_Loop()
 
 		End_Of_Frame();
 
-		/*if (Time_Elapsed_Since_FPS_Update == 0)
+		if (Time_Elapsed_Since_FPS_Update == 0)
 			for (size_t W = 0; W < 10; W++)
 			{
 				glm::vec3 Position, Velocity;
 
-				Position = glm::vec3(2 * RNG() - 4.0f, RNG() - 4.4f, 4 * RNG() - 3.0f);
+				// 3.773928, -0.05f, -3.415
+
+				Position = glm::vec3(2 * RNG() + 2.2, RNG(), 4 * RNG() - 3.0f);
 
 				Velocity = glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f);
 
@@ -244,7 +246,7 @@ void Engine_Loop()
 
 				// Bubble_Particles.Particles.Spawn_Particle(glm::vec3(RNG() - 3.0f, RNG() - 4.0f, RNG() - 3.0f), glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f));
 				// Bubble_Colour_Particles.Particles.Spawn_Particle(glm::vec3(RNG() - 3.0f, RNG() - 4.0f, RNG() - 3.0f), glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f));
-			}*/
+			}
 	}
 }
 

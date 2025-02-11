@@ -285,7 +285,7 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 			for (size_t V = 0; V < Scene_Lights.size(); V++)
 			{
 				Index_Data[V].Index = V;
-				Index_Data[V].Distance = squaref(Scene_Lights[V]->Position.x - Leaf_Nodes_Info[W].Position.x) + squaref(Scene_Lights[V]->Position.z - Leaf_Nodes_Info[W].Position.y);
+				Index_Data[V].Distance = (!Scene_Lights[V]->Flags[LF_PRIORITY]) * (squaref(Scene_Lights[V]->Position.x - Leaf_Nodes_Info[W].Position.x) + squaref(Scene_Lights[V]->Position.z - Leaf_Nodes_Info[W].Position.y));
 
 				// Index_Data[V].Distance += 999999.0f * Is_Occluded(Leaf_Nodes_Info[W].Position, glm::vec2(Scene_Lights[V]->Position.x, Scene_Lights[V]->Position.z));
 				

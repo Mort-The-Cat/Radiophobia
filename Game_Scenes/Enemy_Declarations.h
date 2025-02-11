@@ -40,6 +40,10 @@ public:
 			Ambient_Hit->Flags[ASF_WITHOUT_POSITION] = true;
 			Ambient_Hit->Flags[ASF_DELETE_ONCE_FINISHED] = true;
 			Ambient_Hit->Play_Sound(Pull_Audio("Assets/Audio/Music/Ambient_Hit.wav").Source);
+
+			Object->Flags[MF_UPDATE_MESH] = false;
+
+			return;
 		}
 
 		// Then we'll see if we can move in direction of player!
