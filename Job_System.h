@@ -13,9 +13,15 @@
 class Damageable_Controller : public Controller
 {
 public:
-	Mesh_Animator Animator;
+	enum Damage_Source
+	{
+		Bullet = 0,
+		Blunt_Force = 1
+	};
 
 	float Health; // This is the health of the object, able to be decreased with the "damage" function
+
+	Damageable_Controller() {}
 
 	Damageable_Controller(float Healthp) { Health = Healthp; }
 
@@ -23,43 +29,9 @@ public:
 	{
 		Object = Objectp;
 		Object->Flags[MF_TAKES_DAMAGE] = true;
-
-		Animator.Animation = Pull_Animation("Assets/Animations/Murderer_Idle.anim").Animation;
-		Animator.Time = 0.0f;
-		Animator.Flags[ANIMF_LOOP_BIT] = true;
 	}
 
-	virtual void Control_Function() override
-	{
-		Object->Flags[MF_TO_BE_DELETED] |= Health < 0.0f;
-		Object->Hitboxes[0]->Flags[MF_TO_BE_DELETED] |= Health < 0.0f;
-
-		if (Health < 0.0f)
-		{
-			Audio::Audio_Source* Ambient_Hit = Audio::Create_Audio_Source(glm::vec3(0.0f), 1.0f);
-
-			Ambient_Hit->Flags[ASF_WITHOUT_POSITION] = true;
-			Ambient_Hit->Flags[ASF_DELETE_ONCE_FINISHED] = true;
-			Ambient_Hit->Play_Sound(Pull_Audio("Assets/Audio/Music/Ambient_Hit.wav").Source);
-		}
-
-		// Then we'll see if we can move in direction of player!
-
-		glm::vec3 To_Player_Vector = glm::vec3(Tick, 0.0f, Tick) * glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f) * (Player_Camera.Position - Object->Position));
-
-		Object->Orientation *= glm::vec3(1.0f - Tick, 0.0f, 1.0f - Tick);
-		Object->Orientation += To_Player_Vector;
-
-		Object->Orientation = glm::normalize(Object->Orientation);
-
-		Animator.Animate_Mesh(&Object->Mesh, Tick, true);
-
-		Object->Flags[MF_UPDATE_MESH] = true;
-
-		// This interpolates between the vectors accordingly
-	}
-
-	virtual void Damage(float Delta)
+	virtual void Damage(float Delta, Damage_Source Type = Damage_Source::Bullet)
 	{
 		Health -= Delta;
 	}

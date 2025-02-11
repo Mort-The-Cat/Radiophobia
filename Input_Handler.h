@@ -162,7 +162,7 @@ void Spawn_Test_Object()
 
 		// Create_Model(Pull_Mesh("Assets/Models/Particle_Test.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Physics_Object_Controller(), Generate_Sphere_Hitbox(*Pull_Mesh("Assets/Models/Particle_Test.obj").Mesh));
 		
-		Create_Model(Pull_Mesh("Assets/Models/Cube.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Physics_Object_Controller(), { Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Models/Cube.obj").Mesh) });
+		Create_Model(Pull_Mesh("Assets/Models/Cardboard_Box.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Shelf_things.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Physics_Object_Controller(), { Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Models/Cube.obj").Mesh) });
 		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Elasticity *= 0.25;
 		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Time = 60;
 

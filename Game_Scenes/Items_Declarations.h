@@ -36,6 +36,8 @@ public:
 	Mesh_Animator Last_Shot, Last_Shot_Hand; // This is when the player fires their last shot
 	Mesh_Animator Reload, Reload_Hand;
 
+	Lightsource* Flashlight;
+
 	// Note that we need a pair of animations for the pistol and the pistol's hand-holder
 
 	enum Pistol_State {
@@ -219,6 +221,9 @@ public:
 
 	void Render_Viewmodel()
 	{
+		Flashlight->Position = Player_Camera.Position + glm::vec3(0.0f, 0.1f, 0.0f);
+		Flashlight->Direction = Camera_Direction;
+
 		for (size_t W = 0; W < Viewmodel_Meshes.size(); W++)
 		{
 			Viewmodel_Meshes[W].Position = Player_Camera.Position;
@@ -256,6 +261,9 @@ void Initialise_Pistol()
 	Pull_Audio("Assets/Audio/Makarov.wav");
 	Pull_Audio("Assets/Audio/Makarov_Reload.wav");
 	Pull_Audio("Assets/Audio/No_Ammo_Click.wav");
+
+	Makarov_Pistol.Flashlight = new Lightsource(glm::vec3(0, 0, 0), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 30.0f, 3.0f);
+	Scene_Lights.push_back(Makarov_Pistol.Flashlight);
 
 	Makarov_Pistol.Draw.Animation = Pull_Animation("Assets/Animations/Makarov_Pistol_Draw.anim").Animation;
 	Makarov_Pistol.Draw.Flags[ANIMF_LOOP_BIT] = false;

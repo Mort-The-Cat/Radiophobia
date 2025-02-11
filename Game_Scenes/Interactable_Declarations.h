@@ -8,6 +8,85 @@
 #include "..\Hitdetection.h"
 #include "..\Audio_Declarations.h"
 
+class Damageable_Vent_Controller : public Damageable_Controller
+{
+	std::string Directory;
+
+public:
+	enum State
+	{
+		Untouched = 0,
+		Damaged = 1u,
+		Removed = 2u
+	} Current_State = State::Untouched;
+
+	Mesh_Animator Damaged_Animation;
+
+	Mesh_Animator Remove_Animation;
+
+	Audio::Audio_Source* Damaged_Sound;
+
+	Damageable_Vent_Controller(std::string Directoryp) 
+	{
+		Directory = Directoryp;
+		Health = 5.0f;
+	}
+
+	virtual void Control_Function() override
+	{
+		switch (Current_State)
+		{
+		case State::Damaged:
+			Object->Flags[MF_UPDATE_MESH] = !Damaged_Animation.Animate_Mesh(&Object->Mesh, Tick, true);
+			break;
+
+		case State::Removed:
+			Object->Flags[MF_UPDATE_MESH] = !Remove_Animation.Animate_Mesh(&Object->Mesh, Tick, true);
+			Object->Flags[MF_ACTIVE] &= Object->Flags[MF_UPDATE_MESH];
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	virtual void Initialise_Control(Model* Objectp) override
+	{
+		Object = Objectp;
+		Object->Flags[MF_TAKES_DAMAGE] = true;
+
+		Damaged_Animation.Animation = Pull_Animation((Directory + "_Damage.anim").c_str()).Animation;
+		Damaged_Animation.Flags[ANIMF_LOOP_BIT] = false;
+		Damaged_Animation.Time = 0.0f;
+		Remove_Animation.Animation = Pull_Animation((Directory + "_Remove.anim").c_str()).Animation;
+		Remove_Animation.Flags[ANIMF_LOOP_BIT] = false;
+		Remove_Animation.Time = 0.0f;
+
+		Damaged_Sound = Audio::Create_Audio_Source(glm::vec3(0.0f), 1.0f);
+	}
+
+	virtual void Damage(float Delta, Damage_Source Damage_Type = Damage_Source::Bullet) override
+	{
+		Health -= Delta;
+
+		if (Health < 0.0f)
+		{
+			Damaged_Sound->Position = reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A;
+			// Player interacted with the door!
+
+			// This'll basically remove any collision that the object has
+			reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.y += 9999.0f;
+			reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.y += 9999.0f;
+
+			Damaged_Sound->Play_Sound(Pull_Audio("Assets/Audio/Door/Door_Open.wav").Source);
+
+			Current_State = State::Removed;
+		}
+		else if(Health < 3.0f)
+			Current_State = State::Damaged;
+	}
+};
+
 class Door_Controller : public Controller
 {
 	std::string Animation_Name;

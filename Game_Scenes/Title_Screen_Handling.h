@@ -7,6 +7,8 @@
 
 #include "Menus.h"
 
+#include "Enemy_Declarations.h"
+
 #include "../Light_BVH_Tree_Handler.h"
 
 #include "Interactable_Declarations.h"
@@ -48,8 +50,12 @@ void Load_Test_Scene_Assets()
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_1_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_2_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_3_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Vent_Damage.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Vent_Remove.anim");
 
 	Pull_Animation<THREADED>("Assets/Animations/Murderer_Idle.anim");
+
+	Pull_Texture<THREADED>("Assets/Textures/Shelf_things.png");
 
 	Initialise_Pistol();
 
@@ -137,9 +143,13 @@ void Setup_Intro_Level()
 		}
 	), std::vector<Hitbox*>{});
 
-	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Metal));
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS, MF_CAST_SHADOWS }, Object_Material::Metal));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Vent_Duct.png").Texture, Pull_Texture("Vent").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Air_Duct.obj", LOAD_MESH_OBJ_BIT).Mesh));
+
+	Scene_Models.push_back(new Model({ MF_ACTIVE, MF_SOLID, MF_CAST_SHADOWS }, Object_Material::Metal));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Vent_Grate.obj", LOAD_MESH_OBJ_BIT | LOAD_MESH_ANIM_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Vent_Duct.png").Texture, Pull_Texture("Vent").Texture, Scene_Models.back(), new Damageable_Vent_Controller("Assets/Animations/Intro_Level/Vent"), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Intro_Level/Vent_Grate.obj", LOAD_MESH_OBJ_BIT).Mesh) });
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Floor_Tiles));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
@@ -244,14 +254,14 @@ void Setup_Intro_Level()
 	Scene_Lights.push_back(new Lightsource(glm::vec3(3.97f, -1.72f, -1.26f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
 
 	Scene_Lights.push_back(new Lightsource(glm::vec3(2.34f, -1.72f, -1.26f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
-	Scene_Lights.push_back(new Lightsource(glm::vec3(2.34f, -1.72f, -3.09f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	//Scene_Lights.push_back(new Lightsource(glm::vec3(2.34f, -1.72f, -3.09f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
 
 	Scene_Lights.push_back(new Lightsource(glm::vec3(0.65f, -1.72f, -1.26f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
-	Scene_Lights.push_back(new Lightsource(glm::vec3(0.65f, -1.72f, -3.09f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	//Scene_Lights.push_back(new Lightsource(glm::vec3(0.65f, -1.72f, -3.09f), glm::vec3(0.5f, 0.5f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
 
 	//
 
-	Scene_Lights.push_back(new Lightsource(glm::vec3(1.13f, -1.34f, -7.55f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
+	// Scene_Lights.push_back(new Lightsource(glm::vec3(1.13f, -1.34f, -7.55f), glm::vec3(0.8f, 0.65f, 0.65f), glm::vec3(0.0f, 1.0f, 0.0f), 80.0f, 10.0f, 0.6f));
 
 	/*
 	New lights
@@ -276,7 +286,7 @@ void Setup_Intro_Level()
 
 	Scene_Models.push_back(new Model({MF_SOLID, MF_ACTIVE, MF_CAST_SHADOWS}, Object_Material::Enemy));
 	Scene_Models.back()->Position = glm::vec3(3.773928, -0.05f, -3.415);
-	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Person_Texture_2.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Damageable_Controller(10.0f), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Person_Texture_2.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Test_Enemy_Controller(10.0f), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
 	
 	//
 

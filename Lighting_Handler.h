@@ -53,6 +53,7 @@ public:
 #define LF_CAST_SHADOWS 1u
 #define LF_EXCLUDE_FROM_BVH 2u // This flag is set if the lights can be ignored entirely from the Light BVH, meaning other light sources can be prioritised
 #define LF_TIMER 3u
+#define LF_PRIORITY 4u
 
 enum LG // Light_Group
 {
@@ -80,7 +81,7 @@ public:
 
 	float Timer; // This doesn't necessarily apply
 
-	bool Flags[4] = { false, false, false, false };
+	bool Flags[5] = { false, false, false, false, false };
 
 	LG Light_Group = LG::No_Group;
 

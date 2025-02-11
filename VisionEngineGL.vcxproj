@@ -167,6 +167,7 @@
     <ClInclude Include="Fast_Maths.h" />
     <ClInclude Include="Float_Text_Encoder.h" />
     <ClInclude Include="Game_Scenes\Bullet_Handler.h" />
+    <ClInclude Include="Game_Scenes\Enemy_Declarations.h" />
     <ClInclude Include="Game_Scenes\Interactable_Declarations.h" />
     <ClInclude Include="Game_Scenes\Items_Declarations.h" />
     <ClInclude Include="Game_Scenes\Menus.h" />
