@@ -138,6 +138,7 @@ void Initialise_Shaders_And_Particle_Emitters()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);						// Purely additive blending
 
+	Loading_Screen_Background_Shader.Create_Shader("Shader_Code/Loading_Screen_Spiral.vert", "Shader_Code/Loading_Screen_Background.frag", nullptr);
 	Loading_Screen_Spiral_Shader.Create_Shader("Shader_Code/Loading_Screen_Spiral.vert", "Shader_Code/Loading_Screen_Spiral.frag", nullptr);
 
 	Scene_Object_Shader.Create_Shader("Shader_Code/Vertex_Test.vert", "Shader_Code/Vertex_Test.frag", "Shader_Code/Vertex_Test.geom");

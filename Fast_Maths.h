@@ -16,6 +16,22 @@ float RNG()
 	return static_cast<float>(rand()) * Inv_Rand;
 }
 
+template<typename Type>
+std::vector<Type> operator+(std::vector<Type> A, std::vector<Type> B)
+{
+	size_t Iterator = A.size();
+
+	A.resize(A.size() + B.size());
+
+	for (size_t W = 0; W < B.size(); W++)
+	{
+		A[Iterator] = B[W];
+		Iterator++;
+	}
+
+	return A;
+}
+
 namespace Fast
 {
 

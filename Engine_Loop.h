@@ -279,6 +279,20 @@ void Render_Loading_Screen_Spiral()
 {
 	glEnable(GL_BLEND);
 
+	//
+
+	Billboard_Vertex_Buffer Fullscreen(-1.0f, -1.0f, 1.0f, 1.0f);
+
+	Loading_Screen_Background_Shader.Activate();
+
+	glUniform1f(glGetUniformLocation(Loading_Screen_Spiral_Shader.Program_ID, "Time"), Post_Processor::Shader_Time + 4);
+
+	glDrawElements(GL_TRIANGLES, Fullscreen.Indices_Count, GL_UNSIGNED_INT, 0u);
+
+	Fullscreen.Delete_Buffer();
+
+	//
+
 	Billboard_Vertex_Buffer Big_Spiral(-0.25f, -1.0f, 1.0f, 1.0f);
 
 	Post_Processor::Shader_Time += Tick;

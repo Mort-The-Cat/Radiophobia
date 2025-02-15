@@ -8,6 +8,11 @@
 #include "..\Hitdetection.h"
 #include "..\Audio_Declarations.h"
 
+class Phone_Controller
+{
+
+};
+
 class Damageable_Vent_Controller : public Damageable_Controller
 {
 	std::string Directory;

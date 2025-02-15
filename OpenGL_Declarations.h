@@ -322,6 +322,7 @@ void Bind_Screen_Dimensions(Shader Shader_Program)
 
 Shader Scene_Object_Shader;
 Shader Loading_Screen_Spiral_Shader;
+Shader Loading_Screen_Background_Shader;
 
 bool Fullscreen = false;
 
