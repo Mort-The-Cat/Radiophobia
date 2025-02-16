@@ -8,9 +8,184 @@
 #include "..\Hitdetection.h"
 #include "..\Audio_Declarations.h"
 
-class Phone_Controller
+class Phone_Controller : public Controller
 {
+	enum State
+	{
+		Idle = 0,
+		Ringing = 1,
+		Picking_Up = 2,
+		Calling = 3,
+		Putting_Down = 4
+	} Current_State = Ringing;
 
+public:
+	Mesh_Animator Pickup_Animation;
+
+	Audio::Audio_Source* Sound = nullptr;
+
+	float Time = 0.0f;
+
+	Phone_Controller()
+	{
+
+	}
+
+	virtual void Initialise_Control(Model* Objectp) override
+	{
+		Object = Objectp;
+		Pickup_Animation.Animation = Pull_Animation("Assets/Animations/Intro_Level/Phone_Pickup.anim").Animation;
+		Pickup_Animation.Flags[ANIMF_LOOP_BIT] = false;
+
+		Sound = Audio::Create_Audio_Source(Object->Position - Object->Orientation * glm::vec3(0.25f), 1.2f);
+
+		glm::mat3 Direction_Matrix = Direction_Matrix_Calculate(glm::vec3(0.0f), Object->Orientation, Object->Orientation_Up);
+
+		Object->Hitboxes.push_back(Generate_AABB_Hitbox(*Object->Mesh.Mesh));
+		reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A = Direction_Matrix * reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A;
+		reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B = Direction_Matrix * reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B;
+
+		if (reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.x > reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.x)
+			std::swap(reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.x, reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.x);
+
+		if (reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.z > reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.z)
+			std::swap(reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.z, reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.z);
+	}
+
+	virtual void Control_Function() override
+	{
+		// if(Inputs[Controls::Use])
+
+		Hitbox* Collided;
+		Collision_Info Info;
+
+		Time += Tick;
+
+		switch (Current_State)
+		{
+		case State::Idle:
+		default:
+			break;
+
+		case State::Ringing:
+			if (Time > 5.0)
+			{
+				Time = 0.0f;
+				Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Telephone_Ring.wav").Source);
+			}
+
+			// Handle checks for picking up
+
+			Info = Collision_Test::Raycast(Player_Camera.Position, glm::vec3(0.0625f) * Camera_Direction, 9, Collision_Test::Not_Against_Player_Compare, &Collided, 0.05);
+
+			if (Collided == Object->Hitboxes[0])
+			{
+				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, "Pickup_Phone.txt", true, glm::vec4(1.0f), &Font_Console));
+
+				/* Added extra check here because German is so much longer xd */
+
+				UI_Elements.back()->Flags[UF_IMAGE] = true;
+
+				//UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+				UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+				UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+
+				//UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
+
+				if (Inputs[Controls::Use])
+				{
+					Current_State = State::Picking_Up;
+					Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Pickup_Phone.wav").Source);
+
+					Fade_From_Colour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
+				}
+			}
+
+			break;
+
+		case State::Picking_Up:
+
+			/*
+
+			5.296764, -0.975419, -0.974091
+			555.532898, -4.183055, 0.000000
+			 >> Camera info:
+			5.296764, -0.975419, -0.974091
+			555.532898, -4.183055, 0.000000
+
+			*/
+
+			Player_Flags[Player_Movement_Revoke_Flag] = true;
+			Player_Flags[Player_Direction_Revoke_Flag] = true;
+
+			Player_Physics_Object.Object->Position = glm::vec3(5.296f, -0.975419f, -0.9741f); // Approach_Vector(Player_Physics_Object.Object->Position, glm::vec3(5.296f, -0.975419f, -0.9741f), 0.75f * Tick);
+
+			Player_Camera.Orientation.x = Player_Camera.Orientation.x - 360.0f * std::floorf(Player_Camera.Orientation.x / 360.0f);
+
+			//
+
+			Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f);
+
+			//Player_Camera.Orientation *= glm::vec3(1.0f - 3.5f * Tick);
+			//Player_Camera.Orientation += glm::vec3(3.5f * Tick) * glm::vec3(195.0f, -4.183055, 0.0f);
+
+			// Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f); //glm::normalize((reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A + Object->Position) - Player_Physics_Object.Object->Position);
+			
+			// Player_Camera.Orientation = Approach_Vector(Player_Camera.Orientation, glm::vec3(195.0f, -4.183055, 0.0f), 90.0f * Tick);
+
+			Object->Flags[MF_UPDATE_MESH] = !Pickup_Animation.Animate_Mesh(&Object->Mesh, Tick, true);
+
+			if (!Object->Flags[MF_UPDATE_MESH])
+			{
+				Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f);
+
+				Current_State = State::Calling;
+				Time = 0.0f;
+				Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Static.wav").Source);
+			}
+			break;
+
+		case State::Calling:
+			if (Time > 1.0f && Time < 10.0f)
+			{
+				Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/I_CAN_SEE_YOU2.wav").Source);
+				Time = 10.0f;
+			}
+			else if (Time > 16.0f && Time < 30.0f)
+			{
+				Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Endcall_Beep.wav").Source);
+				Time = 30.0f;
+			}
+
+			if (Time > 35.0f)
+			{
+				Current_State = State::Putting_Down;
+				Time = 0.0f;
+			}
+			break;
+
+		case State::Putting_Down:
+			Object->Flags[MF_UPDATE_MESH] = !Pickup_Animation.Animate_Mesh(&Object->Mesh, -Tick, true);
+
+			if (Time > 0.675f && Time < 10.0f)
+			{
+				Sound->Volume += 0.3f;
+				Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Putdown_Phone.wav").Source);
+				Time = 10.0f;
+			}
+
+			if (Pickup_Animation.Time == 0.0f)
+			{
+				Current_State = State::Idle;
+
+				Player_Flags[Player_Movement_Revoke_Flag] = false;
+				Player_Flags[Player_Direction_Revoke_Flag] = false;
+			}
+			
+			break;
+		}
+	}
 };
 
 class Damageable_Vent_Controller : public Damageable_Controller

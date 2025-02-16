@@ -60,6 +60,17 @@ void Load_Test_Scene_Assets()
 	Pull_Texture<THREADED>("Assets/Textures/Stromkasten.png");
 	Pull_Texture<THREADED>("Assets/Textures/Toilet_Texture.png");
 
+	//
+
+	Pull_Audio("Assets/Audio/Phone/Endcall_Beep.wav");
+	Pull_Audio("Assets/Audio/Phone/I_CAN_SEE_YOU2.wav");
+	Pull_Audio("Assets/Audio/Phone/Static.wav");
+	Pull_Audio("Assets/Audio/Phone/Pickup_Phone.wav");
+	Pull_Audio("Assets/Audio/Phone/Putdown_Phone.wav");
+	Pull_Audio("Assets/Audio/Phone/Telephone_Ring.wav");
+
+	//
+
 	Initialise_Pistol();
 
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Toilets.obj", LOAD_MESH_OBJ_BIT);
@@ -131,7 +142,7 @@ void Setup_Intro_Level()
 	Scene_Models.push_back(new Model({ MF_ACTIVE, MF_SOLID, MF_USE_DECALS }, Object_Material::Electronics));
 	Scene_Models.back()->Position = glm::vec3(5.22f, -0.95f, -0.722f);
 	Scene_Models.back()->Orientation = glm::vec3(0.0f, 0.0f, -1.0f);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Phone_0.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Telefon.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Test_Animation_Controller("Assets/Animations/Intro_Level/Phone_Pickup.anim"), std::vector<Hitbox*>{  });
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Phone_0.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Telefon.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Phone_Controller(), std::vector<Hitbox*>{ });
 
 	//
 
@@ -534,6 +545,8 @@ void Run_Engine_Loop(UI_Element* Element)
 	//
 
 	Setup_Intro_Level();
+
+	Delete_All_UI();
 
 	Cursor_Reset = true;
 

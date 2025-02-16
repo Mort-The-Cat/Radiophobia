@@ -29,6 +29,19 @@
 
 float Time_Elapsed_Since_FPS_Update = 0;
 
+glm::vec3 Approach_Vector(glm::vec3 A, glm::vec3 B, float Distance)
+{
+	glm::vec3 Delta = B - A;
+	float Delta_Distance = std::sqrtf(glm::dot(Delta, Delta));
+	if (Delta_Distance > Distance)
+	{
+		Delta_Distance = Distance / Delta_Distance;
+		return A + Delta * Delta_Distance;
+	}
+
+	return B;
+}
+
 bool Is_Deleted(void* Pointer)
 {
 	return Pointer == nullptr;

@@ -19,6 +19,11 @@
 
 Physics::Physics_Object Player_Physics_Object;
 
+#define Player_Movement_Revoke_Flag 0u
+#define Player_Direction_Revoke_Flag 1u
+
+bool Player_Flags[2];
+
 namespace Collision_Test
 {
 	bool Not_Against_Player_Compare(Hitbox* A, Hitbox* B)
@@ -270,10 +275,10 @@ void Controller_Player_Movement()
 		//UI_Loop();
 	}
 
-	if (Controller_Inputs.buttons[Gamepad_Controls::Use])
+	/*if (Controller_Inputs.buttons[Gamepad_Controls::Use])
 	{
 		Spawn_Test_Object();
-	}
+	}*/
 
 	float Speed = -18.5 * Tick;
 
@@ -360,10 +365,10 @@ void Player_Movement()
 		//UI_Loop();
 	}
 
-	if (Inputs[Controls::Use])
+	/*if (Inputs[Controls::Use])
 	{
 		Spawn_Test_Object();
-	}
+	}*/
 
 	float Speed = -18.5 * Tick;
 
@@ -380,7 +385,7 @@ void Player_Movement()
 	float Movement_X = sin(Angle) * Speed;
 	float Movement_Z = cos(Angle) * Speed;
 
-	if (Mouse_Inputs[1] && Frame_Counter % 5 == 0)
+	/*if (Mouse_Inputs[1] && Frame_Counter % 5 == 0)
 	{
 		// Audio::Audio_Sources.back()->Play_Sound(Sound_Effect_Source);
 
@@ -399,16 +404,6 @@ void Player_Movement()
 		Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
 
 		// Billboard_Smoke_Particles.Particles.Spawn_Particle(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
-	}
-
-	/*if (Inputs[Controls::Lean_Right])
-	{
-		for (size_t W = 0; W < Scene_Lights.size(); W++)
-			Scene_Lights[W]->Flags[LF_TO_BE_DELETED] |= Scene_Lights[W]->Light_Group == LG::Group_One;
-
-		Lighting_BVH::Generate_Light_BVH_Tree();
-
-		Lighting_BVH::Update_Leaf_Node_Data();
 	}*/
 
 	/*if (Mouse_Inputs[0]) // If left-click,
@@ -424,7 +419,7 @@ void Player_Movement()
 
 	bool Feet_Touching_Ground = Check_Feet_Touching_Ground(glm::vec3(Movement_X, 0, Movement_Z), &Forward_Vector, &Right_Vector);
 
-	if(Feet_Touching_Ground)
+	if(Feet_Touching_Ground && !Player_Flags[Player_Movement_Revoke_Flag])
 	{
 		Jump_Timer += Tick;
 
@@ -451,17 +446,7 @@ void Player_Movement()
 
 			Player_Camera.Orientation.z -= Tick * 30.0f;
 		}
-
-		//if (Player_Physics_Object.Velocity.y > 0.0f)
-		//{
-		//	Player_Physics_Object.Velocity.y *= powf(0.125f, Tick);
-		//}
 	}
-
-	/*if (Inputs[Controls::Lean_Left])
-		Player_Camera.Orientation.z += Tick * 70;
-	if (Inputs[Controls::Lean_Right])
-		Player_Camera.Orientation.z -= Tick * 70;*/
 
 	Player_Camera.Orientation.z *= powf(0.01f, Tick);
 
@@ -474,21 +459,14 @@ void Player_Movement()
 		Jump_Timer = 0.0f;
 	}
 
-	//if (Inputs[Controls::Down])
-	//	Player_Camera.Position.y -= Speed;
-	//if (Inputs[Controls::Up])
-	//	Player_Camera.Position.y += Speed;
-
-	Player_Camera.Orientation.x += Cursor.x * 90 * Mouse_Sensitivity;
-	Player_Camera.Orientation.y += Cursor.y * 90 * Mouse_Sensitivity;
+	if (!Player_Flags[Player_Direction_Revoke_Flag])
+	{
+		Player_Camera.Orientation.x += Cursor.x * 90 * Mouse_Sensitivity;
+		Player_Camera.Orientation.y += Cursor.y * 90 * Mouse_Sensitivity;
+	}
 
 	Player_Camera.Orientation.y = std::max(Player_Camera.Orientation.y, -90.0f);
 	Player_Camera.Orientation.y = std::min(Player_Camera.Orientation.y, 90.0f);
-
-	//if (Inputs[Controls::Auxilliary])
-	//{
-	//	printf(" >> FPS: %f\n", 1.0f / Tick);
-	//}
 
 	if (Inputs[Controls::Auxilliary])
 	{
@@ -500,7 +478,7 @@ void Player_Movement()
 
 		// printf(" >> FPS: %f s\n", 1.0f / Tick);
 
-		// printf(" >> Camera info:\n%f, %f, %f\n%f, %f, %f\n", Player_Camera.Position.x, Player_Camera.Position.y, Player_Camera.Position.z, Player_Camera.Orientation.x, Player_Camera.Orientation.y, Player_Camera.Orientation.z);
+		printf(" >> Camera info:\n%f, %f, %f\n%f, %f, %f\n", Player_Camera.Position.x, Player_Camera.Position.y, Player_Camera.Position.z, Player_Camera.Orientation.x, Player_Camera.Orientation.y, Player_Camera.Orientation.z);
 	}
 }
 
