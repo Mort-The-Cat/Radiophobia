@@ -87,7 +87,7 @@ public:
 
 	bool Flags[2] = { false, true };
 
-	const Mesh_Animation* Animation; // This will certainly be shared between multiple mesh_animators, so storing it in a cache for all to use is wise
+	Mesh_Animation* Animation; // This will certainly be shared between multiple mesh_animators, so storing it in a cache for all to use is wise
 
 	void Handle_Update(Model_Vertex_Buffer* Mesh)
 	{

@@ -81,6 +81,15 @@ namespace Cache
 		Mesh_Cache.clear();
 	}
 
+	void Remove_From_Animation_Cache(Mesh_Animation* Item)
+	{
+		auto Removed_Items = std::remove_if(Animation_Cache.begin(), Animation_Cache.end(), [&](Animation_Cache_Info Cache_Info)->bool { return Cache_Info.Animation == Item; });
+
+		Animation_Cache.erase(Removed_Items, Animation_Cache.end());
+
+		delete Item;
+	}
+
 	void Clear_Animation_Cache()
 	{
 		for (size_t W = 0; W < Animation_Cache.size(); W++)

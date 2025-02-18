@@ -81,8 +81,9 @@ public:
 			if (Collided == Object->Hitboxes[0])
 			{
 				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, "Pickup_Phone.txt", true, glm::vec4(1.0f), &Font_Console));
-
 				/* Added extra check here because German is so much longer xd */
+
+				UI_Elements.back()->Colour.w = 0.5f;
 
 				UI_Elements.back()->Flags[UF_IMAGE] = true;
 
@@ -90,7 +91,8 @@ public:
 				UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 				UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 
-				//UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+				UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+
 				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
 
 				if (Inputs[Controls::Use])
@@ -175,7 +177,7 @@ public:
 				Time = 10.0f;
 			}
 
-			if (Pickup_Animation.Time == 0.0f)
+			if (Pickup_Animation.Time <= 0.0f)
 			{
 				Current_State = State::Idle;
 
@@ -266,7 +268,7 @@ public:
 		}
 		else if (Health < 6.5f)
 		{
-			Damaged_Animation.Animate_Mesh(&Object->Mesh, Delta / 60.0f, false);
+			Damaged_Animation.Animate_Mesh(&Object->Mesh, Delta / 60.0f, true);
 			Current_State = State::Damaged;
 		}
 	}
@@ -299,12 +301,13 @@ public:
 		{
 			Object->Flags[MF_UPDATE_MESH] = !Animator.Animate_Mesh(&Object->Mesh, Tick, true);
 
-			Object->Flags[MF_ACTIVE] &= Object->Flags[MF_UPDATE_MESH];
-
-			/*if (!Object->Flags[MF_UPDATE_MESH])
+			if (!Object->Flags[MF_UPDATE_MESH])
 			{
-				Opening_Sound->Play_Sound(Door_Finished_Opening_Sound);
-			}*/
+				Object->Flags[MF_ACTIVE] = false;
+				//Opening_Sound->Play_Sound(Door_Finished_Opening_Sound);
+			}
+
+			//Object->Flags[MF_ACTIVE] &= Object->Flags[MF_UPDATE_MESH];
 		}
 		else
 		{

@@ -253,6 +253,8 @@ void Open_Settings_Menu(UI_Element* Element)
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 
+	// We only want the difficulty to come up 
+
 	//
 
 	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, 0.0f, 0.725f, 0.3f, Open_Controls_Menu, "Controls.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));

@@ -68,6 +68,7 @@ void Load_Test_Scene_Assets()
 	Pull_Audio("Assets/Audio/Phone/Pickup_Phone.wav");
 	Pull_Audio("Assets/Audio/Phone/Putdown_Phone.wav");
 	Pull_Audio("Assets/Audio/Phone/Telephone_Ring.wav");
+	Pull_Audio("Assets/Audio/Music/Ambience_Track.wav");
 
 	//
 
@@ -380,8 +381,17 @@ void Setup_Intro_Level()
 	Lighting_BVH::Update_Leaf_Node_Data();
 
 	//
+	
+	Audio::Set_Music_Tracks_For_Deletion(); // This stops any music currently playing
+	Audio::Create_Music_Source(Pull_Audio("Assets/Audio/Music/Ambience_Track.wav").Source); // This plays the loaded ambience track
+	
+	//if (Music)
+	//	Music->stop();
 
-	Sound_Engine->play2D(Pull_Audio("Assets/Audio/Music/Ambience_Track.wav").Source, true, false);
+	//Music = Sound_Engine->play2D(Pull_Audio("Assets/Audio/Music/Ambience_Track.wav").Source, true, false, false, true);
+	// Music->setVolume(Music_Volume);
+
+	// Sound_Engine->play2D(Pull_Audio("Assets/Audio/Music/Ambience_Track.wav").Source, true, false);
 }
 
 void Setup_Test_Scene()
@@ -606,6 +616,10 @@ void Create_Title_Screen_Page()
 	Player_Camera.Orientation = glm::vec3(
 		616.330139f, -40.649986f, 0.000000f
 	);
+
+	//if (Music)
+	//	Music->stop();
+	//Music = Sound_Engine->play2D(Pull_Audio("Assets/Audio/Music/Intense_Bassloop.wav").Source, true, false, false, true);
 
 	Title_Screen_Loop();
 }

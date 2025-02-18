@@ -1,4 +1,5 @@
 === INCOMING MESSAGE ===
+
 >> Executing script "terminal_logs\setup\register.z"
 	["terminal_logs\setup\register.z"]
 		- main()
@@ -9,7 +10,7 @@
 		- flush_session_pipeline()
 		- system("close")
 	=== PROGRAM ENDED WITH ERROR CODE 0 ===
-		
+
 >> Establishing connection...
 >> Pinging internal system network...
 >> unsupported medium: "s_line"
@@ -18,7 +19,7 @@
 
 >> m_line 1-51 unresponsive; rerouting...
 >> Route cached
->> Requesting communication parameters
+>> Requesting communication parameters...
 >> Exchanging 256-key...
 >> Connection established!
 
@@ -29,8 +30,7 @@
 Something came up, and we've got a job for you.
 
 Rheinsberg Nuclear Powerplant
-Kernkraftwerk Rheinsberg (K.K.R.)
-WWER type reactor
+Kernkraftwerk Rheinsberg (K.K.R.) WWER type reactor
 
 Experienced a tear in the tubing of a cooling 
 circuit in sector alpha.

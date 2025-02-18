@@ -145,9 +145,9 @@ void Engine_Loop()
 {
 	Last_Time = glfwGetTime();
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	/*UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
-	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;*/
 
 	while (!glfwWindowShouldClose(Window))
 	{

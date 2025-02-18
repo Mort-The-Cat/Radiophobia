@@ -186,7 +186,7 @@ void Shoot_Fire(float Angle)
 
 	if (Target != nullptr)
 	{
-		Fire_Sound->setVolume(1);
+		// Fire_Sound->setVolume(1);
 
 		Scene_Lights.push_back(new Lightsource(Info.Collision_Position - Info.Collision_Normal * glm::vec3(0.3), glm::vec3(RNG() * 1 + 2, RNG() + 1, RNG()), Info.Collision_Normal, 360, 1, 0.35f));
 		Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;

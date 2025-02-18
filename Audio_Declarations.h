@@ -15,10 +15,10 @@
 
 irrklang::ISoundEngine* Sound_Engine;
 
+irrklang::ISound* Music;
+
 float Sound_Effect_Volume = 0.1f;
 float Music_Volume = 0.1f;
-
-irrklang::ISound* Fire_Sound;
 
 // irrklang::ISoundSource* Bump_Sound_Effect_Source;
 
@@ -37,13 +37,7 @@ void Initialise_Sound_Engine()
 
 	Sound_Engine->setSoundVolume(0.5f);
 
-	Sound_Engine->play2D("Assets/Audio/PC.wav", false);
-
-	// Bump_Sound_Effect_Source = Sound_Engine->addSoundSourceFromFile("Assets/Audio/Step.wav", irrklang::ESM_AUTO_DETECT, true);
-
-	Fire_Sound = Sound_Engine->play2D("Assets/Audio/Burner2.wav", true, true);
-	Fire_Sound->setVolume(0);
-	Fire_Sound->setIsPaused(false);
+	// Sound_Engine->play2D("Assets/Audio/PC.wav", false);
 }
 
 void Destroy_Sound_Engine()

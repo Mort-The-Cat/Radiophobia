@@ -14,6 +14,10 @@
 
 #define ASF_DELETE_ONCE_FINISHED 2u
 
+#define ASF_LOOP 3u
+
+#define ASF_MUSIC_TRACK 4u
+
 // ASF stands for audio-source-flags lol
 
 // We can modify this later if we really want to
@@ -27,7 +31,7 @@ namespace Audio
 		float Volume = 0;
 		std::mutex Sounds_Mutex;
 		std::vector<irrklang::ISound*> Sounds;
-		bool Flags[3] = { false, false, false };
+		bool Flags[5] = { false, false, false, false, false };
 
 		~Audio_Source()
 		{
@@ -48,14 +52,20 @@ namespace Audio
 			irrklang::ISound* Sound = nullptr;
 			Sounds_Mutex.lock();
 			while(Sound == nullptr)
-				Sound = Sound_Engine->play2D(Sound_Source, false, true, false, true);
+				Sound = Sound_Engine->play2D(Sound_Source, Flags[ASF_LOOP], true, false, true);
 			//Sound_Engine->play3D(Sound_Source, irrklang::vec3df(Position.x, Position.y, Position.z), false, false, false, false);
 			Sounds.push_back(Sound);
+
 			Sounds_Mutex.unlock();
 		}
 
 		void Update(const Camera& Camera)
 		{
+			if (Flags[ASF_MUSIC_TRACK])
+			{
+				Volume = Music_Volume / Sound_Effect_Volume;
+			}
+
 			glm::vec3 Delta_Vector = Position - Camera.Position;
 
 			float Delta_Inverse_Length = (Fast::Sqrt(glm::dot(Delta_Vector, Delta_Vector)));
@@ -106,6 +116,12 @@ namespace Audio
 
 	std::vector<Audio_Source*> Audio_Sources;
 
+	void Set_Music_Tracks_For_Deletion()
+	{
+		for (size_t W = 0; W < Audio_Sources.size(); W++)
+			Audio_Sources[W]->Flags[ASF_TO_BE_DELETED] |= Audio_Sources[W]->Flags[ASF_MUSIC_TRACK];
+	}
+
 	void Handle_Audio_Deletions()
 	{
 		for(size_t W = 0; W < Audio_Sources.size(); W++)
@@ -128,6 +144,15 @@ namespace Audio
 		Audio_Sources.push_back(Source);
 
 		return Source;
+	}
+
+	void Create_Music_Source(irrklang::ISoundSource* Sound_Source)
+	{
+		Audio_Source* Source = Create_Audio_Source(glm::vec3(0.0f), Music_Volume);
+		Source->Flags[ASF_LOOP] = true;
+		Source->Flags[ASF_MUSIC_TRACK] = true;
+		Source->Flags[ASF_WITHOUT_POSITION] = true;
+		Source->Play_Sound(Sound_Source);
 	}
 
 	struct Job_Handle_Audio_Parameters
@@ -156,11 +181,13 @@ namespace Audio
 
 	void Handle_Audio(Camera& Listener)
 	{
+		// Music->setVolume(Music_Volume / Sound_Effect_Volume);
+
 		Sound_Engine->setSoundVolume(Sound_Effect_Volume);
 		Sound_Engine->update();
 
-		 for (size_t W = 0; W < Audio_Sources.size(); W++)
-		 	Audio_Sources[W]->Update(Listener);
+		// for (size_t W = 0; W < Audio_Sources.size(); W++)
+		// 	Audio_Sources[W]->Update(Listener);
 
 		for (size_t W = 0; W < NUMBER_OF_WORKERS; W++)
 			Job_System::Submit_Job(Job_System::Job(Job_Handle_Audio_Task, new Job_Handle_Audio_Parameters(W, &Listener)));

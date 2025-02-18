@@ -207,6 +207,7 @@ namespace Font_Table
 #define UF_SHADOW_BACKDROP 7u
 #define UF_CENTRE_TEXT 8u
 #define UF_BUTTON_OVERRIDE 9u
+#define UF_DELETE_IF_ALPHA_ZERO 10u	// When this flag is set, the UI element is automatically deleted as soon as the "Colour" alpha value equals zero
 
 bool UI_Continue_Looping = false;
 
@@ -378,7 +379,7 @@ class UI_Element // The subclasses hereof will handle things like text, buttons,
 public:
 	float X1, Y1, X2, Y2;
 
-	bool Flags[10] = { false, true, false, false, false, true, false, false, false, false };
+	bool Flags[11] = { false, true, false, false, false, true, false, false, false, false, false };
 
 	float Shadow_Distance = 1.0f / 20.0f;
 
@@ -525,6 +526,9 @@ public:
 	{
 		if (Controller != nullptr)
 			Controller->Control_Function(this);
+
+		if (Flags[UF_DELETE_IF_ALPHA_ZERO] && Colour.w == 0)
+			Flags[UF_TO_BE_DELETED] = true;
 
 		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
 
