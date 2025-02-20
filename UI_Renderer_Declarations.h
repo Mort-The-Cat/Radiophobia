@@ -13,7 +13,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-std::string Current_Language_Setting = "Deutsch"; // This can be set to "English" or "Deutsch" etc and can be changed in settings
+std::string Current_Language_Setting = "English"; // This can be set to "English" or "Deutsch" etc and can be changed in settings
 bool Language_Settings_Update_Flag = false;	// This flag is changed if, on a particular frame, it's requested that the language settings be changed
 
 namespace Font_Table
@@ -576,6 +576,28 @@ public:
 	}
 };
 
+class UI_Filling_Bar_Controller : public UI_Controller
+{
+public:
+	float Bar_Size;
+	float* Bar_Value;
+	const float* Upper_Value;
+
+	UI_Filling_Bar_Controller(float Bar_Sizep, float* Bar_Valuep, const float* Upper_Valuep)
+	{
+		Bar_Size = Bar_Sizep;
+		Bar_Value = Bar_Valuep;
+		Upper_Value = Upper_Valuep;
+	}
+
+	virtual void Control_Function(UI_Element* Element) override
+	{
+		Element->X2 = Element->X1 + (*Bar_Value / *Upper_Value) * Bar_Size;
+		if ((Element->X2 - Element->X1) < (Element->UI_Border_Size * 2))
+			Element->X2 = Element->X1 + 2 * Element->UI_Border_Size;
+	}
+};
+
 class UI_Loading_Screen_Icon_Controller : public UI_Controller
 {
 public:
@@ -586,7 +608,7 @@ public:
 		Loading_Bar_Size = Loading_Bar_Sizep;
 	}
 
-	virtual void Control_Function(UI_Element* Element)
+	virtual void Control_Function(UI_Element* Element) override
 	{
 		// We'll somehow check the progress on the work that needs to be done
 

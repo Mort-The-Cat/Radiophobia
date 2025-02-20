@@ -63,7 +63,7 @@ namespace Audio
 		{
 			if (Flags[ASF_MUSIC_TRACK])
 			{
-				Volume = Music_Volume / Sound_Effect_Volume;
+				Volume = Music_Volume / (Sound_Effect_Volume * 0.5f);
 			}
 
 			glm::vec3 Delta_Vector = Position - Camera.Position;
@@ -183,7 +183,7 @@ namespace Audio
 	{
 		// Music->setVolume(Music_Volume / Sound_Effect_Volume);
 
-		Sound_Engine->setSoundVolume(Sound_Effect_Volume);
+		Sound_Engine->setSoundVolume(0.2f * Sound_Effect_Volume);
 		Sound_Engine->update();
 
 		// for (size_t W = 0; W < Audio_Sources.size(); W++)

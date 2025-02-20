@@ -79,6 +79,14 @@ void Set_Difficulty_Easy(UI_Element* Element)
 	Selected_Difficulty = Difficulty::Easy;
 }
 
+const float Max_Master_Volume = 1.3f;
+
+void Master_Volume_Up(UI_Element* Element) { Sound_Effect_Volume = std::min(1.3f, Sound_Effect_Volume + 0.2f); }
+void Master_Volume_Down(UI_Element* Element) { Sound_Effect_Volume = std::max(0.1f, Sound_Effect_Volume - 0.2f); }
+
+void Music_Volume_Up(UI_Element* Element) { Music_Volume = std::min(1.0f, Music_Volume + 0.1f); }
+void Music_Volume_Down(UI_Element* Element) { Music_Volume = std::max(0.1f, Music_Volume - 0.1f); }
+
 bool Is_Difficulty_Easy() { return Selected_Difficulty == Difficulty::Easy; }
 bool Is_Difficulty_Medium() { return Selected_Difficulty == Difficulty::Medium; }
 bool Is_Difficulty_Hard() { return Selected_Difficulty == Difficulty::Hard; }
@@ -175,6 +183,95 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 
 void Open_Settings_Menu(UI_Element* Element);
 
+void Open_Audio_Settings_Menu(UI_Element* Element)
+{
+	Fade_Colour<FADE_TO_COLOUR>(glm::vec4(0.0f), 10.0f);
+
+	Delete_All_UI();
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+
+	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 5.0f, -0.5f, "Audio.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Shadow_Distance *= 0.25f;
+
+	//
+
+	UI_Elements.push_back(new Text_UI_Element(-0.75f, -0.4f, 0.45f, -0.1f, "Master_Volume.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+
+	UI_Elements.push_back(new UI_Element(0.45f, -0.4f, 1.35f, -0.1f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	UI_Elements.push_back(new UI_Element(0.45f, -0.4f, 1.35f, -0.1f, Pull_Texture("Assets/Textures/White.png").Texture, new UI_Filling_Bar_Controller(0.9f, &Sound_Effect_Volume, &Max_Master_Volume)));
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+
+	UI_Elements.push_back(new Button_UI_Element(1.35f, -0.4f, 1.65f, -0.1f, Master_Volume_Down, Pull_Texture("Assets/UI/Audio_Down.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	UI_Elements.push_back(new Button_UI_Element(1.65f, -0.4f, 1.95f, -0.1f, Master_Volume_Up, Pull_Texture("Assets/UI/Audio_Up.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	//
+
+	UI_Elements.push_back(new Text_UI_Element(-0.75f, 0.0f, 0.45f, 0.3f, "Music_Volume.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+
+	UI_Elements.push_back(new UI_Element(0.45f, 0.0f, 1.35f, 0.3f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	UI_Elements.push_back(new UI_Element(0.45f, 0.0f, 1.35f, 0.3f, Pull_Texture("Assets/Textures/White.png").Texture, new UI_Filling_Bar_Controller(0.9f, &Music_Volume, &One)));
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+
+	UI_Elements.push_back(new Button_UI_Element(1.35f, 0.0f, 1.65f, 0.3f, Music_Volume_Down, Pull_Texture("Assets/UI/Audio_Down.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	UI_Elements.push_back(new Button_UI_Element(1.65f, 0.0f, 1.95f, 0.3f, Music_Volume_Up, Pull_Texture("Assets/UI/Audio_Up.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	//
+
+	Place_Language_Buttons();
+
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, 0.4f, 0.725f, 0.7f, Open_Settings_Menu, "Back.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
+
+	Fade_From_Colour(glm::vec4(0.0f), 10.0f);
+
+	UI_Loop();
+}
+
 void Open_Controls_Menu(UI_Element* Element)
 {
 	Fade_Colour<FADE_TO_COLOUR>(glm::vec4(0.0f), 10.0f);
@@ -226,7 +323,7 @@ void Open_Settings_Menu(UI_Element* Element)
 
 	//
 
-	UI_Elements.push_back(new Text_UI_Element(-0.75f, -0.4f, 0.3f, -0.1f, "Difficulty.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
+	/*UI_Elements.push_back(new Text_UI_Element(-0.75f, -0.4f, 0.3f, -0.1f, "Difficulty.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
@@ -251,9 +348,48 @@ void Open_Settings_Menu(UI_Element* Element)
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;*/
+
+	// We only want the difficulty to come up during the game-creation menu
+
+	/*UI_Elements.push_back(new Text_UI_Element(-0.75f, -0.4f, 0.45f, -0.1f, "Master_Volume.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 
-	// We only want the difficulty to come up 
+	UI_Elements.push_back(new UI_Element(0.45f, -0.4f, 1.35f, -0.1f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	UI_Elements.push_back(new UI_Element(0.45f, -0.4f, 1.35f, -0.1f, Pull_Texture("Assets/Textures/White.png").Texture, new UI_Filling_Bar_Controller(0.9f, &Sound_Effect_Volume, &Max_Master_Volume)));
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+
+	UI_Elements.push_back(new Button_UI_Element(1.35f, -0.4f, 1.65f, -0.1f, Master_Volume_Down, Pull_Texture("Assets/UI/Audio_Down.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+
+	UI_Elements.push_back(new Button_UI_Element(1.65f, -0.4f, 1.95f, -0.1f, Master_Volume_Up, Pull_Texture("Assets/UI/Audio_Up.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;*/
+
+
+	/*UI_Elements.push_back(new Text_UI_Element(-0.75f, -0.4f, 0.3f, -0.1f, "Music_Volume.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;*/
+
+	UI_Elements.push_back(new Button_Text_UI_Element(-0.75f, -0.4f, 0.725f, -0.1f, Open_Audio_Settings_Menu, "Audio.txt", true, glm::vec4(1.0f), &Font_Console, 0.1f, 0.025f));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 
 	//
 

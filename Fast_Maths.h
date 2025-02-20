@@ -7,6 +7,8 @@
 #include <math.h>
 #include <random>
 
+const float One = 1.0f;
+
 constexpr const float DTR = 3.14159f / 180.0f;
 
 constexpr const float Inv_Rand = 1.0f / (float)RAND_MAX;

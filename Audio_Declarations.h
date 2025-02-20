@@ -17,8 +17,8 @@ irrklang::ISoundEngine* Sound_Engine;
 
 irrklang::ISound* Music;
 
-float Sound_Effect_Volume = 0.1f;
-float Music_Volume = 0.1f;
+float Sound_Effect_Volume = 0.5f;
+float Music_Volume = 0.5f;
 
 // irrklang::ISoundSource* Bump_Sound_Effect_Source;
 
