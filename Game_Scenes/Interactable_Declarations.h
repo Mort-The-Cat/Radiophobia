@@ -80,7 +80,7 @@ public:
 
 			if (Collided == Object->Hitboxes[0])
 			{
-				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, "Pickup_Phone.txt", true, glm::vec4(1.0f), &Font_Console));
+				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, "Pickup_Phone.txt", true, glm::vec4(1.0f, 1.0f, 1.0f, 2.0f), &Font_Console));
 				/* Added extra check here because German is so much longer xd */
 
 				UI_Elements.back()->Colour.w = 0.5f;

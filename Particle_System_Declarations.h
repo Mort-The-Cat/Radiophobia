@@ -66,7 +66,7 @@ struct Galaxy_Test_Particle
 
 bool Smoke_Particle_Remove_If(const Smoke_Particle& A)
 {
-	return A.Position.w > 6; // Smoke disappears after 6 seconds
+	return A.Position.w > 8; // Smoke disappears after 8 seconds
 }
 
 bool Spark_Particle_Remove_If(const Spark_Particle& A)

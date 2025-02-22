@@ -571,6 +571,8 @@ void Title_Screen_Loop();
 
 void Create_Title_Screen_Page()
 {
+	Pull_Audio("Assets/Audio/UI/Beep.wav");
+
 	for (float Radius = 0.1f; Radius < 10.0f; Radius += 0.15f)
 	{
 		float Total = 64 * Radius;

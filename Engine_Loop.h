@@ -231,13 +231,13 @@ void Engine_Loop()
 		End_Of_Frame();
 
 		/*if (Time_Elapsed_Since_FPS_Update == 0)
-			for (size_t W = 0; W < 10; W++)
+			for (size_t W = 0; W < 1; W++)
 			{
 				glm::vec3 Position, Velocity;
 
 				// 3.773928, -0.05f, -3.415
 
-				Position = glm::vec3(2 * RNG() + 2.2, RNG(), 4 * RNG() - 3.0f);
+				Position = glm::vec3(3 * RNG() + 2.2, RNG() - 0.5, 3 * RNG() - 3.0f);
 
 				Velocity = glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f);
 

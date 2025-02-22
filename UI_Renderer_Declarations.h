@@ -889,6 +889,8 @@ class Button_UI_Element : public UI_Element
 public:
 	void (*Button_Function)(UI_Element*);
 
+	std::string Click_Directory = "Assets/Audio/UI/Beep.wav";
+
 	Button_UI_Element(float X1p, float Y1p, float X2p, float Y2p, void (*Button_Functionp)(UI_Element*), Texture Imagep = Texture())
 	{
 		X1 = X1p;
@@ -929,7 +931,14 @@ public:
 		Colour = Temp_Colour;
 
 		if (Hovering && Mouse_Unclick(0)) // If we're hovering over the button and the mouse just unclicked, 
+		{
+			Audio::Audio_Source* Source = Audio::Create_Audio_Source(glm::vec3(0.0f), 1.0f);
+			Source->Flags[ASF_DELETE_ONCE_FINISHED] = true;
+			Source->Flags[ASF_WITHOUT_POSITION] = true;
+			Source->Play_Sound(Pull_Audio(Click_Directory.c_str()).Source);	// Play click sound
+
 			Button_Function(this);		// run the button-function
+		}
 	}
 };
 
@@ -937,6 +946,8 @@ class Button_Text_UI_Element : public Text_UI_Element
 {
 public:
 	void (*Button_Function)(UI_Element*);
+
+	std::string Click_Directory = "Assets/Audio/UI/Beep.wav";
 
 	Button_Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, void (*Button_Functionp)(UI_Element*), std::string Textp, bool Load_From_File = false, glm::vec4 Text_Colourp = glm::vec4(1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
 	{
@@ -999,7 +1010,14 @@ public:
 		Colour = Temp_Colour;
 
 		if (Hovering && Mouse_Unclick(0)) // If we're hovering over the button and the mouse just unclicked, 
+		{
+			Audio::Audio_Source* Source = Audio::Create_Audio_Source(glm::vec3(0.0f), 1.0f);
+			Source->Flags[ASF_DELETE_ONCE_FINISHED] = true;
+			Source->Flags[ASF_WITHOUT_POSITION] = true;
+			Source->Play_Sound(Pull_Audio(Click_Directory.c_str()).Source);	// Play click sound
+
 			Button_Function(this);		// run the button-function
+		}
 	}
 };
 
