@@ -206,10 +206,14 @@ void Setup_Intro_Level()
 	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Test_Intro_Level_Floor.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), Generate_AABB_Hitboxes("Assets/Hitboxes/Intro_Level/Intro_Level_Floor_Hitbox.obj"));
 
-	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Floor_Tiles));
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS, MF_ACTIVE }, Object_Material::Floor_Tiles));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Intro_Level_Stairs.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), 
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Intro_Level_Stairs.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Floor_Tiles.png").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), 
+		new Thought_Popups_Controller(std::vector<Thought_Popups_Controller::Thought_Trigger>{ 
+			{ "Intro_Level/Rubble_Stairs.txt", glm::vec3(-3.422f, -1.2f, 7.7f), 1.5f, 0 }, // First stairs and rubble
+			{ "Intro_Level/Rubble_Hallway.txt", glm::vec3(6.4f, -0.11f, -3.27f), 1.65f, 0 }
+	}),
 		std::vector<Hitbox*>{ 
 			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Stairs_0_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh),
 			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Stairs_1_Hitbox.obj", LOAD_MESH_OBJ_BIT).Mesh),

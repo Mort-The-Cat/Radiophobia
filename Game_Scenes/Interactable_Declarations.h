@@ -8,6 +8,69 @@
 #include "..\Hitdetection.h"
 #include "..\Audio_Declarations.h"
 
+class Thought_Popups_Controller : public Controller
+{
+public:
+	struct Thought_Trigger
+	{
+		std::string Inner_Monologue; // Directory of text
+		glm::vec3 Position; // Position of the thought trigger
+		float Radius; // Radius at which thought trigger is activated
+		float Time = 0;
+	};
+
+	std::vector<Thought_Trigger> Thought_Triggers;
+
+	Thought_Popups_Controller(std::vector<Thought_Trigger> Thought_Triggersp)
+	{
+		Thought_Triggers = Thought_Triggersp;
+	}
+
+	virtual void Initialise_Control(Model* Objectp) override
+	{
+		Object = Objectp;
+	}
+
+	virtual void Control_Function() override
+	{
+		// Go through every thought trigger
+
+		for (size_t W = 0; W < Thought_Triggers.size(); W++)
+		{
+			glm::vec3 Delta_Vector = Player_Physics_Object.Object->Position - Thought_Triggers[W].Position;
+
+			if (glm::dot(Delta_Vector, Delta_Vector) < Thought_Triggers[W].Radius * Thought_Triggers[W].Radius)
+			{
+				Thought_Triggers[W].Time = std::fminf(Thought_Triggers[W].Time + Tick, 1);
+			}
+			else
+				Thought_Triggers[W].Time = std::fmaxf(Thought_Triggers[W].Time - Tick, 0);
+
+			if (Thought_Triggers[W].Time > 0)
+			{
+				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, 
+					Thought_Triggers[W].Inner_Monologue, true, 
+					glm::vec4(1.0f, 1.0f, 1.0f, Thought_Triggers[W].Time * 2.0f), &Font_Console));
+				UI_Elements.back()->Colour.w = Thought_Triggers[W].Time * 0.5f;
+				
+				UI_Elements.back()->Flags[UF_IMAGE] = true;
+
+				//UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+				UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+				UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+
+				UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+
+				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
+			}
+		}
+
+		// Check if colliding with player and set hitbox pointers
+
+		// Render popups that collide with player
+	}
+};
+
 class Phone_Controller : public Controller
 {
 	enum State
@@ -25,6 +88,11 @@ public:
 	Audio::Audio_Source* Sound = nullptr;
 
 	float Time = 0.0f;
+
+	~Phone_Controller()
+	{
+		Sound->Flags[ASF_TO_BE_DELETED] = true;
+	}
 
 	Phone_Controller()
 	{
@@ -118,6 +186,8 @@ public:
 
 			*/
 
+			Holster_Current_Item();
+
 			Player_Flags[Player_Movement_Revoke_Flag] = true;
 			Player_Flags[Player_Direction_Revoke_Flag] = true;
 
@@ -207,6 +277,11 @@ public:
 	Mesh_Animator Remove_Animation;
 
 	Audio::Audio_Source* Damaged_Sound;
+
+	~Damageable_Vent_Controller()
+	{
+		Damaged_Sound->Flags[ASF_TO_BE_DELETED] = true;
+	}
 
 	Damageable_Vent_Controller(std::string Directoryp) 
 	{

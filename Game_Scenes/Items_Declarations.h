@@ -19,6 +19,9 @@ class Item
 public:
 	std::string Name;
 	std::vector<Model> Viewmodel_Meshes; // Viewmodel_Meshes[0] is always the hands (unless there are none in the viewmodel)
+
+	virtual void Handle_Viewmodel_States() {}
+	virtual void Render_Viewmodel() {}
 	
 	// This probably won't be added to the list of scene models, we'll just render them directly from the item. Less worries- less complicated
 };
@@ -27,6 +30,8 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 
 Item* Player_Current_Item; // This is the item the player is currently holding
 Item* Player_Desired_Item; // This is the item that the player is currently trying to switch to.
+
+inline void Holster_Current_Item() { Player_Desired_Item = nullptr; }
 
 class Pistol : public Item
 {
@@ -95,7 +100,7 @@ public:
 
 	}
 
-	void Handle_Viewmodel_States()
+	virtual void Handle_Viewmodel_States() override
 	{
 		// 2.2f, -1.23f, 8.24f
 		// if(Inputs[Controls::Lean_Left])
@@ -219,7 +224,7 @@ public:
 		}
 	}
 
-	void Render_Viewmodel()
+	virtual void Render_Viewmodel() override
 	{
 		Flashlight->Position = Player_Camera.Position + glm::vec3(0.0f, 0.1f, 0.0f);
 		Flashlight->Direction = Camera_Direction;
@@ -261,6 +266,9 @@ void Initialise_Pistol()
 	Pull_Audio("Assets/Audio/Makarov.wav");
 	Pull_Audio("Assets/Audio/Makarov_Reload.wav");
 	Pull_Audio("Assets/Audio/No_Ammo_Click.wav");
+
+	Player_Current_Item = &Makarov_Pistol;
+	Player_Desired_Item = &Makarov_Pistol;
 
 	Makarov_Pistol.Flashlight = new Lightsource(glm::vec3(0, 0, 0), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 30.0f, 3.0f);
 	Makarov_Pistol.Flashlight->Flags[LF_PRIORITY] = true;

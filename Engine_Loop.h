@@ -30,7 +30,8 @@ void Render_All()
 		Scene_Models[W]->Render(Scene_Object_Shader);
 	}
 
-	Makarov_Pistol.Render_Viewmodel();
+	if(Player_Current_Item != nullptr)
+		Player_Current_Item->Render_Viewmodel();
 
 	Pistol_Shell_Particles.Shader.Activate();
 	Pistol_Shell_Particles.Render();
