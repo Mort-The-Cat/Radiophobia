@@ -24,6 +24,9 @@ public:
 	Thought_Popups_Controller(std::vector<Thought_Trigger> Thought_Triggersp)
 	{
 		Thought_Triggers = Thought_Triggersp;
+
+		//for (size_t W = 0; W < Thought_Triggers.size(); W++)
+		//	Pull_Text(Thought_Triggers[W].Inner_Monologue.c_str(), true); // This will load all of the text in nicely
 	}
 
 	virtual void Initialise_Control(Model* Objectp) override
@@ -48,9 +51,12 @@ public:
 
 			if (Thought_Triggers[W].Time > 0)
 			{
+				Pull_Text(("Assets/Text/" + Current_Language_Setting + "/" + Thought_Triggers[W].Inner_Monologue).c_str(), true); // This will load in the value we want
+
 				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, 
 					Thought_Triggers[W].Inner_Monologue, true, 
 					glm::vec4(1.0f, 1.0f, 1.0f, Thought_Triggers[W].Time * 2.0f), &Font_Console));
+
 				UI_Elements.back()->Colour.w = Thought_Triggers[W].Time * 0.5f;
 				
 				UI_Elements.back()->Flags[UF_IMAGE] = true;
@@ -169,6 +175,16 @@ public:
 					Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Pickup_Phone.wav").Source);
 
 					Fade_From_Colour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
+
+					//
+
+					Player_Desired_Item = nullptr;
+
+					Holster_Current_Item();
+
+					Player_Flags[Player_Movement_Revoke_Flag] = true;
+					Player_Flags[Player_Direction_Revoke_Flag] = true;
+					Player_Flags[Player_Items_Revoke_Flag] = true;
 				}
 			}
 
@@ -185,11 +201,6 @@ public:
 			555.532898, -4.183055, 0.000000
 
 			*/
-
-			Holster_Current_Item();
-
-			Player_Flags[Player_Movement_Revoke_Flag] = true;
-			Player_Flags[Player_Direction_Revoke_Flag] = true;
 
 			Player_Physics_Object.Object->Position = glm::vec3(5.296f, -0.975419f, -0.9741f); // Approach_Vector(Player_Physics_Object.Object->Position, glm::vec3(5.296f, -0.975419f, -0.9741f), 0.75f * Tick);
 
@@ -253,6 +264,10 @@ public:
 
 				Player_Flags[Player_Movement_Revoke_Flag] = false;
 				Player_Flags[Player_Direction_Revoke_Flag] = false;
+				Player_Flags[Player_Items_Revoke_Flag] = false;
+
+				Player_Desired_Item = &Makarov_Pistol;
+				Makarov_Pistol.Equip_Item();
 			}
 			
 			break;

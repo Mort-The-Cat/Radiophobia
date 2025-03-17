@@ -55,11 +55,24 @@ namespace Cache
 		irrklang::ISoundSource* Source;
 	};
 
+	struct Text_File_Cache_Info
+	{
+		alignas(0) std::string Directory;
+		std::string Text;
+	};
+
 	std::vector<Mesh_Cache_Info> Mesh_Cache;
 	std::vector<Texture_Cache_Info> Texture_Cache;
 	std::vector<Animation_Cache_Info> Animation_Cache;
 
 	std::vector<Audio_Cache_Info> Audio_Cache;
+
+	std::vector<Text_File_Cache_Info> Text_Cache;
+
+	void Clear_Text_Cache()
+	{
+		Text_Cache.clear();
+	}
 
 	void Clear_Texture_Cache()
 	{
@@ -116,6 +129,20 @@ namespace Cache
 				return true;
 			}
 		}
+		return false;
+	}
+
+	bool Search_Text_Cache(const char* Directory, Text_File_Cache_Info* Target_Info)
+	{
+		for (size_t W = 0; W < Text_Cache.size(); W++)
+		{
+			if (strcmp(Directory, Text_Cache[W].Directory.c_str()) == 0)
+			{
+				*Target_Info = Text_Cache[W];
+				return true;
+			}
+		}
+
 		return false;
 	}
 
@@ -442,6 +469,22 @@ Cache::Audio_Cache_Info Pull_Audio(const char* Directory)
 	Cache_Info.Source = Sound_Engine->addSoundSourceFromFile(Directory, irrklang::ESM_AUTO_DETECT, true);
 
 	Cache::Audio_Cache.push_back(Cache_Info);
+
+	return Cache_Info;
+}
+
+Cache::Text_File_Cache_Info Pull_Text(const char* Directory, unsigned char Cache_Value = false)
+{
+	Cache::Text_File_Cache_Info Cache_Info;
+
+	if (Cache::Search_Text_Cache(Directory, &Cache_Info))
+		return Cache_Info;
+
+	Cache_Info.Directory = Directory;
+	Cache_Info.Text = Get_File_Contents(Directory);
+
+	if(Cache_Value)
+		Cache::Text_Cache.push_back(Cache_Info);
 
 	return Cache_Info;
 }

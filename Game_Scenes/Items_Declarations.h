@@ -22,6 +22,8 @@ public:
 
 	virtual void Handle_Viewmodel_States() {}
 	virtual void Render_Viewmodel() {}
+	virtual void Equip_Item() {}
+	virtual void Holster() {}
 	
 	// This probably won't be added to the list of scene models, we'll just render them directly from the item. Less worries- less complicated
 };
@@ -31,7 +33,7 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 Item* Player_Current_Item; // This is the item the player is currently holding
 Item* Player_Desired_Item; // This is the item that the player is currently trying to switch to.
 
-inline void Holster_Current_Item() { Player_Desired_Item = nullptr; }
+inline void Holster_Current_Item() { if (Player_Current_Item != nullptr) Player_Current_Item->Holster(); Player_Desired_Item = nullptr; }
 
 class Pistol : public Item
 {
@@ -61,6 +63,20 @@ public:
 
 	// We'll just use a simple switch-statement to handle what the pistol does haha
 	// Easy as pie
+
+	virtual void Equip_Item() override
+	{
+		Current_State = Drawing;
+		Draw.Time = 0.0f;
+		Draw_Hand.Time = 0.0f;
+	}
+
+	virtual void Holster() override
+	{
+		Current_State = Holstering;
+		Draw.Time = Draw.Animation->Duration / Draw.Animation->Tickrate;
+		Draw_Hand.Time = Draw_Hand.Animation->Duration / Draw.Animation->Tickrate;
+	}
 
 	Pistol() // To create the pistol object, we'll need to create its models, receive its name, receive its animations, etc
 	{
@@ -179,10 +195,14 @@ public:
 
 		case(Holstering):
 
-			Draw.Animate_Mesh(&Viewmodel_Meshes[1].Mesh, -Tick, false); // This plays the animation in reverse, simple
+			Loop_Flag = Draw.Animate_Mesh(&Viewmodel_Meshes[1].Mesh, -Tick, false); // This plays the animation in reverse, simple
 			Draw_Hand.Animate_Mesh(&Viewmodel_Meshes[0].Mesh, -Tick, false);
 
-			Player_Current_Item = Player_Desired_Item;
+			if (Loop_Flag)									// If the animation is finished (includes Time < 0 AS WELL AS Time > Length)
+			{
+				Player_Current_Item = Player_Desired_Item;
+				Equip_Item();
+			}
 
 			break;
 
@@ -347,4 +367,22 @@ void Initialise_Pistol()
 
 	// This sets some stats for the pistol
 }
+
+void Handle_Player_Items()
+{
+	if (!Player_Flags[Player_Items_Revoke_Flag]) // As long as the player's items are revoked, they can't swap back to any item
+	{
+		if (Inputs[Controls::Item_1])
+		{
+			if (Player_Current_Item != &Makarov_Pistol)
+			{
+				Player_Desired_Item = &Makarov_Pistol;
+
+				if(Player_Current_Item != nullptr)		// If the player actually is holding something,
+					Player_Current_Item->Holster();		// We need to holster it before they can pull out another item
+			}
+		}
+	}
+}
+
 #endif

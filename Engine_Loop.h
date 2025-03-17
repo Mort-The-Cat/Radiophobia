@@ -158,7 +158,13 @@ void Engine_Loop()
 
 		Player_Movement();
 
-		Makarov_Pistol.Handle_Viewmodel_States();
+		if(Player_Current_Item != nullptr)
+			Player_Current_Item->Handle_Viewmodel_States();
+		else if (Player_Desired_Item != nullptr)
+		{
+			Player_Current_Item = Player_Desired_Item;
+			Player_Current_Item->Equip_Item();
+		}
 
 		//
 

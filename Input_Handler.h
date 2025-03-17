@@ -21,8 +21,11 @@ Physics::Physics_Object Player_Physics_Object;
 
 #define Player_Movement_Revoke_Flag 0u
 #define Player_Direction_Revoke_Flag 1u
+#define Player_Items_Revoke_Flag 2u
 
-bool Player_Flags[2];
+bool Player_Flags[3];
+
+void Handle_Player_Items();
 
 namespace Collision_Test
 {
@@ -39,9 +42,9 @@ namespace Collision_Test
 
 void UI_Loop();
 
-bool Inputs[11];
+bool Inputs[12];
 
-std::array<uint16_t, 11> Inputs_Keycode = // The values of these keycodes can be changed during runtime if the user wishes to adjust the controls for whatever reason
+std::array<uint16_t, 12> Inputs_Keycode = // The values of these keycodes can be changed during runtime if the user wishes to adjust the controls for whatever reason
 {
 	GLFW_KEY_W, // Forwards
 	GLFW_KEY_S, // backwards
@@ -58,7 +61,11 @@ std::array<uint16_t, 11> Inputs_Keycode = // The values of these keycodes can be
 
 	GLFW_KEY_F, // Use
 
-	GLFW_KEY_R // Reload / auxilliary
+	GLFW_KEY_R, // Reload / auxilliary
+
+	//
+
+	GLFW_KEY_1 // Item 1
 };
 
 GLFWgamepadstate Controller_Inputs;
@@ -73,11 +80,13 @@ namespace Gamepad_Controls
 
 	uint8_t Up = GLFW_GAMEPAD_BUTTON_CROSS;
 
-	uint8_t Forward_Back = 1u;
+	uint8_t Forward_Back = 1u; // These are the axes on the stick
 	uint8_t Left_Right = 0u;
 
 	uint8_t Fire = 5u;
 	uint8_t Auxilliary = 4u;
+
+	uint8_t Item_1 = GLFW_GAMEPAD_BUTTON_DPAD_LEFT;
 }
 
 namespace Controls // These are the indices for every user input. This may need some extra work if the user wishes to *type* something into an in-engine text box.
@@ -97,6 +106,8 @@ namespace Controls // These are the indices for every user input. This may need 
 
 	uint8_t Use = 9;
 	uint8_t Auxilliary = 10;
+
+	uint8_t Item_1 = 11;
 };
 
 float Mouse_Sensitivity = 0.5;
@@ -271,14 +282,7 @@ void Controller_Player_Movement()
 	if (Controller_Inputs.buttons[Gamepad_Controls::Pause] || Window_Width == 0)
 	{
 		Open_Pause_Menu();
-		//Cursor_Reset = false;
-		//UI_Loop();
 	}
-
-	/*if (Controller_Inputs.buttons[Gamepad_Controls::Use])
-	{
-		Spawn_Test_Object();
-	}*/
 
 	float Speed = -18.5 * Tick;
 
@@ -286,23 +290,6 @@ void Controller_Player_Movement()
 
 	float Movement_X = sin(Angle) * Speed;
 	float Movement_Z = cos(Angle) * Speed;
-
-	if (Controller_Inputs.buttons[Gamepad_Controls::Attack] && Frame_Counter % 5 == 0)
-	{
-		Scene_Models.push_back(new Model({ MF_ACTIVE, MF_PHYSICS_TEST, MF_SOLID, MF_CAST_SHADOWS }, Object_Material::Concrete));
-		Scene_Models.back()->Position = Player_Camera.Position; // +glm::vec3(RNG() * 1 - .5, RNG() * 1 - .5, RNG() * 1 - .5);
-
-		Create_Model(Pull_Mesh("Assets/Models/Particle_Test.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Physics_Object_Controller(), { Generate_Sphere_Hitbox(*Pull_Mesh("Assets/Models/Particle_Test.obj").Mesh) });
-
-		// static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Elasticity *= 0.25;
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Time = 60;
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Mass = 10;
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Inv_Mass = 1.0f / 10.0f;
-
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Velocity = glm::vec3(4) * glm::vec3(-sin(Angle) * cos(DTR * Player_Camera.Orientation.y), -sin(DTR * Player_Camera.Orientation.y), -cos(Angle) * cos(DTR * Player_Camera.Orientation.y));
-
-		Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
-	}
 
 	glm::vec3 Forward_Vector, Right_Vector;
 
@@ -328,17 +315,6 @@ void Controller_Player_Movement()
 		Jump_Timer = 0.0f;
 	}
 
-	// glfwGetGamepadState(GLFW_JOYSTICK_2, &Controller_Inputs);
-
-	/*if (Controller_Inputs.axes[Gamepad_Controls::Fire] > 0.5)
-	{
-		// we wanna apply a force onto some objects!
-
-		Shoot_Fire(Angle);
-	}
-	else
-		Fire_Sound->setVolume(0);*/
-
 	Cursor.x += Controller_Inputs.axes[2] * 0.3f;
 	Cursor.y -= Controller_Inputs.axes[3] * 0.3f;
 
@@ -360,15 +336,7 @@ void Player_Movement()
 	if (Inputs[Controls::Pause] && Cursor_Reset || Window_Width == 0)
 	{
 		Open_Pause_Menu();
-
-		//Cursor_Reset = false;
-		//UI_Loop();
 	}
-
-	/*if (Inputs[Controls::Use])
-	{
-		Spawn_Test_Object();
-	}*/
 
 	float Speed = -18.5 * Tick;
 
@@ -384,36 +352,6 @@ void Player_Movement()
 
 	float Movement_X = sin(Angle) * Speed;
 	float Movement_Z = cos(Angle) * Speed;
-
-	/*if (Mouse_Inputs[1] && Frame_Counter % 5 == 0)
-	{
-		// Audio::Audio_Sources.back()->Play_Sound(Sound_Effect_Source);
-
-		Scene_Models.push_back(new Model({ MF_ACTIVE, MF_PHYSICS_TEST, MF_SOLID, MF_CAST_SHADOWS }, Object_Material::Concrete));
-		Scene_Models.back()->Position = Player_Camera.Position; // +glm::vec3(RNG() * 1 - .5, RNG() * 1 - .5, RNG() * 1 - .5);
-
-		Create_Model(Pull_Mesh("Assets/Models/Particle_Test.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Smoke.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Physics_Object_Controller(), { Generate_Sphere_Hitbox(*Pull_Mesh("Assets/Models/Particle_Test.obj").Mesh) });
-		
-		// static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Elasticity *= 0.25;
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Time = 60;
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Mass = 10;
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Inv_Mass = 1.0f / 10.0f;
-
-		static_cast<Physics_Object_Controller*>(Scene_Models.back()->Control)->Physics_Info->Velocity = glm::vec3(4) * glm::vec3(-sin(Angle) * cos(DTR * Player_Camera.Orientation.y), -sin(DTR * Player_Camera.Orientation.y), -cos(Angle) * cos(DTR * Player_Camera.Orientation.y));
-
-		Sound_Engine->play2D(Pull_Audio("Assets/Audio/Makarov.wav").Source);
-
-		// Billboard_Smoke_Particles.Particles.Spawn_Particle(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
-	}*/
-
-	/*if (Mouse_Inputs[0]) // If left-click,
-	{
-		// we wanna apply a force onto some objects!
-
-		Shoot_Fire(Angle);
-	}
-	else
-		Fire_Sound->setVolume(0);*/
 
 	glm::vec3 Forward_Vector, Right_Vector;
 
@@ -468,18 +406,14 @@ void Player_Movement()
 	Player_Camera.Orientation.y = std::max(Player_Camera.Orientation.y, -90.0f);
 	Player_Camera.Orientation.y = std::min(Player_Camera.Orientation.y, 90.0f);
 
-	if (Inputs[Controls::Auxilliary])
-	{
-		// printf(" >> Player y velocity: %f\n", Player_Physics_Object.Velocity.y);
+	//
 
-		//for (size_t W = 0; W < Physics::Scene_Physics_Objects.size(); W++)
-		//{
-		//	Physics::Scene_Physics_Objects[W]->Forces -= glm::vec3(0.25f) * glm::normalize(Physics::Scene_Physics_Objects[W]->Object->Position - Player_Camera.Position);
+	Handle_Player_Items();
 
-		// printf(" >> FPS: %f s\n", 1.0f / Tick);
-
-		printf(" >> Camera info:\n%f, %f, %f\n%f, %f, %f\n", Player_Camera.Position.x, Player_Camera.Position.y, Player_Camera.Position.z, Player_Camera.Orientation.x, Player_Camera.Orientation.y, Player_Camera.Orientation.z);
-	}
+	//if (Inputs[Controls::Auxilliary])
+	//{
+	//	printf(" >> Camera info:\n%f, %f, %f\n%f, %f, %f\n", Player_Camera.Position.x, Player_Camera.Position.y, Player_Camera.Position.z, Player_Camera.Orientation.x, Player_Camera.Orientation.y, Player_Camera.Orientation.z);
+	//}
 }
 
 #endif

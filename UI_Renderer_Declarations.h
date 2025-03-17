@@ -698,7 +698,7 @@ public:
 
 			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
 
-			Text = Get_File_Contents(Directory.c_str());
+			Text = Pull_Text(Directory.c_str()).Text;
 		}
 
 		Size = Sizep;
@@ -852,7 +852,7 @@ public:
 
 				std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
 
-				Text = Get_File_Contents(Directory.c_str());
+				Text = Pull_Text(Directory.c_str()).Text;
 			}
 
 		UI_Shader.Activate();
@@ -970,7 +970,7 @@ public:
 
 			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
 
-			Text = Get_File_Contents(Directory.c_str());
+			Text = Pull_Text(Directory.c_str()).Text;
 		}
 
 		Size = Sizep;
