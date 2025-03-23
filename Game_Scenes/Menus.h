@@ -25,6 +25,13 @@ void Fade_From_Colour(glm::vec4 Colour, float Speed)
 	UI_Elements.back()->Colour = Colour;
 }
 
+void Fade_To_Colour(glm::vec4 Colour, float Speed)
+{
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f, Texture(), new UI_Fade_In_Effect_Controller(0.0f, Speed)));
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Colour = Colour;
+}
+
 template<const bool To_Colour_Flag = FADE_TO_COLOUR>
 void Fade_Colour(glm::vec4 Colour, float Speed)
 {

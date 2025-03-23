@@ -213,31 +213,31 @@ C:\Radiophobia\Radiophobia-main\Engine_Loop.h(178,16): warning C4305: 'argument'
 C:\Radiophobia\Radiophobia-main\Engine_Loop.h(458,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(43,2): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(50,2): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(58,3): warning C4984: 'if constexpr' is a C++17 language extension
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(65,3): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(133,62): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,57): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(133,57): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(133,51): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(126,46): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(133,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(131,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(138,62): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(131,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(138,51): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(131,46): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(138,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(232,51): warning C4305: 'argument': truncation from 'double' to 'float'
@@ -264,7 +264,7 @@ C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(238,52): warning C4305:
 C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(287,27): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Interactable_Declarations.h(153,156): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Interactable_Declarations.h(155,156): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(32,3): warning C4984: 'if constexpr' is a C++17 language extension
@@ -397,7 +397,7 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(28,7): warning C4267: '=
   
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  1 of 5131 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 5134 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     15 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

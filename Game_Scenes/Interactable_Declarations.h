@@ -68,6 +68,8 @@ public:
 				UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 
 				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
+
+				UI_Elements.back()->Flags[UF_AUTO_RESIZE_TO_TEXT] = true;
 			}
 		}
 
@@ -172,15 +174,16 @@ public:
 				if (Inputs[Controls::Use])
 				{
 					Current_State = State::Picking_Up;
-					Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Pickup_Phone.wav").Source);
-
-					Fade_From_Colour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
 
 					//
+
+					Time = 0.0f;
 
 					Player_Desired_Item = nullptr;
 
 					Holster_Current_Item();
+
+					Fade_To_Colour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 2.0f);
 
 					Player_Flags[Player_Movement_Revoke_Flag] = true;
 					Player_Flags[Player_Direction_Revoke_Flag] = true;
@@ -202,13 +205,22 @@ public:
 
 			*/
 
-			Player_Physics_Object.Object->Position = glm::vec3(5.296f, -0.975419f, -0.9741f); // Approach_Vector(Player_Physics_Object.Object->Position, glm::vec3(5.296f, -0.975419f, -0.9741f), 0.75f * Tick);
+			if (Time > 0.5f && Time < 3.0f)
+			{
+				Fade_From_Colour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
 
-			Player_Camera.Orientation.x = Player_Camera.Orientation.x - 360.0f * std::floorf(Player_Camera.Orientation.x / 360.0f);
+				Sound->Play_Sound(Pull_Audio("Assets/Audio/Phone/Pickup_Phone.wav").Source);
 
-			//
+				Time = 4.0f;
 
-			Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f);
+				Player_Physics_Object.Object->Position = glm::vec3(5.296f, -0.975419f, -0.9741f); // Approach_Vector(Player_Physics_Object.Object->Position, glm::vec3(5.296f, -0.975419f, -0.9741f), 0.75f * Tick);
+
+				Player_Camera.Orientation.x = Player_Camera.Orientation.x - 360.0f * std::floorf(Player_Camera.Orientation.x / 360.0f);
+
+				//
+
+				Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f);
+			}
 
 			//Player_Camera.Orientation *= glm::vec3(1.0f - 3.5f * Tick);
 			//Player_Camera.Orientation += glm::vec3(3.5f * Tick) * glm::vec3(195.0f, -4.183055, 0.0f);
@@ -216,6 +228,9 @@ public:
 			// Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f); //glm::normalize((reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A + Object->Position) - Player_Physics_Object.Object->Position);
 			
 			// Player_Camera.Orientation = Approach_Vector(Player_Camera.Orientation, glm::vec3(195.0f, -4.183055, 0.0f), 90.0f * Tick);
+
+			if (Time < 3.0f)
+				break;
 
 			Object->Flags[MF_UPDATE_MESH] = !Pickup_Animation.Animate_Mesh(&Object->Mesh, Tick, true);
 

@@ -195,8 +195,8 @@ public:
 
 		case(Holstering):
 
-			Loop_Flag = Draw.Animate_Mesh(&Viewmodel_Meshes[1].Mesh, -Tick, false); // This plays the animation in reverse, simple
-			Draw_Hand.Animate_Mesh(&Viewmodel_Meshes[0].Mesh, -Tick, false);
+			Loop_Flag = Draw.Animate_Mesh(&Viewmodel_Meshes[1].Mesh, -1.5f * Tick, false); // This plays the animation in reverse, simple
+			Draw_Hand.Animate_Mesh(&Viewmodel_Meshes[0].Mesh, -1.5f * Tick, false);
 
 			if (Loop_Flag)									// If the animation is finished (includes Time < 0 AS WELL AS Time > Length)
 			{

@@ -209,6 +209,10 @@ namespace Font_Table
 #define UF_BUTTON_OVERRIDE 9u
 #define UF_DELETE_IF_ALPHA_ZERO 10u	// When this flag is set, the UI element is automatically deleted as soon as the "Colour" alpha value equals zero
 
+//
+
+#define UF_AUTO_RESIZE_TO_TEXT 11u
+
 bool UI_Continue_Looping = false;
 
 Shader UI_Shader;
@@ -379,7 +383,7 @@ class UI_Element // The subclasses hereof will handle things like text, buttons,
 public:
 	float X1, Y1, X2, Y2;
 
-	bool Flags[11] = { false, true, false, false, false, true, false, false, false, false, false };
+	bool Flags[12] = { false, true, false, false, false, true, false, false, false, false, false, false };
 
 	float Shadow_Distance = 1.0f / 20.0f;
 
@@ -573,6 +577,27 @@ public:
 	virtual void Control_Function(UI_Element* Element)
 	{
 		Element->Colour.w = Opacity; // This is all we care about
+	}
+};
+
+class UI_Fade_In_Effect_Controller : public UI_Controller
+{
+public:
+	float Opacity = 0.0f;
+	float Speed = 3.0f;
+
+	UI_Fade_In_Effect_Controller(float Opacityp, float Speedp)
+	{
+		Opacity = Opacityp;
+		Speed = Speedp;
+	}
+
+	virtual void Control_Function(UI_Element* Element)
+	{
+		Element->Colour.w = Opacity; // This is all we care about
+		Opacity += Tick * Speed;
+
+		Element->Flags[UF_TO_BE_DELETED] = Opacity > 1.0f;
 	}
 };
 
@@ -779,13 +804,16 @@ public:
 		glDrawElementsInstanced(GL_TRIANGLES, Letter.Indices_Count, GL_UNSIGNED_INT, 0u, Character_Indices.size());
 
 		Letter.Delete_Buffer();
-
 #else
 
 		Coords.X1o += Offset;
 
 		float X_Offset = 0;
 		float Y_Offset = 0;
+
+		float Left_X_Pos;
+		float Top_Y_Pos;
+		float Right_X_Pos;
 
 		for (size_t W = 0; W < Text.length(); W++)
 		{
@@ -802,11 +830,11 @@ public:
 
 				Bind_UI_Uniforms(Text_Shader, Character.Glyph, Colour * Text_Colour);
 
-				float Left_X_Pos = Coords.X1o + (Character.Offset.x + X_Offset) * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space
+				Left_X_Pos = Coords.X1o + (Character.Offset.x + X_Offset) * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space
 					+ Size * Window_Aspect_Ratio * 0.5f;
-				float Top_Y_Pos = Coords.Y2o + (Character.Offset.y) * Size * Font->Character_Pixel_To_Screen_Space - Size * (1.5f + Y_Offset);
+				Top_Y_Pos = Coords.Y2o + (Character.Offset.y) * Size * Font->Character_Pixel_To_Screen_Space - Size * (1.5f + Y_Offset);
 
-				float Right_X_Pos = Left_X_Pos + Character.Size.x * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space;
+				Right_X_Pos = Left_X_Pos + Character.Size.x * Window_Aspect_Ratio * Size * Font->Character_Pixel_To_Screen_Space;
 
 				Billboard_Vertex_Buffer Letter(
 					Left_X_Pos,
