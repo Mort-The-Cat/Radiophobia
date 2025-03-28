@@ -105,7 +105,7 @@ void Setup_Intro_Tunnel()
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
 	Scene_Models.push_back(new Model({}, Object_Material::Stone));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
