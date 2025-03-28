@@ -170,6 +170,7 @@
     <ClInclude Include="Game_Scenes\Enemy_Declarations.h" />
     <ClInclude Include="Game_Scenes\Interactable_Declarations.h" />
     <ClInclude Include="Game_Scenes\Items_Declarations.h" />
+    <ClInclude Include="Game_Scenes\Level_Init.h" />
     <ClInclude Include="Game_Scenes\Menus.h" />
     <ClInclude Include="Game_Scenes\Menus_Declarations.h" />
     <ClInclude Include="Game_Scenes\Particle_Effect_Controller_Declarations.h" />
