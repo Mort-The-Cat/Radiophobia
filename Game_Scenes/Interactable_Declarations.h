@@ -8,6 +8,27 @@
 #include "..\Hitdetection.h"
 #include "..\Audio_Declarations.h"
 
+void Create_UI_Popup(const char* Directory, float Transparency)
+{
+	UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f,
+		Directory, true,
+		glm::vec4(1.0f, 1.0f, 1.0f, Transparency * 2.0f), &Font_Console));
+
+	UI_Elements.back()->Colour.w = Transparency * 0.5f;
+
+	UI_Elements.back()->Flags[UF_IMAGE] = true;
+
+	//UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+
+	UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
+
+	UI_Elements.back()->Flags[UF_AUTO_RESIZE_TO_TEXT] = true;
+}
+
 class Thought_Popups_Controller : public Controller
 {
 public:
@@ -53,7 +74,9 @@ public:
 			{
 				Pull_Text(("Assets/Text/" + Current_Language_Setting + "/" + Thought_Triggers[W].Inner_Monologue).c_str(), true); // This will load in the value we want
 
-				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, 
+				Create_UI_Popup(Thought_Triggers[W].Inner_Monologue.c_str(), Thought_Triggers[W].Time);
+
+				/**UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f,
 					Thought_Triggers[W].Inner_Monologue, true, 
 					glm::vec4(1.0f, 1.0f, 1.0f, Thought_Triggers[W].Time * 2.0f), &Font_Console));
 
@@ -69,7 +92,7 @@ public:
 
 				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
 
-				UI_Elements.back()->Flags[UF_AUTO_RESIZE_TO_TEXT] = true;
+				UI_Elements.back()->Flags[UF_AUTO_RESIZE_TO_TEXT] = true;*/
 			}
 		}
 
@@ -156,8 +179,11 @@ public:
 
 			if (Collided == Object->Hitboxes[0])
 			{
-				UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, "Pickup_Phone.txt", true, glm::vec4(1.0f, 1.0f, 1.0f, 2.0f), &Font_Console));
-				/* Added extra check here because German is so much longer xd */
+				Create_UI_Popup("Pickup_Phone.txt", 1.0f);
+
+				/*UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, "Pickup_Phone.txt", true, glm::vec4(1.0f, 1.0f, 1.0f, 2.0f), &Font_Console));
+				
+				//Added extra check here because German is so much longer xd
 
 				UI_Elements.back()->Colour.w = 0.5f;
 
@@ -169,7 +195,7 @@ public:
 
 				UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 
-				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
+				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;*/
 
 				if (Inputs[Controls::Use])
 				{
@@ -421,16 +447,21 @@ public:
 
 			if (Collided == Object->Hitboxes[0])
 			{
-				Opening_Sound->Position = reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A;
-				// Player interacted with the door!
+				Create_UI_Popup("Open_Door.txt", 1.0f);
 
-				// This'll basically remove any collision that the object has
-				reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.y += 9999.0f;
-				reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.y += 9999.0f;
+				if (Inputs[Controls::Use])
+				{
+					Opening_Sound->Position = reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A;
+					// Player interacted with the door!
 
-				Opened = true;
+					// This'll basically remove any collision that the object has
+					reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A.y += 9999.0f;
+					reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->B.y += 9999.0f;
 
-				Opening_Sound->Play_Sound(Pull_Audio("Assets/Audio/Door/Door_Open.wav").Source);
+					Opened = true;
+
+					Opening_Sound->Play_Sound(Pull_Audio("Assets/Audio/Door/Door_Open.wav").Source);
+				}
 			}
 		}
 	}
@@ -448,5 +479,34 @@ public:
 		Opening_Sound = Audio::Create_Audio_Source(Object->Position, 1.0f);
 	}
 };
+
+/*class Alarm_Light_Controller : public Controller // Need to continue work on this
+{
+public:
+	float Direction = 0.0f;
+	Alarm_Light_Controller() {}
+
+	virtual void Control_Function() override
+	{
+		Direction += Tick * 3.14159f * 1.0f;
+
+		glm::vec3 Direction_Vector;
+
+		//Direction_Vector.x = sin(Direction) * 0.866f;
+		//Direction_Vector.z = cos(Direction) * 0.866f;
+		//Direction_Vector.y = 0.5f;
+
+		Direction_Vector.x =  0.5f;
+		Direction_Vector.y = sin(Direction) *0.866f;
+		Direction_Vector.z = cos(Direction) *0.866f;
+
+		Scene_Lights.push_back(new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), Direction_Vector, 35.0f, 10.0f, 0.6f));
+		Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
+		Scene_Lights.back()->Flags[LF_PRIORITY] = true;
+
+		//Volumetric_Cone_Particles.Particles.Particles_Data.clear();
+		//Volumetric_Cone_Particles.Particles.Spawn_Particle(Object->Position, -Direction_Vector, glm::vec3(1.0f, 0.4f, 0.4f), 0.15f, 30.0f);
+	}
+};*/
 
 #endif

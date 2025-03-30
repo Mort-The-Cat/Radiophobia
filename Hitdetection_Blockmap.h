@@ -66,6 +66,9 @@ namespace Blockmap // This is for hitdetection
 			Blockmap_B.y = MAX(Blockmap_B.y, Bounds.B.y);
 		}
 
+		Blockmap_A -= glm::vec2(2.0f);	// This gives a bit of leeway to stop errors in the blockmap
+		Blockmap_B += glm::vec2(2.0f);
+
 		Blockmap_B -= Blockmap_A;
 
 		Blockmap_Width = std::ceilf(Blockmap_B.x / Block_Size);

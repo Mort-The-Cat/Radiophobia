@@ -1,4 +1,5 @@
-﻿  Main.cpp
+﻿  glad.c
+  Main.cpp
 C:\Radiophobia\Radiophobia-main\Fast_Maths.h(111,11): warning C4244: '*=': conversion from 'float' to 'uint32_t', possible loss of data
   (compiling source file 'Main.cpp')
   
@@ -264,7 +265,7 @@ C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(238,52): warning C4305:
 C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(287,27): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Interactable_Declarations.h(155,156): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Interactable_Declarations.h(178,156): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(32,3): warning C4984: 'if constexpr' is a C++17 language extension
@@ -272,16 +273,16 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(32,3): warning C4984: 'i
   C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap_Declarations.h(18,23):
   This diagnostic occurred in the compiler generated function 'std::vector<Hitbox *,std::allocator<Hitbox *>> Blockmap::Read_Blockmap(const glm::vec3)'
   
-C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(71,30): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(74,30): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(72,31): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(75,31): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(109,26): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
+C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(112,26): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(109,50): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
+C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(112,50): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(36,40): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
@@ -391,9 +392,10 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(28,7): warning C4267: '=
   
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  1 of 4892 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    15 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+C:\Radiophobia\Radiophobia-main\OpenGL_Declarations.h(227): warning C4715: 'Get_File_Contents': not all control paths return a value
+C:\Radiophobia\Radiophobia-main\Hitdetection_Declarations.h(295): warning C4715: 'Generate_AABB_Hitboxes': not all control paths return a value
+  All 5135 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
 glfw3.lib(context.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(context.obj)' or at ''; linking object as if no debug info
 glfw3.lib(input.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(input.obj)' or at ''; linking object as if no debug info

@@ -87,6 +87,20 @@ void Load_Test_Scene_Assets()
 	// Pull_Mesh<THREADED>("Assets/Models/Test_Person.obj");
 }
 
+void Create_Ambient_Light_Sources()
+{
+	size_t Size = Scene_Lights.size();
+
+	for (size_t W = 1; W < Size; W+=2)
+	{
+		Scene_Lights.push_back(new Lightsource(*Scene_Lights[W]));
+
+		Scene_Lights.back()->FOV = 180;
+		Scene_Lights.back()->Colour *= glm::vec3(0.99f);
+		Scene_Lights.back()->Attenuation = 1.5f;
+	}
+}
+
 //
 
 //
@@ -103,11 +117,11 @@ void Setup_Intro_Tunnel()
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Floor.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Concrete.jpg").Texture, Pull_Texture("Rubble").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Floor.obj", LOAD_MESH_OBJ_BIT).Mesh) });
 
-	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Concrete));
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
-	Scene_Models.push_back(new Model({}, Object_Material::Stone));
+	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS }, Object_Material::Stone));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Frame.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Toilet_Texture.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>(0));
 
@@ -116,46 +130,59 @@ void Setup_Intro_Tunnel()
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, -1.34f, -1.21f),
 		glm::vec3(0.3f, 0.3f, 0.4f),
-		glm::vec3(0.0f, 1.0f, 0.01f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
 		55.0f, 1.0f, 0.6f));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, -1.34f, -3.037f),
 		glm::vec3(0.3f, 0.3f, 0.4f),
-		glm::vec3(0.0f, 1.0f, 0.01f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
 		55.0f, 1.0f, 0.6f));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, -1.34f, -4.967f),
 		glm::vec3(0.3f, 0.3f, 0.4f),
-		glm::vec3(0.0f, 1.0f, 0.01f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
 		55.0f, 1.0f, 0.6f));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, -1.84f, -7.749f),
 		glm::vec3(0.3f, 0.3f, 0.4f),
-		glm::vec3(0.0f, 1.0f, 0.01f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
 		55.0f, 1.0f, 0.6f));
+
+	Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
+	Scene_Lights.back()->Flags[LF_PRIORITY] = true;
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(-2.704f, -1.34f, -7.749f),
 		glm::vec3(0.3f, 0.3f, 0.4f),
-		glm::vec3(0.0f, 1.0f, 0.01f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
 		55.0f, 1.0f, 0.6f));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(-4.704f, -1.34f, -7.749f),
 		glm::vec3(0.3f, 0.3f, 0.4f),
-		glm::vec3(0.0f, 1.0f, 0.01f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
 		55.0f, 1.0f, 0.6f));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(-6.404f, -1.34f, -7.749f),
 		glm::vec3(0.3f, 0.3f, 0.4f),
-		glm::vec3(0.0f, 1.0f, 0.01f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
 		55.0f, 1.0f, 0.6f));
 
+	//
+
+	//Scene_Models.push_back(new Model({ MF_ACTIVE }, Object_Material::Electronics));
+	//Scene_Models.back()->Position = /*Scene_Lights[2]->Position;*/ glm::vec3(-0.44f, -0.74f, -3.0f);
+	//Create_Model(Pull_Mesh("Assets/Models/Alarm_Light.obj").Vertex_Buffer, Pull_Texture("Assets/Textures/Rust_Texture.png").Texture, Pull_Texture("Rust").Texture, Scene_Models.back(), new Alarm_Light_Controller(), std::vector<Hitbox*>(0));
+
+	// Create_Ambient_Light_Sources();
+
 	Player_Physics_Object.Object->Position = glm::vec3(0.0f, -1.0f, 0.0f);
+	
+	Player_Camera.Orientation.x = 0.0f;
 
 	Lighting_BVH::Generate_Light_BVH_Tree();
 	Lighting_BVH::Update_Leaf_Node_Data();
