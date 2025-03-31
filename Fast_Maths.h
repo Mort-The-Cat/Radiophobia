@@ -34,6 +34,20 @@ std::vector<Type> operator+(std::vector<Type> A, std::vector<Type> B)
 	return A;
 }
 
+template<typename Type>
+std::vector<Type> Splice_Vector(std::vector<Type>& A, size_t Start, size_t End)
+{
+	size_t Delta = End - Start;
+
+	std::vector<Type> New_Vector(Delta);
+	for (size_t I = 0, J = Start; J < End; I++, J++)
+	{
+		New_Vector[I] = A[J];
+	}
+
+	return New_Vector;
+}
+
 namespace Fast
 {
 

@@ -187,7 +187,7 @@ uint Get_Leaf_Node_Index(uint Node, uint Index)
 
 vec3 Lighting()
 {
-	vec3 Sum_Of_Light = vec3(0.01f);
+	vec3 Sum_Of_Light = vec3(0.05f);
 
 	uint Leaf_Node_Index = (Traverse_Partition_Nodes() - 63u) << 1u;
 
@@ -228,6 +228,8 @@ vec3 Lighting()
 
 		Sum_Of_Light += Dot_Normal_Light * Attenuation_Value * Light_Colour[W].xyz;
 	}
+
+	// Sum_Of_Light += vec3(0.2f) * max(0.0f, Normal.y);
 
 	return Sum_Of_Light * Occlusion;
 }

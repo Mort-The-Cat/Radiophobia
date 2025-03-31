@@ -44,7 +44,7 @@ void Run_Engine_Loop(UI_Element* Element)
 
 	//
 
-	Setup_Intro_Level();
+	Setup_Intro_Tunnel();
 
 	Delete_All_UI();
 

@@ -181,22 +181,6 @@ public:
 			{
 				Create_UI_Popup("Pickup_Phone.txt", 1.0f);
 
-				/*UI_Elements.push_back(new Text_UI_Element(-0.9f, -0.9f, strcmp(Current_Language_Setting.c_str(), "Deutsch") == 0 ? 0.9f : 0.3f, -0.65f, "Pickup_Phone.txt", true, glm::vec4(1.0f, 1.0f, 1.0f, 2.0f), &Font_Console));
-				
-				//Added extra check here because German is so much longer xd
-
-				UI_Elements.back()->Colour.w = 0.5f;
-
-				UI_Elements.back()->Flags[UF_IMAGE] = true;
-
-				//UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
-				UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
-				UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
-
-				UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
-
-				UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;*/
-
 				if (Inputs[Controls::Use])
 				{
 					Current_State = State::Picking_Up;
@@ -247,13 +231,6 @@ public:
 
 				Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f);
 			}
-
-			//Player_Camera.Orientation *= glm::vec3(1.0f - 3.5f * Tick);
-			//Player_Camera.Orientation += glm::vec3(3.5f * Tick) * glm::vec3(195.0f, -4.183055, 0.0f);
-
-			// Player_Camera.Orientation = glm::vec3(195.0f, -4.183055, 0.0f); //glm::normalize((reinterpret_cast<AABB_Hitbox*>(Object->Hitboxes[0])->A + Object->Position) - Player_Physics_Object.Object->Position);
-			
-			// Player_Camera.Orientation = Approach_Vector(Player_Camera.Orientation, glm::vec3(195.0f, -4.183055, 0.0f), 90.0f * Tick);
 
 			if (Time < 3.0f)
 				break;
@@ -480,11 +457,27 @@ public:
 	}
 };
 
-/*class Alarm_Light_Controller : public Controller // Need to continue work on this
+class Alarm_Light_Controller : public Controller // Need to continue work on this
 {
 public:
 	float Direction = 0.0f;
+	Lightsource* Light;
 	Alarm_Light_Controller() {}
+
+	virtual void Initialise_Control(Model* Objectp) override
+	{
+		Object = Objectp;
+
+		Light = new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f), 35.0f, 10.0f, 0.6f);
+		Scene_Lights.push_back(Light);
+		Scene_Lights.back()->Flags[LF_PRIORITY] = true;
+
+		/*Scene_Lights.push_back(new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f), 35.0f, 10.0f, 0.6f));
+		Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
+		Scene_Lights.back()->Flags[LF_PRIORITY] = true;*/
+
+		// This will help the lighting BVH to generate the BVH in a more helpful way
+	}
 
 	virtual void Control_Function() override
 	{
@@ -492,21 +485,73 @@ public:
 
 		glm::vec3 Direction_Vector;
 
-		//Direction_Vector.x = sin(Direction) * 0.866f;
-		//Direction_Vector.z = cos(Direction) * 0.866f;
-		//Direction_Vector.y = 0.5f;
+		Direction_Vector.x = sin(Direction) * 0.866f;
+		Direction_Vector.z = cos(Direction) * 0.866f;
+		Direction_Vector.y = 0.5f;
 
-		Direction_Vector.x =  0.5f;
-		Direction_Vector.y = sin(Direction) *0.866f;
-		Direction_Vector.z = cos(Direction) *0.866f;
+		//Direction_Vector.x =  0.5f;
+		//Direction_Vector.y = sin(Direction) *0.866f;
+		//Direction_Vector.z = cos(Direction) *0.866f;
 
-		Scene_Lights.push_back(new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), Direction_Vector, 35.0f, 10.0f, 0.6f));
-		Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
-		Scene_Lights.back()->Flags[LF_PRIORITY] = true;
+		Light->Direction = Direction_Vector;
+
+		//Scene_Lights.push_back(new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.3f, 0.25f, 0.25f), Direction_Vector, 35.0f, 10.0f, 0.6f));
+		//Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
+		//Scene_Lights.back()->Flags[LF_PRIORITY] = true;
 
 		//Volumetric_Cone_Particles.Particles.Particles_Data.clear();
 		//Volumetric_Cone_Particles.Particles.Spawn_Particle(Object->Position, -Direction_Vector, glm::vec3(1.0f, 0.4f, 0.4f), 0.15f, 30.0f);
 	}
-};*/
+};
+
+class Flicker_Light_Controller : public Controller
+{
+	struct Light_Flickerer
+	{
+		float Time_Until_Flicker = 3.0f;	// Time until next toggle
+		uint8_t Flicker_Toggle = 0;		// This tells the controller whether or not the light needs to be halved or doubled
+	};
+
+public:
+	std::vector<Light_Flickerer> Flickers;
+	std::vector<Lightsource*> Lightsources;
+
+	Flicker_Light_Controller(std::vector<Lightsource*> Lightsourcesp) 
+	{
+		Lightsources = Lightsourcesp;
+		Flickers.resize(Lightsources.size());
+	}
+
+	virtual void Initialise_Control(Model* Objectp) override
+	{
+		Object = Objectp;
+	}
+
+	virtual void Control_Function() override
+	{
+		for (size_t W = 0; W < Lightsources.size(); W++)
+		{
+			Flickers[W].Time_Until_Flicker -= Tick;
+
+			if (Flickers[W].Time_Until_Flicker < 0.0f)
+			{
+				if (Flickers[W].Flicker_Toggle)
+				{
+					Lightsources[W]->Colour *= glm::vec3(4.0f);
+					Flickers[W].Time_Until_Flicker = RNG() * 3;
+				}
+				else
+				{
+					Lightsources[W]->Colour *= glm::vec3(0.25f);
+					Flickers[W].Time_Until_Flicker = RNG();
+				}
+
+				Flickers[W].Flicker_Toggle = !Flickers[W].Flicker_Toggle;
+
+			}
+		}
+	}
+
+};
 
 #endif
