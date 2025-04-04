@@ -470,7 +470,8 @@ public:
 
 		Light = new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f), 35.0f, 10.0f, 0.6f);
 		Scene_Lights.push_back(Light);
-		Scene_Lights.back()->Flags[LF_PRIORITY] = true;
+
+		Light->Flags[LF_PRIORITY] = true;
 
 		/*Scene_Lights.push_back(new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f), 35.0f, 10.0f, 0.6f));
 		Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
@@ -494,6 +495,9 @@ public:
 		//Direction_Vector.z = cos(Direction) *0.866f;
 
 		Light->Direction = Direction_Vector;
+		
+		//Scene_Lights.back()->Flags[LF_PRIORITY] = true;
+		//Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
 
 		//Scene_Lights.push_back(new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.3f, 0.25f, 0.25f), Direction_Vector, 35.0f, 10.0f, 0.6f));
 		//Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
@@ -519,7 +523,7 @@ public:
 	Flicker_Light_Controller(std::vector<Lightsource*> Lightsourcesp) 
 	{
 		Lightsources = Lightsourcesp;
-		Flickers.resize(Lightsources.size());
+		Flickers.resize(Lightsources.size() >> 1u);
 	}
 
 	virtual void Initialise_Control(Model* Objectp) override
@@ -529,7 +533,8 @@ public:
 
 	virtual void Control_Function() override
 	{
-		for (size_t W = 0; W < Lightsources.size(); W++)
+		size_t Size = Flickers.size();
+		for (size_t W = 0; W < Size; W++)
 		{
 			Flickers[W].Time_Until_Flicker -= Tick;
 
@@ -538,16 +543,17 @@ public:
 				if (Flickers[W].Flicker_Toggle)
 				{
 					Lightsources[W]->Colour *= glm::vec3(4.0f);
+					Lightsources[W + Size]->Colour *= glm::vec3(4.0f);
 					Flickers[W].Time_Until_Flicker = RNG() * 3;
 				}
 				else
 				{
 					Lightsources[W]->Colour *= glm::vec3(0.25f);
+					Lightsources[W + Size]->Colour *= glm::vec3(0.25f);
 					Flickers[W].Time_Until_Flicker = RNG();
 				}
 
 				Flickers[W].Flicker_Toggle = !Flickers[W].Flicker_Toggle;
-
 			}
 		}
 	}

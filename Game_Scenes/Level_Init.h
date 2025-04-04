@@ -20,14 +20,15 @@ void Load_Test_Scene_Assets()
 {
 	Context_Interface::Loading_Progress_Total = 36;
 
-	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
+	//Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
+	Push_Merged_Material<THREADED>("Assets/Textures/Brick.png", nullptr, "Assets/Textures/Brick_Normal.png", "Brick");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Test_Normal.png", "Stone");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Floor_Tile_Spec.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_Tiles_Normal.png", "Floor");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Floor_2_Tile_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_2_Tile_Normal.png", "NPP_Wall");
-	Push_Merged_Material<THREADED>("Assets/Textures/Reddened_Wall_Spec.png", nullptr, "Assets/Textures/Reddened_Wall_Normal.png", "NPP_Wall_2");
+	Push_Merged_Material<THREADED>("Assets/Textures/Reddened_Wall_Spec.png", nullptr, "Assets/Textures/Reddened_Wall_Normal_2.png", "NPP_Wall_2");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Flat_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Floor_Reflect");
 
@@ -175,15 +176,15 @@ void Setup_Intro_Tunnel()
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Concrete.jpg").Texture, Pull_Texture("Floor").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Brick.png").Texture, Pull_Texture("Brick").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Stone));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Floor.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Concrete.jpg").Texture, Pull_Texture("Rubble").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Floor.obj", LOAD_MESH_OBJ_BIT).Mesh) });
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Floor.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Concrete.jpg").Texture, Pull_Texture("NPP_Wall_2").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Floor.obj", LOAD_MESH_OBJ_BIT).Mesh) });
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall_2").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
 	Blockmap::Initialise_Blockmap();
 

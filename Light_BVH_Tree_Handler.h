@@ -47,6 +47,7 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 
 	struct Leaf_Node_Bounds // This is used only by the CPU-side to assess each node's optimal lights
 	{
+		LG Light_Group = LG::No_Group_Sector;
 		glm::vec2 Position = glm::vec2(99999, 99999); // This is the assessed position of each node - changes can be made to this manually according to artist parameters
 	};
 
@@ -285,7 +286,7 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 			for (size_t V = 0; V < Scene_Lights.size(); V++)
 			{
 				Index_Data[V].Index = V;
-				Index_Data[V].Distance = (!Scene_Lights[V]->Flags[LF_PRIORITY]) * (squaref(Scene_Lights[V]->Position.x - Leaf_Nodes_Info[W].Position.x) + squaref(Scene_Lights[V]->Position.z - Leaf_Nodes_Info[W].Position.y));
+				Index_Data[V].Distance = ((Leaf_Nodes_Info[W].Light_Group == Scene_Lights[V]->Light_Group) || !Scene_Lights[V]->Flags[LF_PRIORITY]) * (squaref(Scene_Lights[V]->Position.x - Leaf_Nodes_Info[W].Position.x) + squaref(Scene_Lights[V]->Position.z - Leaf_Nodes_Info[W].Position.y));
 
 				// Index_Data[V].Distance += 999999.0f * Is_Occluded(Leaf_Nodes_Info[W].Position, glm::vec2(Scene_Lights[V]->Position.x, Scene_Lights[V]->Position.z));
 				

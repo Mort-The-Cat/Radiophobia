@@ -57,6 +57,7 @@ public:
 
 enum LG // Light_Group
 {
+	No_Group_Sector = 0xFFu, // This is the "no group" flag for the sectors, we need separate ones because of how the checking code works
 	No_Group = 0,
 	Group_One = 1,
 	Group_Two = 2,
