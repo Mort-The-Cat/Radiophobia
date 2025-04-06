@@ -240,28 +240,13 @@ C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(138,51): warning C4305: 'arg
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(138,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(232,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(200,9): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(234,66): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(296,27): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(234,59): warning C4305: 'argument': truncation from 'double' to 'float'
-  (compiling source file 'Main.cpp')
-  
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(234,51): warning C4305: 'argument': truncation from 'double' to 'float'
-  (compiling source file 'Main.cpp')
-  
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(238,64): warning C4305: 'argument': truncation from 'double' to 'float'
-  (compiling source file 'Main.cpp')
-  
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(238,58): warning C4305: 'argument': truncation from 'double' to 'float'
-  (compiling source file 'Main.cpp')
-  
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(238,52): warning C4305: 'argument': truncation from 'double' to 'float'
-  (compiling source file 'Main.cpp')
-  
-C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(287,27): warning C4267: '=': conversion from 'size_t' to 'unsigned char', possible loss of data
+C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(438,4): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Interactable_Declarations.h(178,156): warning C4305: 'argument': truncation from 'double' to 'float'

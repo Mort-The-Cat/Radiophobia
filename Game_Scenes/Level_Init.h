@@ -115,23 +115,25 @@ void Setup_Intro_Tunnel()
 #define LIGHT_FOV 60.0f
 #define LIGHT_COLOUR glm::vec3(0.12f, 0.1f, 0.11f)
 
+	// Lighting_BVH::Boundary_Max_Value = 10.0f;
+
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, LIGHT_Y, -1.21f),
 		LIGHT_COLOUR,
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		LIGHT_FOV, 1.0f, 0.6f));
+		LIGHT_FOV, 1.0f, 0.6f, LG::Group_One));
 
-	Scene_Lights.push_back(new Lightsource(
+	/*Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, LIGHT_Y, -3.037f),
 		LIGHT_COLOUR,
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		LIGHT_FOV, 1.0f, 0.6f));
+		LIGHT_FOV, 1.0f, 0.6f, LG::Group_One));*/
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, LIGHT_Y, -4.967f),
 		LIGHT_COLOUR,
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		LIGHT_FOV, 1.0f, 0.6f));
+		LIGHT_FOV, 1.0f, 0.6f, LG::Group_One));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(0.0f, -1.84f, -7.749f),
@@ -140,25 +142,24 @@ void Setup_Intro_Tunnel()
 		LIGHT_FOV, 1.0f, 0.6f));
 
 	Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
-	Scene_Lights.back()->Flags[LF_PRIORITY] = true;
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(-2.704f, LIGHT_Y, -7.749f),
 		LIGHT_COLOUR,
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		LIGHT_FOV, 1.0f, 0.6f));
+		LIGHT_FOV, 1.0f, 0.6f, LG::Group_Two));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(-4.704f, LIGHT_Y, -7.749f),
 		LIGHT_COLOUR,
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		LIGHT_FOV, 1.0f, 0.6f));
+		LIGHT_FOV, 1.0f, 0.6f, LG::Group_Two));
 
 	Scene_Lights.push_back(new Lightsource(
 		glm::vec3(-6.404f, LIGHT_Y, -7.749f),
 		LIGHT_COLOUR,
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		LIGHT_FOV, 1.0f, 0.6f));
+		LIGHT_FOV, 1.0f, 0.6f, LG::Group_Two));
 
 #undef LIGHT_Y
 #undef LIGHT_FOV
@@ -200,6 +201,8 @@ void Setup_Intro_Tunnel()
 	
 	Player_Camera.Orientation.x = 0.0f;
 
+	Lighting_BVH::Load_Light_Occluders("Assets/Light_Occluders/Tunnel.obj");
+
 	Lighting_BVH::Generate_Light_BVH_Tree();
 	Lighting_BVH::Update_Leaf_Node_Data();
 
@@ -209,6 +212,8 @@ void Setup_Intro_Tunnel()
 
 void Setup_Intro_Level()
 {
+	Lighting_BVH::Boundary_Max_Value = 22.0f;
+
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	//Create_Model(Pull_Mesh("Assets/Models/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Level_2_Map.obj", LOAD_MESH_OBJ_BIT).Mesh));
@@ -504,6 +509,9 @@ void Setup_Intro_Level()
 	// Lighting_BVH::Add_Light_Occluders(Generate_AABB_Hitboxes("Assets/Hitboxes/Intro_Level/Occluders.obj"));
 
 	// Lighting_BVH::Add_Intro_Level_Light_Occluders();
+
+	Lighting_BVH::Load_Light_Occluders("Assets/Light_Occluders/Intro_Level.obj");
+
 	Lighting_BVH::Generate_Light_BVH_Tree();
 
 	Lighting_BVH::Update_Leaf_Node_Data();

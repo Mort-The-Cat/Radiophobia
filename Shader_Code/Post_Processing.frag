@@ -199,6 +199,8 @@ vec3 Lighting()
 
 	float Shadow_Check_Result = Shadow_Check(Light_To_Pixel * (1.0f / Length_Light_To_Pixel), Length_Light_To_Pixel, 0u);
 
+	//
+
 	for(uint Index = 0; Index < 8; Index++)
 	{
 		W = Get_Leaf_Node_Index(Leaf_Node_Index, Index);

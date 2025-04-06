@@ -34,7 +34,7 @@
 
 namespace Lighting_BVH // This uses considerably less memory than my previous design of the lighting BVH tree
 {
-#define Boundary_Max_Value 22.0f
+	float Boundary_Max_Value = 22.0f;
 
 	struct Node_Partition
 	{
@@ -79,173 +79,181 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 	class Light_Occluder
 	{
 	public:
-		bool Z_Axis; // This shows the split is parallel to the Z-axis et vice versa
-
-		float Axis_Coordinate;
-
-		float Start, End;	// Start is always a smaller value than end
-
-		Light_Occluder(bool Z_Axisp, float Axis_Coordinatep, float Startp, float Endp)
+		float Min, Max;
+		float Partition;
+		enum Axis
 		{
-			Z_Axis = Z_Axisp;
-			Axis_Coordinate = Axis_Coordinatep;
-			Start = Startp;
-			End = Endp;
+			X = 0u,
+			Z = 1u
+		} Partition_Axis; // This states which axis the "partition" variable represents
+
+		/*
+			   (z)
+				|
+				|	   Max
+				|		p
+				|		p
+				|		p
+			---(o)------p-----(x)
+				|		p
+				|	   Min
+				|
+				|
+			  (-z)
+		*/
+
+		// In this example, Partition_Axis == Axis::Z
+		// Hence, Partition is a value on the X axis
+		// And Min/Max are Z values
+
+		// Simple enough
+
+		bool Handle_Node(glm::vec2& Middle, glm::vec2& Max_N, glm::vec2& Min_N)
+		{
+			const float Required_Offset = 0.5f;
+
+			switch (Partition_Axis)
+			{
+			case Axis::X:
+				if (Max > Min_N.y || Min < Max_N.y)
+				{
+					float Left_Offset = Partition - Min_N.x;
+					float Right_Offset = Max_N.x - Partition;
+
+					if (Left_Offset > Required_Offset && Right_Offset > Required_Offset)
+					{
+						Middle.x = Partition;
+						Max_N.y = Min_N.y;
+
+						return true;
+					}
+				}
+
+				return false;
+
+			case Axis::Z:
+				if (Max > Min_N.x || Min < Max_N.x)
+				{
+					float Left_Offset = Partition - Min_N.y;
+					float Right_Offset = Max_N.y - Partition;
+
+					if (Left_Offset > Required_Offset && Right_Offset > Required_Offset)
+					{
+						Middle.y = Partition;
+						Max_N.x = Min_N.x;
+
+						return true;
+					}
+				}
+
+				return false;
+
+			default:
+				Throw_Error(" >> Light occluder not set properly!\n");
+
+				return NULL;
+			}
 		}
 
-		void Handle_Is_In_Node(glm::vec2& Middle, glm::vec2& Max, glm::vec2& Min)
+		bool Colliding_X(float A_X, float A_Z, float B_X, float B_Z)
 		{
-			if (Z_Axis)
-			{
-				Max.x = Axis_Coordinate + 9999.0f;
-				Min.x = Axis_Coordinate - 9999.0f;
+			if ((A_X > Partition) == (B_X > Partition)) // If they're on the same side of the line,
+				return false;							// we know it can't overlap with it
 
-				// Max.y = Axis_Coordinate;
-				// Min.y = Axis_Coordinate;
-			}
-			else
-			{
-				Max.y = Axis_Coordinate + 9999.0f;
-				Min.y = Axis_Coordinate - 9999.0f;
+			// If they're not, we have some work to do!!
 
-				// Max.x = Axis_Coordinate;
-				// Min.x = Axis_Coordinate;
-			}
+			float Delta_X = B_X - A_X, Delta_Z = B_Z - A_Z;
+
+			float A_To_Partition = Partition - A_X;
+
+			float Z = (A_To_Partition * Delta_Z / Delta_X) + A_Z;
+
+			return Min < Z && Max > Z;
 		}
 
-		bool In_Node(Boundary Node)
+		bool Colliding(float A_X, float A_Z, float B_X, float B_Z)
 		{
-			const float Offset = 0.125f; // This is how far within the node the light occluder line needs to be in order to count as being within the node
-
-			bool X_Within, Z_Within;
-
-			if (Z_Axis)
+			switch (Partition_Axis)
 			{
-				X_Within = 
-					Axis_Coordinate > Node.Min_X + Offset &&
-					Axis_Coordinate < Node.Max_X - Offset;
+			case Axis::X:
 
-				Z_Within =
-					End > Node.Min_Y + Offset &&
-					Start < Node.Max_Y - Offset;
+				return Colliding_X(A_X, A_Z, B_X, B_Z);
+
+				//
+
+			case Axis::Z:
+
+				return Colliding_X(A_Z, -A_X, B_Z, -B_X); // This just rotates the coords, the logic is still the same
+
+			default:
+				Throw_Error(" >> Light occluder not set properly!\n");
+
+				return NULL;
 			}
-			else
-			{
-				Z_Within =
-					Axis_Coordinate > Node.Min_Y + Offset &&
-					Axis_Coordinate < Node.Max_Y - Offset;
-
-				X_Within =
-					End > Node.Min_X + Offset &&
-					Start < Node.Max_X - Offset;
-			}
-
-			return X_Within && Z_Within;
-		}
-
-		bool Colliding(glm::vec2 Node_Position, glm::vec2 Light_Position)
-		{
-			float Delta_X, Delta_Y, Point;
-
-			Delta_X = Node_Position.x - Light_Position.x;
-			Delta_Y = Node_Position.y - Light_Position.y;
-
-			if (Z_Axis)
-			{
-				if ((Node_Position.x > Axis_Coordinate) ==
-					(Light_Position.x > Axis_Coordinate))
-					return false; // If they're on the same side of the line, it's no good
-
-				float Delta = Axis_Coordinate - Light_Position.x;
-
-				if (!(0 <= Delta * copysignf(1.0f, Delta_X) && Delta * copysignf(1.0f, Delta_X) < fabsf(Delta_X)))
-					return false;
-
-				Point = (Delta) * Delta_Y / Delta_X + Light_Position.y;
-			}
-			else
-			{
-				if ((Node_Position.y > Axis_Coordinate) ==
-					(Light_Position.y > Axis_Coordinate))
-					return false;
-
-				float Delta = Axis_Coordinate - Light_Position.y;
-
-				if (!(0 <= Delta * copysignf(1.0f, Delta_Y) && Delta * copysignf(1.0f, Delta_Y) < fabsf(Delta_Y)))
-					return false;
-
-				Point = (Delta) * Delta_X / Delta_Y + Light_Position.x;
-			}
-
-			return Point > Start && Point < End;
 		}
 	};
 
 	std::vector<Light_Occluder> Light_Occluders;
 
-	void Add_Light_Occluders(std::vector<Hitbox*> Occluders)
+	void Clip_Node_With_Light_Occluders(glm::vec2& Middle, glm::vec2& Max, glm::vec2& Min)
 	{
-		Light_Occluders.clear();
-
-		float Delta_X, Delta_Z;
-		float Middle_X, Middle_Z;
-
-		// Only care about x and z values
-
-		for (size_t W = 0; W < Occluders.size(); W++)
+		int W = Light_Occluders.size();
+		while (W--)
 		{
-			AABB_Hitbox* Occluder = (AABB_Hitbox*)Occluders[W];
-
-			Delta_X = Occluder->B.x - Occluder->A.x;
-			Delta_Z = Occluder->B.z - Occluder->A.z;
-
-			Middle_X = 0.5f * (Occluder->B.x + Occluder->A.x);
-			Middle_Z = 0.5f * (Occluder->B.z + Occluder->A.z);
-
-			if (Delta_X > Delta_Z)
-			{
-				// The axis position will be Middle_Z
-
-				Light_Occluders.push_back(Light_Occluder(false, Middle_Z, Occluder->A.x - 10, Occluder->B.x + 10));
-			}
-			else
-			{
-				// The axis position will be Middle_X
-
-				Light_Occluders.push_back(Light_Occluder(true, Middle_X, Occluder->A.z - 10, Occluder->B.z + 10));
-			}
-
-			delete Occluder;
+			if (Light_Occluders[W].Handle_Node(Middle, Max, Min))
+				W = 0;
 		}
-
-		Occluders.clear();
 	}
 
-	void Add_Intro_Level_Light_Occluders()
-	{
-
-	}
-
-	void Add_Test_Scene_Light_Occluders()
-	{
-		Light_Occluders.clear();
-
-		Light_Occluders.push_back(Light_Occluder(true, -0.751, -6.0f, 2.305f));
-
-		Light_Occluders.push_back(Light_Occluder(false, 2.151, -0.631, 5.06));
-
-		//
-
-		Light_Occluders.push_back(Light_Occluder(false, -3.14, 2.27, 6.539208));
-	}
-
-	bool Is_Occluded(glm::vec2 Node_Position, glm::vec2 Light_Position)
+	bool Is_Occluded(glm::vec2 A, float B_X, float B_Z)
 	{
 		for (size_t W = 0; W < Light_Occluders.size(); W++)
-			if (Light_Occluders[W].Colliding(Node_Position, Light_Position))
+			if (Light_Occluders[W].Colliding(A.x, A.y, B_X, B_Z))
 				return true;
 
 		return false;
+	}
+
+	void Load_Light_Occluders(const char* Directory)
+	{
+		if (Directory == nullptr)
+		{
+			Light_Occluders.clear();
+
+			return;
+		}
+
+		std::vector<Hitbox*> Occluder_Boxes = Generate_AABB_Hitboxes(Directory);
+
+		Light_Occluders.resize(Occluder_Boxes.size());
+
+		for (size_t W = 0; W < Occluder_Boxes.size(); W++)
+		{
+			AABB_Hitbox* Box = reinterpret_cast<AABB_Hitbox*>(Occluder_Boxes[W]);
+			
+			float Delta_X = Box->B.x - Box->A.x, Delta_Z = Box->B.z - Box->A.z;
+
+			if (Delta_X > Delta_Z) // If the min/max is on the x axis
+			{
+				Light_Occluders[W].Min = Box->A.x;
+				Light_Occluders[W].Max = Box->B.x;
+
+				Light_Occluders[W].Partition = Box->A.z + Delta_Z * 0.5f;
+
+				Light_Occluders[W].Partition_Axis = Light_Occluder::Axis::Z;
+			}
+			else
+			{
+				Light_Occluders[W].Min = Box->A.z;
+				Light_Occluders[W].Max = Box->B.z;
+
+				Light_Occluders[W].Partition = Box->A.x + Delta_X * 0.5f;
+
+				Light_Occluders[W].Partition_Axis = Light_Occluder::Axis::X;
+			}
+
+			// This sets the values appropriately!
+		}
 	}
 
 	//
@@ -286,9 +294,11 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 			for (size_t V = 0; V < Scene_Lights.size(); V++)
 			{
 				Index_Data[V].Index = V;
-				Index_Data[V].Distance = ((Leaf_Nodes_Info[W].Light_Group == Scene_Lights[V]->Light_Group) || !Scene_Lights[V]->Flags[LF_PRIORITY]) * (squaref(Scene_Lights[V]->Position.x - Leaf_Nodes_Info[W].Position.x) + squaref(Scene_Lights[V]->Position.z - Leaf_Nodes_Info[W].Position.y));
+				Index_Data[V].Distance = (!Scene_Lights[V]->Flags[LF_PRIORITY]) * 
+					(squaref(Scene_Lights[V]->Position.x - Leaf_Nodes_Info[W].Position.x) + 
+						squaref(Scene_Lights[V]->Position.z - Leaf_Nodes_Info[W].Position.y));
 
-				// Index_Data[V].Distance += 999999.0f * Is_Occluded(Leaf_Nodes_Info[W].Position, glm::vec2(Scene_Lights[V]->Position.x, Scene_Lights[V]->Position.z));
+				Index_Data[V].Distance += 999999.0f * Is_Occluded(Leaf_Nodes_Info[W].Position, Scene_Lights[V]->Position.x, Scene_Lights[V]->Position.z);
 				
 				// If the light is occluded, it can be treated as though it is much lower priority than it is
 			}
@@ -390,14 +400,10 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 
 			//
 
-			for (size_t V = 0; V < Light_Occluders.size(); V++)
-				if (Light_Occluders[V].In_Node(Boundaries[W]))
-					Light_Occluders[V].Handle_Is_In_Node(Middle, Max, Min);
-
-			//
-
 			Middle = Min + Max;
 			Middle *= 0.5f;
+
+			Clip_Node_With_Light_Occluders(Middle, Max, Min);
 
 			if ((Max.x - Min.x) >= (Max.y - Min.y))
 			{
@@ -429,10 +435,10 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 
 		for (size_t W = Number_Of_Partition_Nodes; W < Number_Of_Partition_Nodes + Number_Of_Leaf_Nodes; W++)
 		{
-			float Conversion = 1.0f / 30.0f;
-
-			if(false)
+			if constexpr (false)
 			{
+				const float Conversion = 1.0f / 30.0f;
+
 				UI_Elements.push_back(new UI_Element(Conversion * Boundaries[W].Min_X, Conversion * Boundaries[W].Min_Y, Conversion * Boundaries[W].Max_X, Conversion * Boundaries[W].Max_Y, Pull_Texture("Assets/Textures/Pillow.png").Texture));
 				UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 				UI_Elements.back()->UI_Border_Size = 0.0f;

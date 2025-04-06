@@ -471,7 +471,9 @@ public:
 		Light = new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f), 35.0f, 10.0f, 0.6f);
 		Scene_Lights.push_back(Light);
 
-		Light->Flags[LF_PRIORITY] = true;
+		Light->Light_Group = LG::Group_One;
+
+		// Light->Flags[LF_PRIORITY] = true;
 
 		/*Scene_Lights.push_back(new Lightsource(Object->Position, glm::vec3(0.75f) * glm::vec3(1.0f, 0.4f, 0.4f), glm::vec3(0.0f), 35.0f, 10.0f, 0.6f));
 		Scene_Lights.back()->Flags[LF_TO_BE_DELETED] = true;
