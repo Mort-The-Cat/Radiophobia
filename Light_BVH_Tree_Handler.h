@@ -40,6 +40,7 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 	{
 		float X = Boundary_Max_Value, Y = Boundary_Max_Value;
 	};
+
 	struct Leaf_Node
 	{
 		unsigned char Light_Indices[8]; // Each leaf node should have 8 light indices
@@ -451,6 +452,43 @@ namespace Lighting_BVH // This uses considerably less memory than my previous de
 		}
 
 		// From there, we'll generate all the leaf node's average positions
+	}
+
+	size_t Get_BVH_Node(float X, float Z)
+	{
+		size_t Index = 0u;
+		for (size_t W = 0u; W < 6u; W++)
+		{
+			Node_Partition Node = Partition_Nodes[Index];
+
+			size_t Side = (X > Node.X) || (Z > Node.Y);
+
+			Index = Index + Index;
+			Index = Index + 1u + Side;
+		}
+
+		return Index;
+	}
+
+	void Load_BVH_Tree_Corrections(const char* Directory) // These are manual tweaks to the BVH tree which ensure the lighting looks natural
+	{
+		std::string Buffer = Pull_Text(Directory).Text; // We need to keep a std::string alive so that the memory isn't freed until the end of the function
+		const char* File_Contents = Buffer.c_str(); // There isn't really a need to cache this, it's usually under 16 bytes
+
+		size_t Index = 0;
+
+		while (*File_Contents)
+		{
+			float X, Z;
+			X = Encoder::Characters_To_Float(File_Contents);
+			File_Contents += 6u; // This advances to next floating point val
+			Z = Encoder::Characters_To_Float(File_Contents);
+			File_Contents += 7u; // This advances to next line
+
+			size_t Node = Get_BVH_Node(X, Z) - Number_Of_Partition_Nodes;
+			Leaf_Nodes_Info[Node].Position.x = X;
+			Leaf_Nodes_Info[Node].Position.y = Z;
+		}
 	}
 }
 

@@ -8,6 +8,7 @@
 namespace Lighting_BVH
 {
 	void Parse_Partition_Nodes_To_Shader(Shader& Shader);
+	size_t Get_BVH_Node(float X, float Z);
 }
 
 struct Light_Uniform_Location_Object

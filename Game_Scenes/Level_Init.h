@@ -206,6 +206,8 @@ void Setup_Intro_Tunnel()
 	Lighting_BVH::Generate_Light_BVH_Tree();
 	Lighting_BVH::Update_Leaf_Node_Data();
 
+	Lighting_BVH::Load_BVH_Tree_Corrections("Assets/Light_Occluders/Tunnel_Corrections.txt");
+
 	Audio::Set_Music_Tracks_For_Deletion(); // This stops any music currently playing
 	Audio::Create_Music_Source(Pull_Audio("Assets/Audio/Music/Falling_Shepard_Tone.wav").Source); // This plays the loaded ambience track
 }
@@ -513,8 +515,9 @@ void Setup_Intro_Level()
 	Lighting_BVH::Load_Light_Occluders("Assets/Light_Occluders/Intro_Level.obj");
 
 	Lighting_BVH::Generate_Light_BVH_Tree();
-
 	Lighting_BVH::Update_Leaf_Node_Data();
+
+	Lighting_BVH::Load_BVH_Tree_Corrections("Assets/Light_Occluders/Intro_Level_Corrections.txt");
 
 	//
 

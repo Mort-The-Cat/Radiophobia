@@ -105,6 +105,7 @@ public:
 		Scene_Lights.push_back(new Lightsource(Position, glm::vec3(0.3f) * glm::vec3(RNG() * 1 + 2, RNG() + 1, RNG()), glm::vec3(1.0f, 0.0f, 0.0f), 360.0f, 1.0f, 0.35f));
 		Scene_Lights.back()->Flags[LF_CAST_SHADOWS] = true;
 		Scene_Lights.back()->Flags[LF_TIMER] = true;
+		//Scene_Lights.back()->Flags[LF_PRIORITY] = true;
 		Scene_Lights.back()->Timer = 0.02f;
 
 		Position += glm::vec3(0.1f) * Camera_Direction; // +Viewmodel_Meshes[0].Orientation * glm::vec3(0.02f);

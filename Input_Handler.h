@@ -410,6 +410,19 @@ void Player_Movement()
 
 	Handle_Player_Items();
 
+	/*if (Inputs[Controls::Auxilliary])
+	{
+		printf(" >> Get_BVH_Node(X, Z) result:\n	 >> Node: %d\n	 >> [x,z]: (%f, %f)\n",
+			Lighting_BVH::Get_BVH_Node(Player_Camera.Position.x, Player_Camera.Position.z),
+			Player_Camera.Position.x, Player_Camera.Position.z);
+
+		std::string Buffer =
+			Encoder::Float_To_Characters(Player_Camera.Position.x) +
+			Encoder::Float_To_Characters(Player_Camera.Position.z);
+
+		printf(" >> Current x/z position as a float-to-text encoded string:\n	[%s]\n", Buffer.c_str());
+	}*/
+
 	//if (Inputs[Controls::Auxilliary])
 	//{
 	//	printf(" >> Camera info:\n%f, %f, %f\n%f, %f, %f\n", Player_Camera.Position.x, Player_Camera.Position.y, Player_Camera.Position.z, Player_Camera.Orientation.x, Player_Camera.Orientation.y, Player_Camera.Orientation.z);
