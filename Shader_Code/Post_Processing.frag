@@ -265,15 +265,15 @@ void main()
 
 	// return;
 
-	Reflection_Vector = normalize(reflect(Camera_To_Pixel, Normal));
+	Reflection_Vector = (reflect(Camera_To_Pixel, Normal));
 
 	// vec3 Reflection_Vector = normalize(reflect(Camera_To_Pixel, Normal));
 
 	vec3 Light = Lighting();
 
-	float Reflectivity = texture(Material_Texture, Final_UV).y;
+	// float Reflectivity = texture(Material_Texture, Final_UV).y;
 
-	vec4 Final_Colour = (vec4(Specular_Lighting, 0) + vec4(vec3(Reflectivity), 1) * texture(Cubemap, Reflection_Vector) + vec4(Light, 1) * texture(Screen_Texture, Final_UV));
+	vec4 Final_Colour = (vec4(Specular_Lighting, 0) + vec4(Light, 1) * texture(Screen_Texture, Final_UV)); // + vec4(vec3(Reflectivity), 1) * texture(Cubemap, Reflection_Vector)
 
 	Out_Colour = Final_Colour + vec4(vec3(Add_Screen_Grain() * 17.0f), 0.0f);
 }

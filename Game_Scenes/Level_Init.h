@@ -23,14 +23,14 @@ void Load_Test_Scene_Assets()
 	//Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick.png", nullptr, "Assets/Textures/Brick_Normal.png", "Brick");
 
-	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Test_Normal.png", "Stone");
+	// Push_Merged_Material<THREADED>("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Test_Normal.png", "Stone");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Floor_Tile_Spec.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_Tiles_Normal.png", "Floor");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Floor_2_Tile_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Floor_2_Tile_Normal.png", "NPP_Wall");
 	Push_Merged_Material<THREADED>("Assets/Textures/Reddened_Wall_Spec.png", nullptr, "Assets/Textures/Reddened_Wall_Normal_2.png", "NPP_Wall_2");
 
-	Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Flat_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Floor_Reflect");
+	// Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Flat_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Floor_Reflect");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Rust_Texture.png", "Assets/Textures/Rust_Reflectivity.png", "Assets/Textures/Rust_Normal.png", "Rust");
 

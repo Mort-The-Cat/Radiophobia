@@ -63,7 +63,8 @@ vec3 Normal_Map_Read()
 	New_Values.z = -(texture(Material, UV).z * 2 - 1);
 	New_Values.x = -(texture(Material, UV).w * 2 - 1);
 
-	New_Values.y = sqrt(1 - (New_Values.x * New_Values.x + New_Values.z * New_Values.z));
+	New_Values.y = texture(Material, UV).y;
+	//sqrt(1 - (New_Values.x * New_Values.x + New_Values.z * New_Values.z));
 
 	return New_Values;
 }
@@ -145,7 +146,7 @@ void main()
 	
 	Final_Normal = normalize(TBN * Normal_Map_Read());
 
-	Reflection_Vector = normalize(reflect(Camera_To_Pixel, Final_Normal));
+	// Reflection_Vector = reflect(Camera_To_Pixel, Final_Normal);
 	
 	// float Reflectivity = texture(Material, UV).g;
 
@@ -154,7 +155,7 @@ void main()
 	Out_Colour = texture(Albedo, UV);
 	
 	Position_Out = Position;
-	Material_Out = vec4(texture(Material, UV).xy, 0, 0);
+	Material_Out = vec4(texture(Material, UV).x, 0, 0, 0);
 
 	Normal_Out = vec4(Final_Normal, 0); // TBN_To_Quaternion(TBN(Final_Normal));
 	

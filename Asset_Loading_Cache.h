@@ -27,7 +27,7 @@ namespace Cache
 	struct Texture_Cache_Info
 	{
 		alignas(0) std::string Directory;
-		stbi_uc* Pixels;
+		stbi_uc* Pixels = nullptr;
 		int Texture_Width, Texture_Height, Texture_Channels;
 
 		Texture Texture;	// This can be taken easily from the cache
@@ -226,7 +226,7 @@ void Push_Merged_Specular_Reflectivity(const char* T_1, const char* T_2, const c
 	for (size_t W = 0; W < Total_Size; W += 4)
 	{
 		((unsigned char*)Final_Texture.Pixels)[W] = (unsigned char)Textures[0].Pixels[W];
-		((unsigned char*)Final_Texture.Pixels)[W + 1] = (unsigned char)Textures[1].Pixels[W];
+		((unsigned char*)Final_Texture.Pixels)[W + 1] = 255; // (unsigned char)Textures[1].Pixels[W];
 		((unsigned char*)Final_Texture.Pixels)[W + 2] = 128;
 		((unsigned char*)Final_Texture.Pixels)[W + 3] = 128;
 	}
@@ -280,7 +280,7 @@ void Push_Merged_Material(const char* T_1, const char* T_2, const char* T_3, con
 	for (size_t W = 0; W < Total_Size; W += 4)
 	{
 		((char*)Final_Texture.Pixels)[W] = (char)Textures[0].Pixels[W];
-		((char*)Final_Texture.Pixels)[W + 1] = (char)Textures[1].Pixels[W];
+		((char*)Final_Texture.Pixels)[W + 1] = (char)Textures[2].Pixels[W + 2];
 		((char*)Final_Texture.Pixels)[W + 2] = (char)Textures[2].Pixels[W + 1];
 		((char*)Final_Texture.Pixels)[W + 3] = (char)Textures[2].Pixels[W + 0];
 	}

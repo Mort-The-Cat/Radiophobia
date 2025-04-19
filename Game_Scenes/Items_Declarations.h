@@ -33,6 +33,9 @@ void Shoot_Bullet_Function(Hitbox* Shooter_Hitbox, glm::vec3 Position, glm::vec3
 Item* Player_Current_Item; // This is the item the player is currently holding
 Item* Player_Desired_Item; // This is the item that the player is currently trying to switch to.
 
+float Player_Viewmodel_Walk_Magnitude = 0.0f;
+float Player_Viewmodel_Walk_Timer = 0.0f;
+
 inline void Holster_Current_Item() { if (Player_Current_Item != nullptr) Player_Current_Item->Holster(); Player_Desired_Item = nullptr; }
 
 class Pistol : public Item
@@ -247,11 +250,21 @@ public:
 
 	virtual void Render_Viewmodel() override
 	{
+		float Speed = sqrtf(Fast::Square(Player_Physics_Object.Velocity.x) + Fast::Square(Player_Physics_Object.Velocity.z));
+
+		Speed = 1.0f - expf(-Speed * 0.2f);
+
+		Player_Viewmodel_Walk_Magnitude = 0.1f * Speed;
+		Player_Viewmodel_Walk_Timer += 14.0f * Speed * Tick;
+
 		Flashlight->Position = Player_Camera.Position + glm::vec3(0.0f, 0.1f, 0.0f);
 		Flashlight->Direction = Camera_Direction;
 
 		for (size_t W = 0; W < Viewmodel_Meshes.size(); W++)
 		{
+			float Delta_Y = 0.0f;
+			float Delta_X = 0.0f;
+
 			Viewmodel_Meshes[W].Position = Player_Camera.Position;
 
 			Viewmodel_Meshes[W].Orientation = glm::cross(Camera_Direction, Camera_Up_Direction);
@@ -259,8 +272,10 @@ public:
 
 			if (Inputs[Controls::Down]) // These are the offsets required for when the player is ADS-ing
 			{
-				Viewmodel_Meshes[W].Position -= glm::vec3(0.096437f) * Viewmodel_Meshes[W].Orientation;
-				Viewmodel_Meshes[W].Position += glm::vec3(0.030538f) * Viewmodel_Meshes[W].Orientation_Up;
+				Delta_X -= 0.096437f;
+				Delta_Y += 0.030538f;
+				// Viewmodel_Meshes[W].Position -= glm::vec3(0.096437f) * Viewmodel_Meshes[W].Orientation;
+				// Viewmodel_Meshes[W].Position += glm::vec3(0.030538f) * Viewmodel_Meshes[W].Orientation_Up;
 
 				Viewmodel_Meshes[W].Position -= glm::vec3(0.05f) * Camera_Direction;
 
@@ -269,8 +284,15 @@ public:
 			else
 			{
 				Player_Camera.FOV = 70.0f;
-				Viewmodel_Meshes[W].Position += glm::vec3(sinf(glfwGetTime() * 0.7f) * 0.025f - 0.04) * Viewmodel_Meshes[W].Orientation_Up;
+				Delta_Y += sinf(glfwGetTime() * 0.7f) * 0.025f - 0.04;
+				// Viewmodel_Meshes[W].Position += glm::vec3(sinf(glfwGetTime() * 0.7f) * 0.025f - 0.04) * Viewmodel_Meshes[W].Orientation_Up;
 			}
+
+			Delta_Y -= Player_Viewmodel_Walk_Magnitude * Fast::Square(sin(Player_Viewmodel_Walk_Timer));
+			Delta_X += Player_Viewmodel_Walk_Magnitude * cos(Player_Viewmodel_Walk_Timer);
+
+			Viewmodel_Meshes[W].Position += glm::vec3(Delta_X) * Viewmodel_Meshes[W].Orientation;
+			Viewmodel_Meshes[W].Position += glm::vec3(Delta_Y) * Viewmodel_Meshes[W].Orientation_Up;
 
 			Viewmodel_Meshes[W].Mesh.Bind_Buffer();
 			Viewmodel_Meshes[W].Mesh.Update_Vertices();

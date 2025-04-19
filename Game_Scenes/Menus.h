@@ -128,17 +128,19 @@ void Close_Game(UI_Element* Element)
 	glfwSetWindowShouldClose(Window, 1);
 }
 
-void Place_Language_Buttons()
+void Place_Language_Buttons(glm::vec4 Colour = glm::vec4(1.0f))
 {
 	UI_Elements.push_back(new Button_UI_Element(0.6, 0.65, 0.9, 0.9, Set_Language_English, Pull_Texture("Assets/UI/English.png").Texture));
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Colour = Colour;
 
 	UI_Elements.push_back(new Button_UI_Element(0.2, 0.65, 0.5, 0.9, Set_Language_Deutsch, Pull_Texture("Assets/UI/German.png").Texture));
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Colour = Colour;
 }
 
 void Open_Pause_Menu(UI_Element* Element);

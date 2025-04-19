@@ -119,7 +119,7 @@ namespace Audio
 	void Set_Music_Tracks_For_Deletion()
 	{
 		for (size_t W = 0; W < Audio_Sources.size(); W++)
-			Audio_Sources[W]->Flags[ASF_TO_BE_DELETED] |= Audio_Sources[W]->Flags[ASF_MUSIC_TRACK];
+			Audio_Sources[W]->Flags[ASF_TO_BE_DELETED] |= Audio_Sources[W]->Flags[ASF_MUSIC_TRACK]; // If the audio source is a music track, set it for deletion.
 	}
 
 	void Handle_Audio_Deletions()

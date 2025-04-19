@@ -98,6 +98,12 @@ namespace Fast
 		return *(float*)&Long;
 	}
 
+	template<typename Type>
+	Type Square(Type A)
+	{
+		return A * A;
+	}
+
 	float Division(float Value, float Denominator)
 	{
 		uint32_t Long = *(uint32_t*)&Value;

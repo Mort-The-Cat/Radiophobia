@@ -248,11 +248,11 @@ void Bind_UI_Uniforms(Shader UI_Shader, Texture Image, glm::vec4 Colour)
 	Image.Bind_Texture();
 }
 
-void Render_Screen_Sprite(float X1, float Y1, float X2, float Y2, glm::vec2 TL_UV, glm::vec2 TR_UV, glm::vec2 BL_UV, glm::vec2 BR_UV)
+void Render_Screen_Sprite(float X1, float Y1, float X2, float Y2, glm::vec2 TL_UV, glm::vec2 TR_UV, glm::vec2 BL_UV, glm::vec2 BR_UV, float Slant = 0.0f)
 {
 	// Make vertex buffer for this
 
-	Billboard_Vertex_Buffer Vertex_Buffer(X1, Y1, X2, Y2, TL_UV, TR_UV, BL_UV, BR_UV); // This draws the image within the UI border
+	Billboard_Vertex_Buffer Vertex_Buffer(X1, Y1, X2, Y2, TL_UV, TR_UV, BL_UV, BR_UV, Slant * Window_Aspect_Ratio * (Y2 - Y1)); // This draws the image within the UI border
 
 	// Vertex_Buffer.Bind_Buffer();
 
@@ -865,6 +865,8 @@ public:
 			else
 				X_Offset += Font->Characters['a'].Step;
 		}
+
+
 
 #endif
 	}
