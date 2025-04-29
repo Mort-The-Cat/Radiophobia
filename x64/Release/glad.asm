@@ -5101,6 +5101,7 @@ PUBLIC	__xmm@f493f493f493f493f493f493f493f493
 PUBLIC	__xmm@f9c31a9df9c31a9df9c31a9df9c31a9d
 PUBLIC	__xmm@fa7efa7efa7efa7efa7efa7efa7efa7e
 EXTRN	_CxxThrowException:PROC
+EXTRN	__CxxFrameHandler4:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__GSHandlerCheck_EH4:PROC
 EXTRN	__chkstk:PROC

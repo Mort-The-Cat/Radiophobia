@@ -140,10 +140,10 @@ void Execute_Mesh_Animator_Animation(void* Parameter)
 	__m256 Time_Vector = _mm256_set1_ps(Info->Time_Scalar);					// We can just set both of these before we start multiplying
 	__m256 Opposite_Time_Vector = _mm256_set1_ps(1.0f - Info->Time_Scalar);
 
-	Keyframe_Vertex* A_Source = Info->Animator->Animation->Keyframes[Info->Keyframe_Index].data();
-	Keyframe_Vertex* B_Source = Info->Animator->Animation->Keyframes[Info->Keyframe_Index + 1].data();
+	Keyframe_Vertex* A_Source = Info->Animator->Animation->Keyframes[Info->Keyframe_Index].data() + Info->Offset;
+	Keyframe_Vertex* B_Source = Info->Animator->Animation->Keyframes[Info->Keyframe_Index + 1].data() + Info->Offset;
 
-	Model_Vertex* Destination = Info->Mesh->Mesh->Vertices.data();
+	Model_Vertex* Destination = Info->Mesh->Mesh->Vertices.data() + Info->Offset;
 
 	__m256 A, B, Interpolated_Vector, Expanded;
 
