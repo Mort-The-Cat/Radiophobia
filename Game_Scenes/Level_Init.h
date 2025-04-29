@@ -173,6 +173,12 @@ void Setup_Intro_Tunnel()
 		new Flicker_Light_Controller(Splice_Vector(Scene_Lights, 1u, Scene_Lights.size())),
 		std::vector<Hitbox*>(0));
 
+	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS }, Object_Material::Stone));
+	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Pipes.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Rust_Texture.png").Texture, Pull_Texture("Rust").Texture, Scene_Models.back(),
+		new Controller(),
+		std::vector<Hitbox*>(0));
+
 	// We ignore index 0 because we don't want to include the player's flashlight in the flicker effect
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Concrete));
@@ -186,6 +192,10 @@ void Setup_Intro_Tunnel()
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall_2").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Concrete));
+	Scene_Models.back()->Position = glm::vec3(0.0f);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Door_Texture.png").Texture, Pull_Texture("Door").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Mesh) });
 
 	Blockmap::Initialise_Blockmap();
 

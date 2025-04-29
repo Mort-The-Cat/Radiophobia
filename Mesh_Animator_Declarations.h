@@ -1,44 +1,14 @@
 #ifndef MESH_ANIMATOR_DECLARATIONS
 #define MESH_ANIMATOR_DECLARATIONS
 
+// https://db.in.tum.de/~finis/x86-intrin-cheatsheet-v2.1.pdf
+
 #include "OpenGL_Declarations.h"
 #include "Vertex_Buffer_Declarations.h"
 #include "Quaternion.h"
 #include "Job_System_Declarations.h"
 
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
-
 #include "Float_Text_Encoder.h"
-
-glm::mat4 Assimp_Matrix_To_Mat4(aiMatrix4x4 Matrix)
-{
-	return glm::mat4(
-		Matrix.a1, Matrix.b1, Matrix.c1, Matrix.d1,
-		Matrix.a2, Matrix.b2, Matrix.c2, Matrix.d2,
-		Matrix.a3, Matrix.b3, Matrix.c3, Matrix.d3,
-		Matrix.a4, Matrix.b4, Matrix.c4, Matrix.d4);
-
-	//return glm::mat4(
-	//	Matrix.a1, Matrix.c1, Matrix.b1, Matrix.d1,
-	//	Matrix.a3, Matrix.c3, Matrix.b3, Matrix.d3,
-	//	Matrix.a2, Matrix.c2, Matrix.b2, Matrix.d2,
-	//	Matrix.a4, Matrix.c4, Matrix.b4, Matrix.d4);
-
-	//return glm::mat4(
-	//	Matrix.d4, Matrix.c4, Matrix.b4, Matrix.a4,
-	//	Matrix.d3, Matrix.c3, Matrix.b3, Matrix.a3,
-	//	Matrix.d2, Matrix.c2, Matrix.b2, Matrix.a2,
-	//	Matrix.d1, Matrix.c1, Matrix.b1, Matrix.a1);
-
-	return glm::mat4(
-		Matrix.a1, Matrix.a2, Matrix.a3, Matrix.a4,
-		Matrix.b1, Matrix.b2, Matrix.b3, Matrix.b4,
-		Matrix.c1, Matrix.c2, Matrix.c3, Matrix.c4,
-		Matrix.d1, Matrix.d2, Matrix.d3, Matrix.d4
-	);
-}
 
 //
 
@@ -95,16 +65,27 @@ public:
 
 		float Time_Scalar = MIN(Time * Animation->Tickrate, Animation->Keyframes.size() - 1) - ((float)Keyframe_Index);
 
-		// Time_Scalar /= Animation->Tickrate;
+		__m256 Time_Vector = _mm256_set1_ps(Time_Scalar);					// We can just set both of these before we start multiplying
+		__m256 Opposite_Time_Vector = _mm256_set1_ps(1.0f - Time_Scalar);
 
-		for (size_t W = 0; W < Animation->Keyframes[Keyframe_Index].size(); W++)
+		char* A_Source = (char*)Animation->Keyframes[Keyframe_Index].data();
+		char* B_Source = (char*)Animation->Keyframes[Keyframe_Index + 1].data();
+
+		Model_Vertex* Destination = Mesh->Mesh->Vertices.data();
+
+		__m256 A, B, Interpolated_Vector, Expanded;
+
+		for (size_t V = 0; V < Mesh->Mesh->Vertices.size(); V++)
 		{
-			Keyframe_Vertex A, B;
-			A = Animation->Keyframes[Keyframe_Index][W];
-			B = Animation->Keyframes[Keyframe_Index + 1][W];
+			A = _mm256_mul_ps(Opposite_Time_Vector, *(__m256*)A_Source);
+			B = _mm256_mul_ps(Time_Vector, *(__m256*)B_Source);
 
-			Mesh->Mesh->Vertices[W].Position = A.Position * (1.0f - Time_Scalar) + B.Position * Time_Scalar;
-			Mesh->Mesh->Vertices[W].Normal = A.Normal * (1.0f - Time_Scalar) + B.Normal * Time_Scalar;
+			Interpolated_Vector = _mm256_add_ps(A, B);
+			memcpy(Destination, &Interpolated_Vector, 24);
+
+			Destination++;
+			A_Source += 24;
+			B_Source += 24;
 		}
 	}
 
@@ -156,14 +137,28 @@ void Execute_Mesh_Animator_Animation(void* Parameter)
 {
 	Worker_Mesh_Animator_Info* Info = (Worker_Mesh_Animator_Info*)Parameter;
 
+	__m256 Time_Vector = _mm256_set1_ps(Info->Time_Scalar);					// We can just set both of these before we start multiplying
+	__m256 Opposite_Time_Vector = _mm256_set1_ps(1.0f - Info->Time_Scalar);
+
+	Keyframe_Vertex* A_Source = Info->Animator->Animation->Keyframes[Info->Keyframe_Index].data();
+	Keyframe_Vertex* B_Source = Info->Animator->Animation->Keyframes[Info->Keyframe_Index + 1].data();
+
+	Model_Vertex* Destination = Info->Mesh->Mesh->Vertices.data();
+
+	__m256 A, B, Interpolated_Vector, Expanded;
+
 	for (size_t W = Info->Offset; W < Info->Animator->Animation->Keyframes[Info->Keyframe_Index].size(); W += NUMBER_OF_WORKERS)
 	{
-		Keyframe_Vertex A, B;
-		A = Info->Animator->Animation->Keyframes[Info->Keyframe_Index][W];
-		B = Info->Animator->Animation->Keyframes[Info->Keyframe_Index + 1][W];
+		A = _mm256_mul_ps(Opposite_Time_Vector, *(__m256*)A_Source);
+		B = _mm256_mul_ps(Time_Vector, *(__m256*)B_Source);
 
-		Info->Mesh->Mesh->Vertices[W].Position = A.Position * (1.0f - Info->Time_Scalar) + B.Position * Info->Time_Scalar;
-		Info->Mesh->Mesh->Vertices[W].Normal = A.Normal * (1.0f - Info->Time_Scalar) + B.Normal * Info->Time_Scalar;
+		Interpolated_Vector = _mm256_add_ps(A, B);
+
+		memcpy(Destination, &Interpolated_Vector, 24u);
+
+		Destination += NUMBER_OF_WORKERS;
+		A_Source += NUMBER_OF_WORKERS;
+		B_Source += NUMBER_OF_WORKERS;
 	}
 
 	delete Info;
