@@ -162,6 +162,7 @@
     <ClInclude Include="Audio_Declarations.h" />
     <ClInclude Include="Audio_Handler_Declarations.h" />
     <ClInclude Include="Bool_Array.h" />
+    <ClInclude Include="AI_Navigation_Grid.h" />
     <ClInclude Include="Decal_Projection_Clipper_Declarations.h" />
     <ClInclude Include="Deletion_Handler.h" />
     <ClInclude Include="Engine_Loop.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Game_Scenes\Level_Init.h" />
     <ClInclude Include="Game_Scenes\Menus.h" />
     <ClInclude Include="Game_Scenes\Menus_Declarations.h" />
+    <ClInclude Include="Game_Scenes\Object_Controllers.h" />
     <ClInclude Include="Game_Scenes\Particle_Effect_Controller_Declarations.h" />
     <ClInclude Include="Game_Scenes\Shader_Etc_Initialisation.h" />
     <ClInclude Include="Game_Scenes\Title_Screen_Handling.h" />

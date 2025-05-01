@@ -8,6 +8,8 @@
 
 #include "../Model_Declarations.h"
 
+#include "../AI_Navigation_Grid.h"
+
 class Test_Enemy_Controller : public Damageable_Controller
 {
 public:
@@ -48,7 +50,22 @@ public:
 
 		// Then we'll see if we can move in direction of player!
 
-		glm::vec3 To_Player_Vector = glm::vec3(Tick, 0.0f, Tick) * glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f) * (Player_Camera.Position - Object->Position));
+		glm::vec3 To_Player_Vector = glm::vec3(1.0f, 0.0f, 1.0f) * (Player_Camera.Position - Object->Position);// glm::vec3(Tick, 0.0f, Tick)* glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f) * (Player_Camera.Position - Object->Position));
+
+		float Squared_Length = glm::dot(To_Player_Vector, To_Player_Vector);
+
+		if (Squared_Length > 6.0f)
+		{
+			glm::vec3 Movement_Direction = glm::vec3(Tick) * Navigation::Get_Path_Direction(Object->Position, Player_Camera.Position);
+
+			Object->Position += Movement_Direction;
+		}
+
+		Squared_Length = Tick * Fast::Inverse_Sqrt(Squared_Length);
+
+		To_Player_Vector.x *= Squared_Length;
+		To_Player_Vector.z *= Squared_Length;
+		// We know that To_Player_Vector.y == 0
 
 		Object->Orientation *= glm::vec3(1.0f - Tick, 0.0f, 1.0f - Tick);
 		Object->Orientation += To_Player_Vector;

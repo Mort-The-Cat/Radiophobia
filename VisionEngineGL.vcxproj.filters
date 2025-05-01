@@ -152,6 +152,12 @@
     <ClInclude Include="Game_Scenes\Level_Init.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game_Scenes\Object_Controllers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AI_Navigation_Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader_Code\Vertex_Test.frag" />

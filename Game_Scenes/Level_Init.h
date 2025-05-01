@@ -7,6 +7,8 @@
 
 #include "Menus.h"
 
+#include "../AI_Navigation_Grid.h"
+
 #include "Enemy_Declarations.h"
 
 #include "../Light_BVH_Tree_Handler.h"
@@ -198,6 +200,13 @@ void Setup_Intro_Tunnel()
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Door_Texture.png").Texture, Pull_Texture("Door").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Mesh) });
 
 	Blockmap::Initialise_Blockmap();
+
+	Navigation::Initialise_Level_Navigation_Grid(-0.1, 0.8f);
+
+
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_ACTIVE, MF_CAST_SHADOWS }, Object_Material::Enemy));
+	Scene_Models.back()->Position = glm::vec3(-9.5, -0.05f, -7.8);
+	Create_Model(Pull_Mesh("Assets/Models/Test_Person.obj", LOAD_MESH_ANIM_BIT | LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Person_Texture_2.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Test_Enemy_Controller(10.0f), { Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Test_Person.obj").Mesh) });
 
 	//
 
@@ -498,6 +507,7 @@ void Setup_Intro_Level()
 	//
 
 	Blockmap::Initialise_Blockmap();
+	Navigation::Initialise_Level_Navigation_Grid(-0.2, 0.6f);
 
 	// Must add dynamic objects AFTER blockmap is initialised
 
