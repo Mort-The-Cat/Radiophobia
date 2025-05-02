@@ -17,6 +17,8 @@
 
 #include "Level_Init.h"
 
+#include "UI_Dialogue_Handler.h"
+
 void Run_Engine_Loop(UI_Element* Element)
 { 
 	Delete_All_UI();
@@ -42,9 +44,11 @@ void Run_Engine_Loop(UI_Element* Element)
 
 	Delete_All_UI();
 
+	Setup_Intro_Dialogue();
+
 	//
 
-	Setup_Intro_Level();
+	Setup_Intro_Tunnel();
 
 	Delete_All_UI();
 

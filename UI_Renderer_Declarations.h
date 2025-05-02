@@ -669,7 +669,7 @@ public:
 	{
 		std::string File_Name;
 		bool Local_Language_Settings_Update_Flag = false;
-	} * File_Info;
+	} File_Info;
 
 #ifndef USING_FREETYPE_FONT
 	std::vector<uint32_t> Character_Indices; // These are the indices of the letters in the font
@@ -696,8 +696,8 @@ public:
 		if (Controller != nullptr)
 			delete Controller;
 
-		if (File_Info != nullptr)
-			delete File_Info;
+		//if (File_Info != nullptr)
+		//	delete File_Info;
 	}
 
 	Text_UI_Element(float X1p, float Y1p, float X2p, float Y2p, std::string Textp, bool Load_From_File = false, glm::vec4 Text_Colourp = glm::vec4(1.0f), Font_Table::Font* Fontp = &Font_Georgia, float Sizep = 1.0f / 15.0f, float Italic_Slantp = 0.0f)
@@ -715,16 +715,18 @@ public:
 
 		if (Load_From_File)
 		{
-			File_Info = new Text_Origin_File_Info();
-			File_Info->File_Name = Textp;
-			File_Info->Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
+			// File_Info = new Text_Origin_File_Info();
+			File_Info.File_Name = Textp;
+			File_Info.Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
 
 			// Automatically load the stuff
 
-			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
+			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info.File_Name;
 
 			Text = Pull_Text(Directory.c_str()).Text;
 		}
+		else
+			File_Info.File_Name = "";
 
 		Size = Sizep;
 
@@ -750,7 +752,7 @@ public:
 			//	continue; // We're perfectly happy, skipping to the next iteration
 			//}
 
-			if (Text[W] != ' ')
+			if (Text[W] != ' ' && Text[W] != '\t')
 			{
 				Font_Table::Character Character = Font->Characters[Text[W]];
 
@@ -767,7 +769,7 @@ public:
 				//	X_Offset = 0.0f;
 			}
 			else
-				X_Offset += Font->Characters['a'].Step;
+				X_Offset += Font->Characters['a'].Step * (1 + 3 * (Text[W] == '\t'));
 
 		}
 
@@ -824,7 +826,7 @@ public:
 				continue; // We're perfectly happy, skipping to the next iteration
 			}
 
-			if (Text[W] != ' ')
+			if (Text[W] != ' ' && Text[W] != '\t')
 			{
 				Font_Table::Character Character = Font->Characters[Text[W]];
 
@@ -863,7 +865,7 @@ public:
 				Letter.Delete_Buffer();
 			}
 			else
-				X_Offset += Font->Characters['a'].Step;
+				X_Offset += Font->Characters['a'].Step * (1 + 3 * (Text[W] == '\t'));
 		}
 
 
@@ -873,14 +875,14 @@ public:
 
 	virtual void Render(UI_Transformed_Coordinates Coords) override
 	{
-		if(File_Info != nullptr)
-			if (File_Info->Local_Language_Settings_Update_Flag != Language_Settings_Update_Flag)
+		if(File_Info.File_Name != "")
+			if (File_Info.Local_Language_Settings_Update_Flag != Language_Settings_Update_Flag)
 			{
-				File_Info->Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
+				File_Info.Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
 
 				// Automatically load the stuff
 
-				std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
+				std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info.File_Name;
 
 				Text = Pull_Text(Directory.c_str()).Text;
 			}
@@ -994,14 +996,16 @@ public:
 
 		if (Load_From_File)
 		{
-			File_Info = new Text_Origin_File_Info();
-			File_Info->File_Name = Text;
-			File_Info->Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
+			//File_Info = new Text_Origin_File_Info();
+			File_Info.File_Name = Text;
+			File_Info.Local_Language_Settings_Update_Flag = Language_Settings_Update_Flag;
 
-			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info->File_Name;
+			std::string Directory = "Assets/Text/" + Current_Language_Setting + "/" + File_Info.File_Name;
 
 			Text = Pull_Text(Directory.c_str()).Text;
 		}
+		else
+			File_Info.File_Name = "";
 
 		Size = Sizep;
 

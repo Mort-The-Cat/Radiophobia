@@ -1,0 +1,115 @@
+^p
+=== INCOMING MESSAGE ===
+
+^p
+>> Executing script "terminal_logs\setup\register.z"
+	["terminal_logs\setup\register.z"]
+		- main()
+		- fopen(".\temp\security\templates\config.csv")
+		- push_session_id()
+		- fclose(unnamed_address), unnamed_address=0x0180E473
+		- verify_session_id()
+		- flush_session_pipeline()
+		- system("close")
+	=== PROGRAM ENDED WITH ERROR CODE 0 ===
+
+^p
+>> Establishing connection...
+^p
+>> Pinging internal system network...
+^p
+>> unsupported medium: "s_line"
+
+[VANISHED]
+
+^p
+>> m_line 1-51 unresponsive; rerouting...
+>> Route cached
+>> Requesting communication parameters...
+^p
+>> Exchanging 256-key...
+^p
+>> Connection established!
+
+^p
+^p
+^c
+=== MESSAGE INTERFACE ===
+
+>> You are on a secure line.
+^n
+
+	Something came up, and we've got a job for you.
+^n
+
+	Rheinsberg Nuclear Powerplant
+	Kernkraftwerk Rheinsberg (K.K.R.) WWER type reactor
+
+	Experienced a tear in the tubing of a cooling 
+	circuit in sector alpha.
+^n
+
+	This was noticed quickly and the signal was sent. 
+^n
+
+	Under normal circumstances, the problem would've 
+	been resolved before the public even heard about it.
+^n
+
+	But there was no response back, and the whole 
+	place went up in flames. Sabotage is suspected.
+^n
+^s1
+	Teens and crackheads in the area are getting too 
+	curious and exploring areas they're not supposed to.
+^n
+
+	Although we've lost any visual feed on the 
+	facilities, motion sensors are being tripped. 
+^n
+
+	Most of these are likely false-alarms or just 
+	some animal that got lost, but we have reason to 
+	believe that outsiders and a number of personnel 
+	are still inside.
+^n
+
+	We've sent the signal to remotely close the doors, 
+	but it's only a matter of time before they find 
+	their way out.
+^n
+^s1
+	You'll be issued with a standard law 
+	enforcement pistol among other things.
+^r 
+Am I to arrest trespassers?
+
+>> "Am I to arrest trespassers?"
+>> Message sent
+^p
+
+	Arrest? No, these people are fucking with actual 
+	classified information. They need to be put down 
+	like a rabid dog.
+^n
+^s1
+	This operation is extremely secretive, so funds 
+	are scarce.
+^n
+
+	However, this facility was extensively stocked 
+	in the event of an emergency. You'll find more 
+	equipment in these locations.
+^n
+
+	We heavily advice you to take whatever equipment 
+	you can find - anything you think's useful.
+^n
+
+	Meet me at the shop, and we'll tell you 
+	the rest on the way. 
+^p
+
+>> Connection terminated
+
+=== MESSAGE INTERFACE ENDED WITH ERROR CODE 0 ===

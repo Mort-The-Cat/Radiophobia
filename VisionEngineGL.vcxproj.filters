@@ -158,6 +158,9 @@
     <ClInclude Include="AI_Navigation_Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UI_Dialogue_Handler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader_Code\Vertex_Test.frag" />

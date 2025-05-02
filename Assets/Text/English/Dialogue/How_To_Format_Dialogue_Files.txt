@@ -1,0 +1,24 @@
+^p
+This line gives a pause of an optional duration
+
+
+^n
+This waits until the player hits the "next" button
+
+
+^c
+This clears the previous onscreen text
+
+
+^r
+This prompts the player with a dialogue response
+
+
+^s0
+^s1
+^s2
+^s3
+^s4
+^s5
+etc...
+This clears everything but the first (n) lines (where n is between 0 and 9)

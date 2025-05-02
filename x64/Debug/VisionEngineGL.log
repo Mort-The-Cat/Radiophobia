@@ -23,22 +23,22 @@ C:\Radiophobia\Radiophobia-main\Vertex_Buffer_Declarations.h(302,107): warning C
 C:\Radiophobia\Radiophobia-main\Vertex_Buffer_Declarations.h(311,37): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(64,25): warning C4244: 'initializing': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(65,25): warning C4244: 'initializing': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(76,37): warning C4101: 'Expanded': unreferenced local variable
+C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(77,37): warning C4101: 'Expanded': unreferenced local variable
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(94,25): warning C4244: 'initializing': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(95,25): warning C4244: 'initializing': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(148,36): warning C4101: 'Expanded': unreferenced local variable
+C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(149,36): warning C4101: 'Expanded': unreferenced local variable
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(178,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(179,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(185,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Mesh_Animator_Declarations.h(186,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Texture_Declarations.h(109,36): warning C4267: 'argument': conversion from 'size_t' to 'GLenum', possible loss of data
@@ -242,17 +242,17 @@ C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(139,51): warning C4305: 'arg
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(139,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(65,37): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(68,37): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(66,38): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(69,38): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(118,54): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
-C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(118,54): warning C4267:         with
-C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(118,54): warning C4267:         [
-C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(118,54): warning C4267:             _Ty=std::seed_seq::result_type
-C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(118,54): warning C4267:         ]
+C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(124,54): warning C4267: '=': conversion from 'size_t' to '_Ty', possible loss of data
+C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(124,54): warning C4267:         with
+C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(124,54): warning C4267:         [
+C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(124,54): warning C4267:             _Ty=std::seed_seq::result_type
+C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(124,54): warning C4267:         ]
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(201,9): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
@@ -287,13 +287,16 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(112,50): warning C4244: 
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Level_Init.h(204,48): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(36,40): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Level_Init.h(510,48): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(37,46): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(38,40): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(201,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(39,46): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
+  (compiling source file 'Main.cpp')
+  
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Title_Screen_Handling.h(205,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Shader_Etc_Initialisation.h(66,98): warning C4305: 'argument': truncation from 'double' to 'float'
@@ -394,19 +397,4 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(28,7): warning C4267: '=
   
 C:\Radiophobia\Radiophobia-main\OpenGL_Declarations.h(227): warning C4715: 'Get_File_Contents': not all control paths return a value
 C:\Radiophobia\Radiophobia-main\Hitdetection_Declarations.h(295): warning C4715: 'Generate_AABB_Hitboxes': not all control paths return a value
-glfw3.lib(init.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(init.obj)' or at ''; linking object as if no debug info
-glfw3.lib(monitor.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(monitor.obj)' or at ''; linking object as if no debug info
-glfw3.lib(window.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(window.obj)' or at ''; linking object as if no debug info
-glfw3.lib(input.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(input.obj)' or at ''; linking object as if no debug info
-glfw3.lib(context.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(context.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_init.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_init.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_monitor.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_time.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_time.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_thread.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_thread.obj)' or at ''; linking object as if no debug info
-glfw3.lib(vulkan.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(vulkan.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_window.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_window.obj)' or at ''; linking object as if no debug info
-glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(win32_joystick.obj)' or at ''; linking object as if no debug info
-glfw3.lib(wgl_context.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(wgl_context.obj)' or at ''; linking object as if no debug info
-glfw3.lib(egl_context.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(egl_context.obj)' or at ''; linking object as if no debug info
-glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(osmesa_context.obj)' or at ''; linking object as if no debug info
   VisionEngineGL.vcxproj -> C:\Radiophobia\Radiophobia-main\VisionEngineGL.exe
