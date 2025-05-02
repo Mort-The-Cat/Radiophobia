@@ -25,6 +25,7 @@ struct Mesh_Animation
 
 #define ANIMF_TO_BE_DELETED 0u
 #define ANIMF_LOOP_BIT 1u
+#define NUMBER_OF_ANIMATION_WORKERS 6u
 
 #define MAX(x, y) (x > y ? x : y)
 #define MIN(x, y) (x < y ? x : y)
@@ -97,7 +98,7 @@ public:
 
 		// Mesh->Update_Vertices();
 
-		for (size_t W = 0; W < NUMBER_OF_WORKERS; W++)
+		for (size_t W = 0; W < NUMBER_OF_ANIMATION_WORKERS; W++)
 			Job_System::Submit_Job(Job_System::Job(Execute_Mesh_Animator_Animation, new Worker_Mesh_Animator_Info(this, Mesh, W, Keyframe_Index, Time_Scalar)));
 
 		// Execute_Mesh_Animator_Animation(new Worker_Mesh_Animator_Info(this, Mesh, NUMBER_OF_WORKERS - 1, Keyframe_Index, Time_Scalar));
@@ -147,7 +148,7 @@ void Execute_Mesh_Animator_Animation(void* Parameter)
 
 	__m256 A, B, Interpolated_Vector, Expanded;
 
-	for (size_t W = Info->Offset; W < Info->Animator->Animation->Keyframes[Info->Keyframe_Index].size(); W += NUMBER_OF_WORKERS)
+	for (size_t W = Info->Offset; W < Info->Animator->Animation->Keyframes[Info->Keyframe_Index].size(); W += NUMBER_OF_ANIMATION_WORKERS)
 	{
 		A = _mm256_mul_ps(Opposite_Time_Vector, *(__m256*)A_Source);
 		B = _mm256_mul_ps(Time_Vector, *(__m256*)B_Source);
@@ -156,9 +157,9 @@ void Execute_Mesh_Animator_Animation(void* Parameter)
 
 		memcpy(Destination, &Interpolated_Vector, 24u);
 
-		Destination += NUMBER_OF_WORKERS;
-		A_Source += NUMBER_OF_WORKERS;
-		B_Source += NUMBER_OF_WORKERS;
+		Destination += NUMBER_OF_ANIMATION_WORKERS;
+		A_Source += NUMBER_OF_ANIMATION_WORKERS;
+		B_Source += NUMBER_OF_ANIMATION_WORKERS;
 	}
 
 	delete Info;

@@ -31,7 +31,7 @@ namespace Navigation
 
 	std::mutex Saved_Grid_Mutex;
 
-	float Block_Size = 0.1f;
+	const constexpr float Block_Size = 0.2f;
 
 	size_t Navigation_Grid_Width;
 	size_t Navigation_Grid_Height;
@@ -113,11 +113,14 @@ namespace Navigation
 
 	//
 
-	inline void Check_Flood_Fill_Iteration(std::vector<size_t>& New_Indices, size_t Z_Index, size_t Distance, Pathfinding_Grid* Pathfinding)
+	inline void Check_Flood_Fill_Iteration(
+		size_t* Indices_Data, size_t Z_Index, size_t Distance, Pathfinding_Grid* Pathfinding,
+		unsigned char* Current_Indices, unsigned char* Next_Indices, unsigned char* End_Next_Indices)
 	{
 		if (Pathfinding->Navigation_Grid.Distances[Z_Index] > Distance && (Pathfinding->Navigation_Grid.Distances[Z_Index] + 1u))
 		{
-			New_Indices.push_back(Z_Index);
+			Indices_Data[*End_Next_Indices] = Z_Index;
+			(*End_Next_Indices)++;
 			Pathfinding->Navigation_Grid.Distances[Z_Index] = Distance;
 		}
 	}
@@ -126,25 +129,27 @@ namespace Navigation
 	{
 		uint32_t Distance = 1;
 
-		std::vector<size_t> Indices;// = { Z_Index };
-		std::vector<size_t> New_Indices(0);
+		size_t Indices_Data[256];														// This looping queue saves soooo much time
+		unsigned char Current_Indices = 0, Next_Indices = 1, End_Next_Indices = 1;
+		Indices_Data[0] = Z_Index;
 
-		Check_Flood_Fill_Iteration(Indices, Z_Index, 0, Pathfinding);
+		Check_Flood_Fill_Iteration(Indices_Data, Z_Index, 0, Pathfinding, &Current_Indices, &Next_Indices, &End_Next_Indices);
 
-		//Pathfinding->Navigation_Grid.Distances[Z_Index] = 0u;
-
-		while (Indices.size())
+		while (End_Next_Indices - Next_Indices)
 		{
-			New_Indices.clear();
-			for (size_t W = 0; W < Indices.size(); W++)
+			Current_Indices = Next_Indices;
+			Next_Indices = End_Next_Indices;
+			for (unsigned char W = Current_Indices; W != Next_Indices; W++)
 			{
-				Check_Flood_Fill_Iteration(New_Indices, Indices[W] - Navigation_Grid_Width, Distance, Pathfinding);
-				Check_Flood_Fill_Iteration(New_Indices, Indices[W] + Navigation_Grid_Width, Distance, Pathfinding);
-				Check_Flood_Fill_Iteration(New_Indices, Indices[W] - 1, Distance, Pathfinding);
-				Check_Flood_Fill_Iteration(New_Indices, Indices[W] + 1, Distance, Pathfinding);
+				Check_Flood_Fill_Iteration(Indices_Data, Indices_Data[W] - Navigation_Grid_Width, Distance, Pathfinding,
+					&Current_Indices, &Next_Indices, &End_Next_Indices);
+				Check_Flood_Fill_Iteration(Indices_Data, Indices_Data[W] + Navigation_Grid_Width, Distance, Pathfinding,
+					&Current_Indices, &Next_Indices, &End_Next_Indices);
+				Check_Flood_Fill_Iteration(Indices_Data, Indices_Data[W] - 1, Distance, Pathfinding,
+					&Current_Indices, &Next_Indices, &End_Next_Indices);
+				Check_Flood_Fill_Iteration(Indices_Data, Indices_Data[W] + 1, Distance, Pathfinding,
+					&Current_Indices, &Next_Indices, &End_Next_Indices);
 			}
-
-			Indices = New_Indices;
 
 			Distance++;
 		}
