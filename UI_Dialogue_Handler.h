@@ -27,6 +27,36 @@ std::string Attach_Dialogue_Cursor(std::string Text, float Timer)
 	return Text;
 }
 
+class UI_Computer_Flicker : public UI_Controller
+{
+public:
+	float Timer = 0.0f;
+
+	virtual void Control_Function(UI_Element* Element) override
+	{
+		Timer += Tick;
+
+#define COMPUTER_ZOOM 2.5f
+
+		float Scalar = (1 + MIN(Timer, 1)) * 0.5f;
+
+		Element->X1 = Scalar * COMPUTER_ZOOM * -1.7777f;
+		Element->Y1 = Scalar * COMPUTER_ZOOM * -1.0f;
+		Element->X2 = Scalar * COMPUTER_ZOOM * 1.7777f;
+		Element->Y2 = Scalar * COMPUTER_ZOOM * 1.0f;
+
+		while (Timer > 2.2f)
+		{
+			Timer -= 0.2f;
+
+			if (rand() & 1u)
+				Element->Colour = glm::vec4(1.0f, 0.8f, 1.0f, 1.0f);
+			else
+				Element->Colour = glm::vec4(1.0f);
+		}
+	}
+};
+
 class UI_Dialogue_Master : public UI_Controller
 {
 public:
@@ -222,8 +252,8 @@ void Load_Dialogue(std::string Directory, UI_Dialogue_Master* Target_DM)
 {
 	// This will read and handle the file line-by-line
 
-	Target_DM->Instructions.clear();
-	Target_DM->Text = { "" };
+	Target_DM->Instructions = { 'p', 'p' };
+	Target_DM->Text = { "", "", "" };
 
 	std::ifstream File(("Assets/Text/" + Current_Language_Setting + "/" + Directory).c_str());
 
@@ -267,17 +297,27 @@ void Load_Dialogue(std::string Directory, UI_Dialogue_Master* Target_DM)
 
 void Setup_Intro_Dialogue()
 {
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
-	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
-	UI_Elements.back()->Colour = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	UI_Elements.push_back(new UI_Element(COMPUTER_ZOOM * -1.7777f, COMPUTER_ZOOM * -1.0f, COMPUTER_ZOOM * 1.7777f, COMPUTER_ZOOM * 1.0f, Pull_Texture("Assets/UI/Computer_Edited.png").Texture, new UI_Computer_Flicker()));
+	// UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = true;
+	UI_Elements.back()->UI_Border_Size = 0.0f;
+	UI_Elements.back()->Inv_UI_Border_Size = 0.0f;
 
-	UI_Elements.push_back(new Text_UI_Element(-0.7f, -0.9f, 2.4f, 1.0f, "", false, glm::vec4(1.0f), &Font_Console));
+	// UI_Elements.back()->Colour = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	/*UI_Elements.push_back(new Text_UI_Element(-0.7f, -0.9f, 2.4f, 1.0f, "", false, glm::vec4(1.0f), &Font_Console));
 	// UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
-	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;*/
+
+	UI_Elements.push_back(new Text_UI_Element(-1.2f, -0.8f, 1.55f, 1.0f, "", false, glm::vec4(1.0f), &Font_Console, 0.06f));
+	// UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 
 	((Text_UI_Element*)UI_Elements.back())->Text_Colour = glm::vec4(0.1f, 0.75f, 0.1f, 0.75f);
 	UI_Elements.back()->Controller = new UI_Dialogue_Master();

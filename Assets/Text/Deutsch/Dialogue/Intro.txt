@@ -39,30 +39,30 @@
 >> Diese Verbindung ist versichert.
 ^n
 
-	Etwas passierte, und wir haben einen Job fÃ¼r Sie.
+	Etwas passierte, und wir haben einen Job für Sie.
 ^n
 
 	Kernkraftwerk Rheinsberg (K.K.R.) WWER-Reaktor
 
-	Das KÃ¼hlsystem wurde in Sektor Alpha zerrissen.
+	Das Kühlsystem wurde in Sektor Alpha zerrissen.
 ^n
 
 	Es wurde schnell bemerkt, und das Signal wurde gesendet.
 ^n
 
-	Normalerweise wÃ¤re das Problem gelÃ¶st worden, 
+	Normalerweise wäre das Problem gelöst worden, 
 	und zwar bevor die Leute davon erfahren haben.
 ^n
 
-	Aber es gab keine RÃ¼ckmeldung, 
-	und das ganze GebÃ¤ude wurde niedergebrannt...
+	Aber es gab keine Rückmeldung, 
+	und das ganze Gebäude wurde niedergebrannt...
 ^p
 
 	Verrat wird vermutet.
 ^n
 ^s1
-	Jungen und DrogensÃ¼chtiger werden zu neugierig
-	und erkunden Bereiche, die sie nicht dÃ¼rfen.
+	Jungen und Drogensüchtiger werden zu neugierig
+	und erkunden Bereiche, die sie nicht dürfen.
 ^n
 
 	Although we've lost any visual feed on the 
