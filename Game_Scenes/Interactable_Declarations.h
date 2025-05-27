@@ -382,6 +382,31 @@ public:
 	}
 };
 
+class Level_Exit_Door_Controller : public Controller
+{
+	void(*Load_New_Level_Function)();
+public:
+
+	Level_Exit_Door_Controller(void(*Load_New_Level_Functionp)())
+	{
+		Load_New_Level_Function = Load_New_Level_Functionp;
+	}
+
+	virtual void Control_Function() override
+	{
+		Hitbox* Collided;
+		Collision_Info Info = Collision_Test::Raycast(Player_Camera.Position, glm::vec3(0.15f) * Camera_Direction, 4, Collision_Test::Not_Against_Player_Compare, &Collided, 0.1f);
+
+		if (Collided == Object->Hitboxes[0])
+		{
+			Create_UI_Popup("Open_Door.txt", 1.0f);
+
+			if (Inputs[Controls::Use])
+				Load_New_Level_Function();
+		}
+	}
+};
+
 class Door_Controller : public Controller
 {
 	std::string Animation_Name;

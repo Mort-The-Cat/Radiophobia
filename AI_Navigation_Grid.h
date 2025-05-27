@@ -11,14 +11,14 @@ namespace Navigation
 {
 	// Vom Anfang bis zum Ziel.
 
-#define NAV_GRID_MASK 0xFFFFFFFFu
+#define NAV_GRID_MASK 0xFFFFu
 
 	// If the uint8_t distance is 255u, that means that the grid block is a wall and cannot be traversed.
 
 	class Grid
 	{
 	public:
-		std::vector<uint32_t> Distances; // These are the distances from Ziel
+		std::vector<uint16_t> Distances; // These are the distances from Ziel
 	} Map_Grid;
 
 	class Pathfinding_Grid
@@ -99,7 +99,7 @@ namespace Navigation
 
 				Collision_Test::Find_Collision(&Block, Collision_Test::Always_Compare, &Collided_Hitbox);
 
-				uint32_t Wall;
+				uint16_t Wall;
 
 				if (Collided_Hitbox)
 					Wall = NAV_GRID_MASK;
@@ -114,10 +114,13 @@ namespace Navigation
 	//
 
 	inline void Check_Flood_Fill_Iteration(
-		size_t* Indices_Data, size_t Z_Index, size_t Distance, Pathfinding_Grid* Pathfinding,
+		size_t* Indices_Data, size_t Z_Index, uint16_t Distance, Pathfinding_Grid* Pathfinding,
 		unsigned char* Current_Indices, unsigned char* Next_Indices, unsigned char* End_Next_Indices)
 	{
-		if (Pathfinding->Navigation_Grid.Distances[Z_Index] > Distance && (Pathfinding->Navigation_Grid.Distances[Z_Index] + 1u))
+		if (Z_Index >= Map_Grid.Distances.size())
+			return;
+
+		if (Pathfinding->Navigation_Grid.Distances[Z_Index] > Distance && (Pathfinding->Navigation_Grid.Distances[Z_Index] != NAV_GRID_MASK))
 		{
 			Indices_Data[*End_Next_Indices] = Z_Index;
 			(*End_Next_Indices)++;
@@ -127,7 +130,7 @@ namespace Navigation
 
 	void Pathfinding_Fill(size_t Z_Index, Pathfinding_Grid* Pathfinding)
 	{
-		uint32_t Distance = 1;
+		uint16_t Distance = 1;
 
 		size_t Indices_Data[256];														// This looping queue saves soooo much time
 		unsigned char Current_Indices = 0, Next_Indices = 1, End_Next_Indices = 1;
@@ -135,7 +138,7 @@ namespace Navigation
 
 		Check_Flood_Fill_Iteration(Indices_Data, Z_Index, 0, Pathfinding, &Current_Indices, &Next_Indices, &End_Next_Indices);
 
-		while (End_Next_Indices - Next_Indices)
+		while (End_Next_Indices - Next_Indices && Distance)
 		{
 			Current_Indices = Next_Indices;
 			Next_Indices = End_Next_Indices;
@@ -183,7 +186,7 @@ namespace Navigation
 		Saved_Grid_Mutex.unlock();
 	}
 
-	inline void Select_Direction(glm::vec3& Direction_Vector, size_t Z_Index, float Scalar, size_t Distance, Pathfinding_Grid& Navigation, size_t Delta_Index)
+	inline void Select_Direction(glm::vec3& Direction_Vector, size_t Z_Index, float Scalar, uint16_t Distance, Pathfinding_Grid& Navigation, size_t Delta_Index)
 	{
 		struct Delta
 		{
@@ -223,7 +226,7 @@ namespace Navigation
 
 		Get_Pathfinding(End.x, End.z, &Navigation);
 
-		size_t Distance_From_Start = Navigation.Navigation_Grid.Distances[Start_Index];
+		uint16_t Distance_From_Start = Navigation.Navigation_Grid.Distances[Start_Index];
 
 		glm::vec3 Direction_Vector(0.0f);
 

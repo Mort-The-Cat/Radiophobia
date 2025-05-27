@@ -1,5 +1,6 @@
 ^p
 === INCOMING MESSAGE ===
+^f
 
 ^p
 >> Executing script "terminal_logs\setup\register.z"
@@ -33,6 +34,7 @@
 
 ^p
 ^p
+^f
 ^c
 === MESSAGE INTERFACE ===
 

@@ -122,6 +122,11 @@ void Set_Language_Deutsch(UI_Element* Element)
 	Language_Settings_Update_Flag = !Language_Settings_Update_Flag;
 }
 
+void Set_Using_Controller(UI_Element* Element)
+{
+	Using_Controller = true;
+}
+
 void Close_Game(UI_Element* Element)
 {
 	UI_Continue_Looping = false;
@@ -141,6 +146,12 @@ void Place_Language_Buttons(glm::vec4 Colour = glm::vec4(1.0f))
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
 	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
 	UI_Elements.back()->Colour = Colour;
+
+	/*UI_Elements.push_back(new Button_UI_Element(-0.2f, 0.65f, 0.1f, 0.9f, Set_Using_Controller, Pull_Texture("Assets/UI/Controller.png").Texture));
+	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
+	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = true;
+	UI_Elements.back()->Flags[UF_SHADOW_BACKDROP] = true;
+	UI_Elements.back()->Colour = Colour;*/
 }
 
 void Open_Pause_Menu(UI_Element* Element);

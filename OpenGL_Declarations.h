@@ -91,6 +91,14 @@ glm::mat4 Projection_Matrix; // This is the projection matrix of the current cam
 glm::vec3 Camera_Up_Direction;
 glm::vec3 Camera_Direction;
 
+bool Engine_Continue_Looping = true;
+
+struct New_Scene_Loading_Info
+{
+	void(*Loading_Function)();
+	std::vector<void(*)()> Scene_Setup_Functions;
+} New_Scene_Loading_Buffer;
+
 namespace Context_Interface
 {
 	size_t Loading_Progress, Loading_Progress_Total;

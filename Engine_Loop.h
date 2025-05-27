@@ -150,7 +150,7 @@ void Engine_Loop()
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
 	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;*/
 
-	while (!glfwWindowShouldClose(Window))
+	while (Engine_Continue_Looping && !glfwWindowShouldClose(Window))
 	{
 		Handle_Tick();
 
@@ -255,6 +255,8 @@ void Engine_Loop()
 				// Bubble_Colour_Particles.Particles.Spawn_Particle(glm::vec3(RNG() - 3.0f, RNG() - 4.0f, RNG() - 3.0f), glm::vec3(RNG() * 0.01f, RNG() * 0.01f, RNG() * 0.01f));
 			}*/
 	}
+
+	Handle_Deletions();
 }
 
 //

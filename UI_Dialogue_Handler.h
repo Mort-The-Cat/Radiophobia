@@ -38,7 +38,7 @@ public:
 
 #define COMPUTER_ZOOM 2.5f
 
-		float Scalar = (1 + MIN(Timer, 1)) * 0.5f;
+		float Scalar = (1 + floor(16.0f * MIN(Timer, 1)) / 16.0f) * 0.5f;
 
 		Element->X1 = Scalar * COMPUTER_ZOOM * -1.7777f;
 		Element->Y1 = Scalar * COMPUTER_ZOOM * -1.0f;
@@ -69,11 +69,19 @@ public:
 
 	std::string Onscreen_Text;				// This is all of the text that is on screen currently (can be cleared and added to)
 
+	uint16_t Last_Frame_Pause_Was_Pressed = false;
+	uint16_t Toggle_Fast_Scroll = 1;
+
 #define TIME_BETWEEN_CHARACTERS 0.0075f
 
 	virtual void Control_Function(UI_Element* Element) override
 	{
-		Timer += Tick;
+		Timer += Tick * (float)Toggle_Fast_Scroll;
+
+		if (Last_Frame_Pause_Was_Pressed && !Inputs[Controls::Pause])
+			UI_Continue_Looping = false;
+
+		Last_Frame_Pause_Was_Pressed = Inputs[Controls::Pause];
 
 		((Text_UI_Element*)Element)->Text = Attach_Dialogue_Cursor(Onscreen_Text, Timer);// +(fmodf(Timer, 0.8f) < 0.4 ? "_" : Block);
 
@@ -98,6 +106,13 @@ public:
 
 					switch (Instructions[Instruction_Index])
 					{
+					case 'f':
+						Toggle_Fast_Scroll = 3u - Toggle_Fast_Scroll;
+						Character_Index = 0;
+						Instruction_Index++;
+						Text_Index++;
+						break;
+
 					case 'p':
 						if (Timer > 0.5f)
 						{
@@ -192,7 +207,7 @@ public:
 					{
 						// Create the UI button that says "next"
 
-						UI_Elements.push_back(new Button_Text_UI_Element(-0.3f, 0.65f, 0.9f, 0.9f, Dialogue_Master_End, "NEXT ->", false,
+						UI_Elements.push_back(new Button_Text_UI_Element(-0.3f, 0.65f, 0.9f, 0.9f, Dialogue_Master_End, "END ->", false,
 							glm::vec4(1.0f, 1.0f, 1.0f, 2.0f), &Font_Console, 0.075f));
 
 						UI_Elements.back()->Colour.w = 0.5f;
@@ -208,7 +223,7 @@ public:
 						UI_Elements.back()->Flags[UF_AUTO_RESIZE_TO_TEXT] = true;
 						UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 
-						Timer += 1000;
+						Timer = 1001;
 					}
 				}
 			}
@@ -252,8 +267,8 @@ void Load_Dialogue(std::string Directory, UI_Dialogue_Master* Target_DM)
 {
 	// This will read and handle the file line-by-line
 
-	Target_DM->Instructions = { 'p', 'p' };
-	Target_DM->Text = { "", "", "" };
+	Target_DM->Instructions = { 'p', 'p', 'p' };
+	Target_DM->Text = { "", "", "", "" };
 
 	std::ifstream File(("Assets/Text/" + Current_Language_Setting + "/" + Directory).c_str());
 
@@ -325,6 +340,10 @@ void Setup_Intro_Dialogue()
 	Load_Dialogue("Dialogue/Intro.txt", (UI_Dialogue_Master*)UI_Elements.back()->Controller);
 
 	UI_Loop();
+
+	Cache::Remove_From_Texture_Cache("Assets/UI/Computer_Edited.png"); // This line might be redundant - just clearing the cache slightly
+
+	// Especially since this image is like a 1920x1040 PNG... That expands to a lot of pixels
 
 	Delete_All_UI();
 }

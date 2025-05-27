@@ -491,6 +491,9 @@ namespace Physics
 
 	void Record_Collisions()
 	{
+		if (!Engine_Continue_Looping)
+			return;
+
 		Wait_On_Physics();
 
 		Threads_Working_Count_Mutex.lock();

@@ -94,6 +94,56 @@ namespace Cache
 		Mesh_Cache.clear();
 	}
 
+	void Remove_From_Mesh_Cache(const char* Directory)
+	{
+		for(size_t W = 0; W < Mesh_Cache.size(); W++)
+			if (strcmp(Directory, Mesh_Cache[W].Directory.c_str()) == 0)
+			{
+				Mesh_Cache[W].Vertex_Buffer.Delete_Buffer();
+				delete Mesh_Cache[W].Mesh;
+
+				break;
+			}
+
+		auto Removed_Items = std::remove_if(Mesh_Cache.begin(), Mesh_Cache.end(), [&](Mesh_Cache_Info Cache_Info)->bool { return Cache_Info.Mesh == nullptr; });
+
+		Mesh_Cache.erase(Removed_Items, Mesh_Cache.end());
+	}
+
+	void Remove_From_Texture_Cache(const char* Directory)
+	{
+		for (size_t W = 0; W < Texture_Cache.size(); W++)
+		{
+			if (strcmp(Directory, Texture_Cache[W].Directory.c_str()) == 0)
+			{
+				Texture_Cache[W].Texture.Delete_Texture();
+				stbi_image_free(Texture_Cache[W].Pixels);
+				Texture_Cache[W].Pixels = nullptr;
+
+				break;
+			}
+		}
+
+		auto Removed_Items = std::remove_if(Texture_Cache.begin(), Texture_Cache.end(), [&](Texture_Cache_Info Cache_Info)->bool { return Cache_Info.Pixels == nullptr; });
+
+		Texture_Cache.erase(Removed_Items, Texture_Cache.end());
+	}
+
+	void Remove_From_Audio_Cache(const char* Directory)
+	{
+		for (size_t W = 0; W < Audio_Cache.size(); W++)
+		{
+			if (strcmp(Directory, Audio_Cache[W].Directory.c_str()) == 0)
+			{
+				Audio_Cache[W].Source->drop();
+				Audio_Cache[W].Source = nullptr;
+			}
+		}
+
+		auto Removed_Items = std::remove_if(Audio_Cache.begin(), Audio_Cache.end(), [&](Audio_Cache_Info Cache_Info)->bool { return Cache_Info.Source == nullptr; });
+		Audio_Cache.erase(Removed_Items, Audio_Cache.end());
+	}
+
 	void Remove_From_Animation_Cache(Mesh_Animation* Item)
 	{
 		auto Removed_Items = std::remove_if(Animation_Cache.begin(), Animation_Cache.end(), [&](Animation_Cache_Info Cache_Info)->bool { return Cache_Info.Animation == Item; });
@@ -263,6 +313,9 @@ void Push_Merged_Material(const char* T_1, const char* T_2, const char* T_3, con
 	Cache::Texture_Cache_Info Final_Texture;
 	std::array<Cache::Texture_Cache_Info, 3> Textures;
 	std::array<const char*, 3> Directories = { T_1, T_2, T_3 };
+
+	if(Cache::Search_Texture_Cache(Material_Name, &Final_Texture))		// The material already exists...
+		return;
 
 	for (size_t W = 0; W < 3; W++)
 		if (Directories[W] != nullptr)

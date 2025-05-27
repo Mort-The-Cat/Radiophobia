@@ -17,12 +17,17 @@
 
 #include "../Hitdetection_Blockmap.h"
 
-
-void Load_Test_Scene_Assets()
+void Delete_All()
 {
-	Context_Interface::Loading_Progress_Total = 36;
+	for (size_t W = 0; W < Scene_Lights.size(); W++)
+		Scene_Lights[W]->Flags[LF_TO_BE_DELETED] = true;
 
-	//Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
+	for (size_t W = 0; W < Scene_Models.size(); W++)
+		Scene_Models[W]->Flags[MF_TO_BE_DELETED] = true;
+}
+
+void Push_Merged_Material_Textures() // Loads 12 textures
+{
 	Push_Merged_Material<THREADED>("Assets/Textures/Brick.png", nullptr, "Assets/Textures/Brick_Normal.png", "Brick");
 
 	// Push_Merged_Material<THREADED>("Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Test_Normal.png", "Stone");
@@ -49,6 +54,81 @@ void Load_Test_Scene_Assets()
 	Push_Merged_Material<THREADED>("Assets/Textures/Metal_Specular.png", nullptr, "Assets/Textures/Metal_Normal_Texture.png", "Metal");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Vent_Duct.png", nullptr, "Assets/Textures/Vent_Normal.png", "Vent");
+}
+/*
+void Load_Tunnel_Scene_Assets()
+{
+	Context_Interface::Loading_Progress_Total = 20;
+
+	Push_Merged_Material_Textures();
+
+	Pull_Audio("Assets/Audio/Music/Falling_Shepard_Tone.wav");
+	
+	Initialise_Pistol();
+
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Tunnel/Tunnel.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Tunnel/Frame.obj", LOAD_MESH_OBJ_BIT);
+}
+
+void Load_Intro_Level_Assets()
+{
+	Context_Interface::Loading_Progress_Total = 37;
+
+	Push_Merged_Material_Textures();
+
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_0_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_1_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_2_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_3_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_5_Open.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Vent_Damage.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Vent_Remove.anim");
+
+	Pull_Audio("Assets/Audio/Phone/Endcall_Beep.wav");
+	Pull_Audio("Assets/Audio/Phone/I_CAN_SEE_YOU2.wav");
+	Pull_Audio("Assets/Audio/Phone/Static.wav");
+	Pull_Audio("Assets/Audio/Phone/Pickup_Phone.wav");
+	Pull_Audio("Assets/Audio/Phone/Putdown_Phone.wav");
+	Pull_Audio("Assets/Audio/Phone/Telephone_Ring.wav");
+	Pull_Audio("Assets/Audio/Music/Ambience_Track.wav");
+
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Toilets.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Tables.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Heaters.obj", LOAD_MESH_OBJ_BIT);
+
+	Initialise_Pistol();
+
+}
+
+void Unload_Intro_Level_Assets()
+{
+	Cache::Remove_From_Audio_Cache("Assets/Audio/Music/Ambience_Track.wav");
+
+	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Door_1_Open.anim").Animation);
+	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Door_2_Open.anim").Animation);
+	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Door_3_Open.anim").Animation);
+	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Door_5_Open.anim").Animation);
+	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Vent_Damage.anim").Animation);
+	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Vent_Remove.anim").Animation);
+}
+
+void Unload_Test_Tunnel_Assets()
+{
+	Cache::Remove_From_Audio_Cache("Assets/Audio/Music/Falling_Shepard_Tone.wav");
+	
+	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Pipes.obj");
+	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Frame.obj");
+	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Exit_Door.obj");
+	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Tunnel.obj");
+}*/
+
+void Load_Test_Scene_Assets()
+{
+	Context_Interface::Loading_Progress_Total = 36;
+
+	Push_Merged_Material_Textures();
+
+	//Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
 
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_0_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_1_Open.anim");
@@ -73,6 +153,7 @@ void Load_Test_Scene_Assets()
 	Pull_Audio("Assets/Audio/Phone/Putdown_Phone.wav");
 	Pull_Audio("Assets/Audio/Phone/Telephone_Ring.wav");
 	Pull_Audio("Assets/Audio/Music/Ambience_Track.wav");
+	Pull_Audio("Assets/Audio/Music/Falling_Shepard_Tone.wav");
 
 	//
 
@@ -82,7 +163,7 @@ void Load_Test_Scene_Assets()
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Tables.obj", LOAD_MESH_OBJ_BIT);
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Heaters.obj", LOAD_MESH_OBJ_BIT);
 
-	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT);
+	// Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT);
 
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Tunnel/Tunnel.obj", LOAD_MESH_OBJ_BIT);
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Tunnel/Frame.obj", LOAD_MESH_OBJ_BIT);
@@ -229,11 +310,18 @@ void Setup_Intro_Tunnel()
 
 	Audio::Set_Music_Tracks_For_Deletion(); // This stops any music currently playing
 	Audio::Create_Music_Source(Pull_Audio("Assets/Audio/Music/Falling_Shepard_Tone.wav").Source); // This plays the loaded ambience track
+
+	Engine_Continue_Looping = true;
 }
 
 void Setup_Intro_Level()
 {
 	Lighting_BVH::Boundary_Max_Value = 22.0f;
+
+	Player_Camera.Position = glm::vec3(
+		2.2f, -1.23f, 8.24f
+	);
+	Player_Physics_Object.Object->Position = Player_Camera.Position;
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
@@ -507,7 +595,7 @@ void Setup_Intro_Level()
 	//
 
 	Blockmap::Initialise_Blockmap();
-	Navigation::Initialise_Level_Navigation_Grid(-0.2, 0.6f);
+	Navigation::Initialise_Level_Navigation_Grid(-0.1, 0.6f);
 
 	// Must add dynamic objects AFTER blockmap is initialised
 
@@ -551,6 +639,8 @@ void Setup_Intro_Level()
 	// Music->setVolume(Music_Volume);
 
 	// Sound_Engine->play2D(Pull_Audio("Assets/Audio/Music/Ambience_Track.wav").Source, true, false);
+
+	Engine_Continue_Looping = true;
 }
 
 

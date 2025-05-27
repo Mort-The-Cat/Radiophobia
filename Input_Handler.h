@@ -25,7 +25,11 @@ Physics::Physics_Object Player_Physics_Object;
 
 bool Player_Flags[3];
 
+bool Using_Controller = false;
+
 void Handle_Player_Items();
+void Delete_All();
+void Setup_Intro_Level();
 
 namespace Collision_Test
 {
@@ -76,38 +80,42 @@ namespace Gamepad_Controls
 {
 	uint8_t Pause = GLFW_GAMEPAD_BUTTON_START;
 	uint8_t Use = GLFW_GAMEPAD_BUTTON_SQUARE;
-	uint8_t Attack = GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER;
+	uint8_t Attack = GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER;
 
 	uint8_t Up = GLFW_GAMEPAD_BUTTON_CROSS;
 
-	uint8_t Forward_Back = 1u; // These are the axes on the stick
-	uint8_t Left_Right = 0u;
+	uint8_t Forward_Back = GLFW_GAMEPAD_AXIS_LEFT_Y; // These are the axes on the stick
+	uint8_t Left_Right = GLFW_GAMEPAD_AXIS_LEFT_X;
 
-	uint8_t Fire = 5u;
 	uint8_t Auxilliary = 4u;
 
 	uint8_t Item_1 = GLFW_GAMEPAD_BUTTON_DPAD_LEFT;
+
+	uint8_t Aim = GLFW_GAMEPAD_BUTTON_LEFT_BUMPER;
+
+	uint8_t Look_Left_Right = GLFW_GAMEPAD_AXIS_RIGHT_X;
+	uint8_t Look_Up_Down = GLFW_GAMEPAD_AXIS_RIGHT_Y;
 }
 
 namespace Controls // These are the indices for every user input. This may need some extra work if the user wishes to *type* something into an in-engine text box.
 {
-	uint8_t Forwards = 0;
-	uint8_t Backwards = 1;
-	uint8_t Left = 2;
-	uint8_t Right = 3;
+	const uint8_t Forwards = 0;
+	const uint8_t Backwards = 1;
+	const uint8_t Left = 2;
+	const uint8_t Right = 3;
 
-	uint8_t Up = 4;
-	uint8_t Down = 5;
+	const uint8_t Up = 4;
+	const uint8_t Down = 5;
 
-	uint8_t Pause = 6;
+	const uint8_t Pause = 6;
 
-	uint8_t Lean_Left = 7;
-	uint8_t Lean_Right = 8;
+	const uint8_t Lean_Left = 7;
+	const uint8_t Lean_Right = 8;
 
-	uint8_t Use = 9;
-	uint8_t Auxilliary = 10;
+	const uint8_t Use = 9;
+	const uint8_t Auxilliary = 10;
 
-	uint8_t Item_1 = 11;
+	const uint8_t Item_1 = 11;
 };
 
 float Mouse_Sensitivity = 0.5;
@@ -132,6 +140,30 @@ bool Mouse_Unclick(bool Left_Or_Right_Mouse_Button)
 
 //
 
+#define Controller_Smoothing(Magnitude) (std::copysign(std::fmaxf(0, fabsf(Magnitude) * 1.2f - 0.2f), Magnitude))
+
+void Apply_Controller_Inputs()
+{
+	double Cursor_X, Cursor_Y;
+
+	Using_Controller = glfwGetGamepadState(GLFW_JOYSTICK_1, &Controller_Inputs);	// If there is NO controller connected, we stop using controller
+
+	glfwGetCursorPos(Window, &Cursor_X, &Cursor_Y);
+
+	glfwSetCursorPos(Window, 
+		Cursor_X + Controller_Smoothing(Controller_Inputs.axes[Gamepad_Controls::Look_Left_Right]) * Tick * (float)Window_Height * 3.0f,
+		Cursor_Y + Controller_Smoothing(Controller_Inputs.axes[Gamepad_Controls::Look_Up_Down]) * Tick * (float)Window_Height * 3.0f);
+
+	Inputs[Controls::Pause] = Controller_Inputs.buttons[Gamepad_Controls::Pause];
+	Inputs[Controls::Up] = Controller_Inputs.buttons[Gamepad_Controls::Up];
+	Inputs[Controls::Auxilliary] = Controller_Inputs.buttons[Gamepad_Controls::Auxilliary];
+	Inputs[Controls::Item_1] = Controller_Inputs.buttons[Gamepad_Controls::Item_1];
+	Inputs[Controls::Use] = Controller_Inputs.buttons[Gamepad_Controls::Use];
+
+	Mouse_Inputs[0] = Controller_Inputs.axes[Gamepad_Controls::Attack] > 0.35f; // If trigger is pulled, that's a left-click
+	Inputs[Controls::Down] = Controller_Inputs.axes[Gamepad_Controls::Aim] > 0.35f;
+}
+
 void Receive_Inputs() // This sets all of the bits in "inputs", ready to be processed
 {
 	for (uint8_t W = 0; W < Inputs_Keycode.size(); W++)
@@ -147,6 +179,9 @@ void Receive_Inputs() // This sets all of the bits in "inputs", ready to be proc
 	glfwGetCursorPos(Window, &X, &Y);
 
 	if (Cursor_Reset) glfwSetCursorPos(Window, Window_Width >> 1, Window_Height >> 1); // Middle of the screen
+
+	if (Using_Controller)
+		Apply_Controller_Inputs();
 
 	glfwSetInputMode(Window, GLFW_CURSOR, Cursor_Reset ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
 
@@ -270,7 +305,7 @@ bool Can_Player_Uncrouch()
 
 	return Collided_Hitbox == nullptr;
 }
-
+/*
 void Controller_Player_Movement()
 {
 	Player_Camera.Position = Player_Physics_Object.Object->Position;
@@ -324,6 +359,40 @@ void Controller_Player_Movement()
 	Player_Camera.Orientation.y = std::max(Player_Camera.Orientation.y, -90.0f);
 	Player_Camera.Orientation.y = std::min(Player_Camera.Orientation.y, 90.0f);
 }
+*/
+
+inline void WASD_And_Analogue_Move(glm::vec3& Forward_Vector, glm::vec3& Right_Vector)
+{
+	if (Using_Controller)
+	{
+		Player_Physics_Object.Forces -= Forward_Vector * glm::vec3(Controller_Inputs.axes[Gamepad_Controls::Forward_Back]);
+		Player_Physics_Object.Forces += Right_Vector * glm::vec3(Controller_Inputs.axes[Gamepad_Controls::Left_Right]);
+		Player_Camera.Orientation.z += Tick * 30.0f * Controller_Inputs.axes[Gamepad_Controls::Left_Right];
+	}
+	else
+	{
+		if (Inputs[Controls::Forwards])
+		{
+			Player_Physics_Object.Forces += Forward_Vector;
+		}
+		if (Inputs[Controls::Backwards])
+		{
+			Player_Physics_Object.Forces -= Forward_Vector;
+		}
+		if (Inputs[Controls::Left])
+		{
+			Player_Physics_Object.Forces -= Right_Vector;
+
+			Player_Camera.Orientation.z += Tick * 30.0f;
+		}
+		if (Inputs[Controls::Right])
+		{
+			Player_Physics_Object.Forces += Right_Vector;
+
+			Player_Camera.Orientation.z -= Tick * 30.0f;
+		}
+	}
+}
 
 void Player_Movement()
 {
@@ -364,26 +433,7 @@ void Player_Movement()
 		Forward_Vector *= Speed;
 		Right_Vector *= Speed;
 
-		if (Inputs[Controls::Forwards])
-		{
-			Player_Physics_Object.Forces += Forward_Vector;
-		}
-		if (Inputs[Controls::Backwards])
-		{
-			Player_Physics_Object.Forces -= Forward_Vector;
-		}
-		if (Inputs[Controls::Left])
-		{
-			Player_Physics_Object.Forces -= Right_Vector;
-
-			Player_Camera.Orientation.z += Tick * 30.0f;
-		}
-		if (Inputs[Controls::Right])
-		{
-			Player_Physics_Object.Forces += Right_Vector;
-
-			Player_Camera.Orientation.z -= Tick * 30.0f;
-		}
+		WASD_And_Analogue_Move(Forward_Vector, Right_Vector);
 	}
 
 	Player_Camera.Orientation.z *= powf(0.01f, Tick);
@@ -410,6 +460,8 @@ void Player_Movement()
 
 	Handle_Player_Items();
 
+	// This is used for getting lighting BVH corrections
+
 	/*if (Inputs[Controls::Auxilliary])
 	{
 		printf(" >> Get_BVH_Node(X, Z) result:\n	 >> Node: %d\n	 >> [x,z]: (%f, %f)\n",
@@ -421,6 +473,16 @@ void Player_Movement()
 			Encoder::Float_To_Characters(Player_Camera.Position.z);
 
 		printf(" >> Current x/z position as a float-to-text encoded string:\n	[%s]\n", Buffer.c_str());
+	}*/
+
+	/*if (Inputs[Controls::Auxilliary])
+	{
+		Engine_Continue_Looping = false;
+
+		Wait_On_Physics();
+
+		New_Scene_Loading_Buffer.Loading_Function = Delete_All;
+		New_Scene_Loading_Buffer.Scene_Setup_Functions.push_back(Setup_Intro_Level);
 	}*/
 
 	//if (Inputs[Controls::Auxilliary])

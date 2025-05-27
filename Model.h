@@ -4,6 +4,20 @@
 #include "Model_Declarations.h"
 #include "Physics_Engine.h"
 
+Model::~Model()
+{
+		if (Mesh.Buffer_Storage_Hint == GL_DYNAMIC_DRAW)
+			Mesh.Delete_Buffer();
+
+		if (Flags[MF_PHYSICS_TEST])
+			((Physics_Object_Controller*)Control)->Physics_Info->Flags[0u] = true; // PF_TO_BE_DELETED
+
+		for (size_t W = 0; W < Hitboxes.size(); W++)
+			Hitboxes[W]->Flags[HF_TO_BE_DELETED] = true;
+
+		delete Control;
+}
+
 void Create_Model(Model_Vertex_Buffer Mesh, Texture Albedo, Texture Material, Model* Target_Model, Controller* Controlp, std::vector<Hitbox*> Hitboxp)
 {
 	Target_Model->Mesh = Mesh;

@@ -22,3 +22,7 @@ This prompts the player with a dialogue response
 ^s5
 etc...
 This clears everything but the first (n) lines (where n is between 0 and 9)
+
+
+^f
+This toggles the speed at which text scrolls, speeding it up

@@ -17,11 +17,14 @@
 
 #include "Level_Init.h"
 
-#include "UI_Dialogue_Handler.h"
+#include "../UI_Dialogue_Handler.h"
 
 void Run_Engine_Loop(UI_Element* Element)
 { 
 	Delete_All_UI();
+
+	New_Scene_Loading_Buffer.Loading_Function = Load_Test_Scene_Assets;
+	New_Scene_Loading_Buffer.Scene_Setup_Functions = { Setup_Intro_Dialogue, Setup_Intro_Tunnel };
 
 	//UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
 	//UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
@@ -29,36 +32,48 @@ void Run_Engine_Loop(UI_Element* Element)
 
 	Galaxy_Particles.Delete_All_Particles();
 
-	//
+	do	
+	{
+		New_Scene_Loading_Info Info = New_Scene_Loading_Buffer;
 
-	// Load_Test_Scene_Assets();
+		New_Scene_Loading_Buffer.Loading_Function = nullptr;
+		New_Scene_Loading_Buffer.Scene_Setup_Functions.clear();
 
-	bool Finished_Loading = false;
+		//
 
-	Context_Interface::Loading_Progress = 1.0f;
-	Context_Interface::Loading_Progress_Total = 1.0f;
+		// Load_Test_Scene_Assets();
 
-	Job_System::Submit_Job(Job_System::Job(Loading_Function, new Loading_Function_Parameters(Load_Test_Scene_Assets, &Finished_Loading)));
+		bool Finished_Loading = false;
 
-	Loading_Screen_Loop(Finished_Loading);
+		Context_Interface::Loading_Progress = 1.0f;
+		Context_Interface::Loading_Progress_Total = 1.0f;
 
-	Delete_All_UI();
+		Job_System::Submit_Job(Job_System::Job(Loading_Function, new Loading_Function_Parameters(Info.Loading_Function, &Finished_Loading)));
 
-	Setup_Intro_Dialogue();
+		Loading_Screen_Loop(Finished_Loading);
 
-	//
+		Delete_All_UI();
 
-	Setup_Intro_Tunnel();
+		// Setup_Intro_Dialogue();
 
-	Delete_All_UI();
+		//
 
-	Cursor_Reset = true;
+		// Setup_Intro_Tunnel();
 
-	//Player_Camera.Position = glm::vec3(
-	//	-1, -9.2, -4
-	//);
+		for (size_t W = 0; W < Info.Scene_Setup_Functions.size(); W++)
+			Info.Scene_Setup_Functions[W]();
 
-	Engine_Loop(); 
+		Delete_All_UI();
+
+		Cursor_Reset = true;
+
+		//Player_Camera.Position = glm::vec3(
+		//	-1, -9.2, -4
+		//);
+
+		Engine_Loop();
+
+	} while (New_Scene_Loading_Buffer.Loading_Function != nullptr && !glfwWindowShouldClose(Window));	// If the window should close, don't worry and stop loading new scenes!
 }
 
 void Title_Screen_Loop();

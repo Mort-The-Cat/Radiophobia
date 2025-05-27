@@ -94,12 +94,7 @@ public:
 		Material_Flag = Material_Flagp;
 	}
 
-	~Model()
-	{
-		if (Mesh.Buffer_Storage_Hint == GL_DYNAMIC_DRAW)
-			Mesh.Delete_Buffer();
-		delete Control;
-	}
+	~Model();
 
 	void Render(Shader Shader)
 	{
