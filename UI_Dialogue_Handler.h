@@ -239,6 +239,8 @@ public:
 void Dialogue_Master_End(UI_Element* Element)
 {
 	UI_Continue_Looping = false;
+
+	Fade_From_Colour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 0.8f);
 }
 
 void Dialogue_Master_Next(UI_Element* Element)

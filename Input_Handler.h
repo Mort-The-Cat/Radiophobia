@@ -30,6 +30,7 @@ bool Using_Controller = false;
 void Handle_Player_Items();
 void Delete_All();
 void Setup_Intro_Level();
+void Load_Intro_Level_Assets();
 
 namespace Collision_Test
 {
@@ -475,15 +476,15 @@ void Player_Movement()
 		printf(" >> Current x/z position as a float-to-text encoded string:\n	[%s]\n", Buffer.c_str());
 	}*/
 
-	/*if (Inputs[Controls::Auxilliary])
+	if (Inputs[Controls::Lean_Left])
 	{
 		Engine_Continue_Looping = false;
 
 		Wait_On_Physics();
 
-		New_Scene_Loading_Buffer.Loading_Function = Delete_All;
+		New_Scene_Loading_Buffer.Loading_Function = Load_Intro_Level_Assets;
 		New_Scene_Loading_Buffer.Scene_Setup_Functions.push_back(Setup_Intro_Level);
-	}*/
+	}
 
 	//if (Inputs[Controls::Auxilliary])
 	//{

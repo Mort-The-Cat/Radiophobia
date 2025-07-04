@@ -122,13 +122,15 @@ void Unload_Test_Tunnel_Assets()
 	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Tunnel.obj");
 }*/
 
-void Load_Test_Scene_Assets()
+void Load_Intro_Level_Assets()
 {
+	Delete_All();
+
+	Decal_Particles.Particles.Particles_Data.clear();
+
 	Context_Interface::Loading_Progress_Total = 36;
 
 	Push_Merged_Material_Textures();
-
-	//Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
 
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_0_Open.anim");
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Door_1_Open.anim");
@@ -140,11 +142,13 @@ void Load_Test_Scene_Assets()
 
 	Pull_Animation<THREADED>("Assets/Animations/Murderer_Idle.anim");
 
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Toilets.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Tables.obj", LOAD_MESH_OBJ_BIT);
+	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Heaters.obj", LOAD_MESH_OBJ_BIT);
+
 	Pull_Texture<THREADED>("Assets/Textures/Shelf_things.png");
 	Pull_Texture<THREADED>("Assets/Textures/Stromkasten.png");
 	Pull_Texture<THREADED>("Assets/Textures/Toilet_Texture.png");
-
-	//
 
 	Pull_Audio("Assets/Audio/Phone/Endcall_Beep.wav");
 	Pull_Audio("Assets/Audio/Phone/I_CAN_SEE_YOU2.wav");
@@ -153,15 +157,23 @@ void Load_Test_Scene_Assets()
 	Pull_Audio("Assets/Audio/Phone/Putdown_Phone.wav");
 	Pull_Audio("Assets/Audio/Phone/Telephone_Ring.wav");
 	Pull_Audio("Assets/Audio/Music/Ambience_Track.wav");
+}
+
+void Load_Test_Scene_Assets()
+{
+	Context_Interface::Loading_Progress_Total = 36;
+
+	Push_Merged_Material_Textures();
+
+	//Push_Merged_Material<THREADED>("Assets/Textures/Brick_Specular.png", "Assets/Textures/Brick_Reflectivity.png", "Assets/Textures/Brick_Normal_Test.png", "Brick");
+
+	//
+
 	Pull_Audio("Assets/Audio/Music/Falling_Shepard_Tone.wav");
 
 	//
 
 	Initialise_Pistol();
-
-	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Toilets.obj", LOAD_MESH_OBJ_BIT);
-	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Tables.obj", LOAD_MESH_OBJ_BIT);
-	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Heaters.obj", LOAD_MESH_OBJ_BIT);
 
 	// Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Test_Intro_Level.obj", LOAD_MESH_OBJ_BIT);
 
