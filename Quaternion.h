@@ -6,8 +6,8 @@
 glm::mat4 Model_Rotation_Calculate(glm::vec3 Position, glm::vec3 Orientation, glm::vec3 Up_Vector)
 {
 	glm::vec3 Front = Orientation;
-	glm::vec3 Right = glm::normalize(glm::cross(Up_Vector, Front));
-	glm::vec3 Up = glm::cross(Front, Right);
+	glm::vec3 Right = glm::normalize(Fast::Cross(Up_Vector, Front));
+	glm::vec3 Up = Fast::Cross(Front, Right);
 
 	/*return glm::mat4(Right.x, Up.x, Front.x, Position.x,
 		Right.y, Up.y, Front.y, Position.y,
@@ -114,7 +114,7 @@ namespace Quaternion
 
 	Quaternion Sphere_Interpolate(Quaternion A, Quaternion B, float Value)
 	{
-		float Dot = glm::dot(glm::vec4(A.X, A.Y, A.Z, A.W), glm::vec4(B.X, B.Y, B.Z, B.W));
+		float Dot = Fast::Dot(glm::vec4(A.X, A.Y, A.Z, A.W), glm::vec4(B.X, B.Y, B.Z, B.W));
 
 		//const float Dot_Threshold = 0.9995f;
 		//if (Dot > Dot_Threshold)
@@ -142,11 +142,11 @@ namespace Quaternion
 	{
 		glm::vec3 Quaternion_Vector(Rotation.X, Rotation.Y, Rotation.Z);
 
-		float Scalar = Rotation.W;
+		const float Scalar = Rotation.W;
 
-		return 2.0f * glm::dot(Quaternion_Vector, Vector) * Quaternion_Vector
-			+ (Scalar * Scalar - glm::dot(Quaternion_Vector, Quaternion_Vector)) * Vector
-			+ 2.0f * Scalar * glm::cross(Quaternion_Vector, Vector);
+		return (2.0f * Fast::Dot(Quaternion_Vector, Vector)) * Quaternion_Vector
+			+ (Scalar * Scalar - Fast::Dot(Quaternion_Vector, Quaternion_Vector)) * Vector
+			+ (2.0f * Scalar) * Fast::Cross(Quaternion_Vector, Vector);
 	}
 
 	glm::vec3 Get_Tangent(glm::vec3 Angle_Axis, glm::vec3 Point)
@@ -155,7 +155,7 @@ namespace Quaternion
 
 		//Angle_Axis.y = -Angle_Axis.y;
 
-		Angle_Axis = glm::normalize(glm::cross(Angle_Axis, Point));
+		Angle_Axis = glm::normalize(Fast::Cross(Angle_Axis, Point));
 		if (std::isnan(Angle_Axis.x) || std::isnan(Angle_Axis.y) || std::isnan(Angle_Axis.z))
 			Angle_Axis = glm::vec3(0, 0, 1);
 		return Angle_Axis;
@@ -163,25 +163,25 @@ namespace Quaternion
 
 	float Get_Angle(Quaternion Rotation, glm::vec3 Point) // This returns radians
 	{
-		return acosf(glm::dot(Rotate(Rotation, Point), Point));
+		return acosf(Fast::Dot(Rotate(Rotation, Point), Point));
 	}
 
 	glm::vec4 Get_Axis_Angle(Quaternion Rotation, glm::vec3 Point) // angle is in radians
 	{
 		glm::vec3 A = Rotate(Rotation, Point);
 
-		float Dot_Product = acosf(glm::dot(A, Point)); // This can be simplified haha
+		float Dot_Product = acosf(Fast::Dot(A, Point)); // This can be simplified haha
 
 		//float Sign = A.x; // This will be used for the sign bit of the sine lol
 
-		A = glm::normalize(glm::cross(A, Point));
+		A = glm::normalize(Fast::Cross(A, Point));
 
 		if (std::isnan(A.x))
 			A = glm::vec3(1, 0, 0);
 
 		return glm::vec4(A.x, A.y, A.z, Dot_Product); // the angle is in radians
 
-		//return glm::vec4(glm::cross(A, glm::vec3(0, 0, 1)), acosf(Dot_Product));
+		//return glm::vec4(Fast::cross(A, glm::vec3(0, 0, 1)), acosf(Dot_Product));
 	}
 
 	Quaternion Rotation_Vector_To_Quaternion(glm::vec3 Rotation)

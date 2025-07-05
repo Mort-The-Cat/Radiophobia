@@ -478,12 +478,14 @@ void Player_Movement()
 
 	if (Inputs[Controls::Lean_Left])
 	{
-		Engine_Continue_Looping = false;
+		Engine_Continue_Looping = false; // Tells the game to end the current engine loop
 
 		Wait_On_Physics();
 
-		New_Scene_Loading_Buffer.Loading_Function = Load_Intro_Level_Assets;
+		New_Scene_Loading_Buffer.Loading_Function = Load_Intro_Level_Assets;	// Once it does, it'll check this scene change and handle it
 		New_Scene_Loading_Buffer.Scene_Setup_Functions.push_back(Setup_Intro_Level);
+
+		// This will enter the program into the engine loop anew
 	}
 
 	//if (Inputs[Controls::Auxilliary])

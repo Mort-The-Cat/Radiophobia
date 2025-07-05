@@ -481,12 +481,19 @@ Cache::Mesh_Cache_Info Pull_Mesh(const char* Directory, unsigned char Flags = LO
 		break;
 	}
 
+	Cache_Info.Directory = Directory;
+	Cache_Info.Vertex_Buffer.Mesh = Cache_Info.Mesh;
+
+	if (Cache_Info.Vertex_Buffer.Buffer_Storage_Hint == GL_DYNAMIC_DRAW)
+	{
+		Cache::Mesh_Cache.push_back(Cache_Info);
+		return Pull_Mesh<Is_Threaded>(Directory, Flags | LOAD_MESH_ANIM_BIT);
+	}
+
 	if constexpr (Is_Threaded)
 		Context_Interface::Request_Context();
 
-	Cache_Info.Directory = Directory;
 	Cache_Info.Vertex_Buffer.Create_Buffer();
-	Cache_Info.Vertex_Buffer.Mesh = Cache_Info.Mesh;
 
 	//uint16_t Buffer_Storage_Hints[2] = { GL_STATIC_DRAW, GL_DYNAMIC_DRAW };
 

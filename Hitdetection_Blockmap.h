@@ -78,6 +78,8 @@ namespace Blockmap // This is for hitdetection
 
 		// Sets dimensions
 
+		printf("Number of scene hitboxes (excluding physics objects): %d\n", (int)Scene_Hitboxes.size());
+
 		Blockmap_Data.resize(Blockmap_Width);
 		for (size_t W = 0; W < Blockmap_Width; W++)
 		{

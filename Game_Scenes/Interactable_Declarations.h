@@ -444,6 +444,8 @@ public:
 		}
 		else
 		{
+			// Object->Flags[MF_UPDATE_MESH] = false;
+
 			Hitbox* Collided;
 			Collision_Info Info = Collision_Test::Raycast(Player_Camera.Position, glm::vec3(0.25f) * Camera_Direction, 3, Collision_Test::Not_Against_Player_Compare, &Collided);
 
@@ -472,11 +474,18 @@ public:
 	{
 		Object = Objectp;
 
-		Object->Hitboxes.push_back(Generate_AABB_Hitbox(*Object->Mesh.Mesh));
-
 		Animator.Animation = Pull_Animation(Animation_Name.c_str()).Animation;
 		Animator.Time = 0.0f;
 		Animator.Flags[ANIMF_LOOP_BIT] = false;
+
+		// Animator.Animate_Mesh(&Object->Mesh, 0.0f, false, true); // We just want to correct the animation if there's an error once it was loaded
+
+		//Object->Mesh.Bind_Buffer();
+		//Object->Mesh.Update_Vertices();
+
+		Object->Hitboxes.push_back(Generate_AABB_Hitbox(*Object->Mesh.Mesh));
+
+		// Object->Flags[MF_UPDATE_MESH] = true;
 
 		Opening_Sound = Audio::Create_Audio_Source(Object->Position, 1.0f);
 	}
