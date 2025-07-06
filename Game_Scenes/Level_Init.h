@@ -54,6 +54,8 @@ void Push_Merged_Material_Textures() // Loads 12 textures
 	Push_Merged_Material<THREADED>("Assets/Textures/Metal_Specular.png", nullptr, "Assets/Textures/Metal_Normal_Texture.png", "Metal");
 
 	Push_Merged_Material<THREADED>("Assets/Textures/Vent_Duct.png", nullptr, "Assets/Textures/Vent_Normal.png", "Vent");
+
+	Push_Merged_Material<THREADED>("Assets/Textures/Walther_PPK_Specular.png", nullptr, "Assets/Textures/Walther_PPK_Normals.png", "Walther_PPK");
 }
 /*
 void Load_Tunnel_Scene_Assets()
