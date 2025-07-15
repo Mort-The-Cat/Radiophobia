@@ -385,11 +385,13 @@ public:
 class Level_Exit_Door_Controller : public Controller
 {
 	void(*Load_New_Level_Function)();
+	void(*Setup_Scene_Function)();
 public:
 
-	Level_Exit_Door_Controller(void(*Load_New_Level_Functionp)())
+	Level_Exit_Door_Controller(void(*Load_New_Level_Functionp)(), void(*Setup_Scene_Functionp)())
 	{
 		Load_New_Level_Function = Load_New_Level_Functionp;
+		Setup_Scene_Function = Setup_Scene_Functionp;
 	}
 
 	virtual void Control_Function() override
@@ -402,7 +404,14 @@ public:
 			Create_UI_Popup("Open_Door.txt", 1.0f);
 
 			if (Inputs[Controls::Use])
-				Load_New_Level_Function();
+			{
+				Engine_Continue_Looping = false;
+
+				New_Scene_Loading_Buffer.Loading_Function = Load_New_Level_Function;
+				New_Scene_Loading_Buffer.Scene_Setup_Functions.push_back(Setup_Scene_Function);
+
+				// That's all!! This'll be handled once the frame ends
+			}
 		}
 	}
 };

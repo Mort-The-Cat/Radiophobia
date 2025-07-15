@@ -79,7 +79,7 @@ public:
 		Timer += Tick * (float)Toggle_Fast_Scroll;
 
 		if (Last_Frame_Pause_Was_Pressed && !Inputs[Controls::Pause])
-			UI_Continue_Looping = false;
+			Dialogue_Master_End(nullptr);
 
 		Last_Frame_Pause_Was_Pressed = Inputs[Controls::Pause];
 

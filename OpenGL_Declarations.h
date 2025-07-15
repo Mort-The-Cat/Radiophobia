@@ -186,7 +186,7 @@ public:
 
 		View = glm::translate(View, -Position);
 
-		Projection_Matrix = glm::perspective(Fast::To_Radians(FOV), (float)Window_Width / (float)Window_Height, 0.01f, 100.0f);
+		Projection_Matrix = glm::perspective(Fast::To_Radians(FOV), (float)Window_Width / (float)Window_Height, 0.01f, 50.0f);
 
 		Projection_Matrix[1][1] *= -1;
 

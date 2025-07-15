@@ -292,9 +292,11 @@ void Setup_Intro_Tunnel()
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Tunnel_Cubicle.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Reddened_Wall.jpg").Texture, Pull_Texture("NPP_Wall_2").Texture, Scene_Models.back(), new Controller(), Wrap_AABB_Hitboxes(*Pull_Mesh("Assets/Hitboxes/Intro_Tunnel/Cubicle.obj", LOAD_MESH_OBJ_BIT).Mesh));
 
-	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Concrete));
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS, MF_ACTIVE }, Object_Material::Concrete));
 	Scene_Models.back()->Position = glm::vec3(0.0f);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Door_Texture.png").Texture, Pull_Texture("Door").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Mesh) });
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Door_Texture.png").Texture, Pull_Texture("Door").Texture, Scene_Models.back(), 
+		new Level_Exit_Door_Controller(Load_Intro_Level_Assets, Setup_Intro_Level), 
+		std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Intro_Tunnel/Exit_Door.obj", LOAD_MESH_OBJ_BIT).Mesh) });
 
 	Blockmap::Initialise_Blockmap();
 
@@ -328,6 +330,8 @@ void Setup_Intro_Tunnel()
 	Lighting_BVH::Update_Leaf_Node_Data();
 
 	Lighting_BVH::Load_BVH_Tree_Corrections("Assets/Light_Occluders/Tunnel_Corrections.txt");
+
+	Initialise_Pistol_Flashlight();
 
 	Audio::Set_Music_Tracks_For_Deletion(); // This stops any music currently playing
 	Audio::Create_Music_Source(Pull_Audio("Assets/Audio/Music/Falling_Shepard_Tone.wav").Source); // This plays the loaded ambience track
@@ -647,6 +651,8 @@ void Setup_Intro_Level()
 	Lighting_BVH::Update_Leaf_Node_Data();
 
 	Lighting_BVH::Load_BVH_Tree_Corrections("Assets/Light_Occluders/Intro_Level_Corrections.txt");
+
+	Initialise_Pistol_Flashlight();
 
 	//
 

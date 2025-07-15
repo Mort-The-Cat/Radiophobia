@@ -304,6 +304,13 @@ public:
 
 Pistol Makarov_Pistol;
 
+void Initialise_Pistol_Flashlight()
+{
+	Makarov_Pistol.Flashlight = new Lightsource(glm::vec3(0, 0, 0), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 30.0f, 3.0f);
+	Makarov_Pistol.Flashlight->Flags[LF_PRIORITY] = true;
+	Scene_Lights.push_back(Makarov_Pistol.Flashlight);
+}
+
 void Initialise_Pistol()
 {
 	Pull_Audio("Assets/Audio/Makarov.wav");
@@ -312,10 +319,6 @@ void Initialise_Pistol()
 
 	Player_Current_Item = &Makarov_Pistol;
 	Player_Desired_Item = &Makarov_Pistol;
-
-	Makarov_Pistol.Flashlight = new Lightsource(glm::vec3(0, 0, 0), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 30.0f, 3.0f);
-	Makarov_Pistol.Flashlight->Flags[LF_PRIORITY] = true;
-	Scene_Lights.push_back(Makarov_Pistol.Flashlight);
 
 	Makarov_Pistol.Draw.Animation = Pull_Animation("Assets/Animations/Makarov_Pistol_Draw.anim").Animation;
 	Makarov_Pistol.Draw.Flags[ANIMF_LOOP_BIT] = false;

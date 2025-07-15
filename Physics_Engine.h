@@ -587,6 +587,7 @@ void Wait_On_Physics()
 		Still_Working = Physics::Threads_Working_On_Physics > 0;
 		Physics::Threads_Working_Count_Mutex.unlock();
 	} while (Still_Working);
+
 }
 
 #endif

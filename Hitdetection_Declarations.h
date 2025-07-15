@@ -196,7 +196,68 @@ void Remove_Duplicate_AABB_Hitbox(std::vector<Hitbox*>* Hitboxes)
 	}
 }
 
-std::vector<Hitbox*> Wrap_AABB_Hitboxes(Model_Mesh& Mesh)
+bool Check_Greedy_Hitboxing(AABB_Hitbox* A, AABB_Hitbox* B)
+{
+	bool X_Match = A->A.x == B->A.x && A->B.x == B->B.x,
+		Y_Match = A->A.y == B->A.y && A->B.y == B->B.y,
+		Z_Match = A->A.z == B->A.z && A->B.z == B->B.z;
+
+	return
+		(X_Match && Y_Match && (A->A.z == B->B.z)) ||
+		(Y_Match && Z_Match && (A->A.x == B->B.x)) ||
+		(Z_Match && X_Match && (A->A.y == B->B.y));
+}
+
+std::vector<Hitbox*> Apply_Greedy_Hitboxing(std::vector<Hitbox*> Hitboxes) // Doesn't have to be fast
+{
+	// Apply Greedy-Hitboxing to list
+
+	std::vector<Hitbox*> New_List = Hitboxes;
+	bool List_Modified;
+
+	do
+	{
+		List_Modified = false;
+
+		for (size_t Index = 0; Index < New_List.size(); Index++)
+		{
+			for (size_t W = Index + 1; W < New_List.size(); W++)
+			{
+				// If we get a hit, update list and break from these loops to iterate through again
+
+				if (Check_Greedy_Hitboxing(reinterpret_cast<AABB_Hitbox*>(New_List[Index]), reinterpret_cast<AABB_Hitbox*>(New_List[W])) || 
+					Check_Greedy_Hitboxing(reinterpret_cast<AABB_Hitbox*>(New_List[W]), reinterpret_cast<AABB_Hitbox*>(New_List[Index])))
+				{
+					// handle it
+
+					reinterpret_cast<AABB_Hitbox*>(New_List[Index])->A = 
+						glm::min(
+							reinterpret_cast<AABB_Hitbox*>(New_List[Index])->A, 
+							reinterpret_cast<AABB_Hitbox*>(New_List[W])->A);
+
+					reinterpret_cast<AABB_Hitbox*>(New_List[Index])->B =
+						glm::max(
+							reinterpret_cast<AABB_Hitbox*>(New_List[Index])->B,
+							reinterpret_cast<AABB_Hitbox*>(New_List[W])->B);
+
+					delete New_List[W];
+					New_List[W] = nullptr;
+					New_List.erase(
+						std::remove_if(New_List.begin(), New_List.end(), [&](Hitbox* H)->bool { return H == nullptr; }),
+						New_List.end());
+
+					Index = New_List.size();
+					List_Modified = true;
+					break;
+				}
+			}
+		}
+	} while (List_Modified);
+
+	return New_List;
+}
+
+std::vector<Hitbox*> Wrap_AABB_Hitboxes(Model_Mesh& Mesh, bool Greedy_Hitboxing = true)
 {
 	std::vector<Hitbox*> Hitboxes;
 
@@ -229,7 +290,10 @@ std::vector<Hitbox*> Wrap_AABB_Hitboxes(Model_Mesh& Mesh)
 		Remove_Duplicate_AABB_Hitbox(&Hitboxes);
 	}
 
-	return Hitboxes;
+	if(Greedy_Hitboxing)
+		return Apply_Greedy_Hitboxing(Hitboxes);
+	else
+		return Hitboxes;
 }
 
 std::vector<Hitbox*> Generate_AABB_Hitboxes(std::string File_Name)
