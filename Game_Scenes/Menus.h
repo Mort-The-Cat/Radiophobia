@@ -133,6 +133,24 @@ void Close_Game(UI_Element* Element)
 	glfwSetWindowShouldClose(Window, 1);
 }
 
+void Place_Background_Elements()
+{
+	/*Cache::Texture_Cache_Info T = Pull_Texture("Assets/UI/Title_Screen.png");
+
+	float Aspect_Ratio = (float)T.Texture_Width / (float)T.Texture_Height;
+
+	UI_Elements.push_back(new UI_Element(-Aspect_Ratio, -1.0f, Aspect_Ratio, 1.0f, T.Texture)); // Background image
+	UI_Elements.back()->Flags[UF_IMAGE] = true;
+	UI_Elements.back()->Flags[UF_IMAGE_ASPECT_RATIO_PRESERVE] = true;
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;*/
+
+	// This is the background image (I don't quite like it right now)
+
+	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f)); // Background border
+	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+}
+
 void Place_Language_Buttons(glm::vec4 Colour = glm::vec4(1.0f))
 {
 	UI_Elements.push_back(new Button_UI_Element(0.6, 0.65, 0.9, 0.9, Set_Language_English, Pull_Texture("Assets/UI/English.png").Texture));
@@ -164,9 +182,11 @@ void Open_Pause_Menu_Close_Game_Prompt(UI_Element* Element)
 
 	Cursor_Reset = false;
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	/*UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
-	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;*/
+
+	Place_Background_Elements();
 
 	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Close_Game_Prompt.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
@@ -205,9 +225,7 @@ void Open_Pause_Menu(UI_Element* Element) // There doesn't need to be any UI ele
 
 	Cursor_Reset = false;
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
-	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
-	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	Place_Background_Elements();
 
 	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Paused.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
@@ -254,9 +272,11 @@ void Open_Audio_Settings_Menu(UI_Element* Element)
 
 	Delete_All_UI();
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	/*UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
-	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;*/
+
+	Place_Background_Elements();
 
 	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 5.0f, -0.5f, "Audio.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
@@ -345,9 +365,11 @@ void Open_Controls_Menu(UI_Element* Element)
 
 	Delete_All_UI();
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	/*UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
-	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;*/
+
+	Place_Background_Elements();
 
 	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 5.0f, -0.5f, "Controls.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
@@ -376,9 +398,11 @@ void Open_Settings_Menu(UI_Element* Element)
 
 	Delete_All_UI();
 
-	UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
+	/*UI_Elements.push_back(new UI_Element(-1.0f, -1.0f, 1.0f, 1.0f));
 	UI_Elements.back()->Flags[UF_FILL_SCREEN] = true;
-	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;
+	UI_Elements.back()->Flags[UF_RENDER_CONTENTS] = false;*/
+
+	Place_Background_Elements();
 
 	UI_Elements.push_back(new Text_UI_Element(-1.0f, -0.9f, 3.0f, -0.5f, "Settings.txt", true, glm::vec4(1.0f), &Font_Georgia, 0.225f, 0.025f));
 	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;

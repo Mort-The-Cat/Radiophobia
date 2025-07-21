@@ -403,6 +403,12 @@ void Setup_Intro_Level()
 
 	//
 
+	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS }, Object_Material::Electronics));
+	Scene_Models.back()->Position = glm::vec3(0.0f);
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Generator.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Generator.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{ Generate_AABB_Hitbox(*Pull_Mesh("Assets/Models/Intro_Level/Generator.obj").Mesh) });
+
+	//
+
 	Scene_Models.push_back(new Model({ MF_ACTIVE, MF_SOLID, MF_USE_DECALS }, Object_Material::Electronics));
 	Scene_Models.back()->Position = glm::vec3(5.22f, -0.95f, -0.722f);
 	Scene_Models.back()->Orientation = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -424,13 +430,13 @@ void Setup_Intro_Level()
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Lockers.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Metal_Specular.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(), new Controller(),
 		std::vector<Hitbox*>{
-		Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_AABB_0.obj").Mesh),
+			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_AABB_0.obj").Mesh),
 			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_AABB_1.obj").Mesh),
 			Generate_AABB_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_AABB_2.obj").Mesh),
 			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_0.obj").Mesh),
 			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_1.obj").Mesh),
 			Generate_Mesh_Hitbox(*Pull_Mesh("Assets/Hitboxes/Intro_Level/Locker_2.obj").Mesh),
-	}
+		}
 	);
 
 	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Metal));
@@ -443,17 +449,17 @@ void Setup_Intro_Level()
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
 	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Vents.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Metal_Specular.png").Texture, Pull_Texture("Metal").Texture, Scene_Models.back(),
 		new Vent_Smoke_Controller(std::vector<Vent_Smoke_Controller::Vent_Info>
-	{
-		{ glm::vec3(3.1434f, -1.0362, 7.3434f), Vent_Smoke_Controller::Directions::West },
-		{ glm::vec3(3.958f, -0.38284, 1.8101f), Vent_Smoke_Controller::Directions::South },
-		{ glm::vec3(1.7492f, -0.38284, 1.8101f), Vent_Smoke_Controller::Directions::South },
-		{ glm::vec3(0.7f, -1.1942, 3.5388f), Vent_Smoke_Controller::Directions::North },
+		{
+			{ glm::vec3(3.1434f, -1.0362, 7.3434f), Vent_Smoke_Controller::Directions::West },
+			{ glm::vec3(3.958f, -0.38284, 1.8101f), Vent_Smoke_Controller::Directions::South },
+			{ glm::vec3(1.7492f, -0.38284, 1.8101f), Vent_Smoke_Controller::Directions::South },
+			{ glm::vec3(0.7f, -1.1942, 3.5388f), Vent_Smoke_Controller::Directions::North },
 
-		{ glm::vec3(-2.356f, -1.1545, 8.6548f), Vent_Smoke_Controller::Directions::North },
-		{ glm::vec3(-4.1754f, -1.1403, 7.6125f), Vent_Smoke_Controller::Directions::East },
+			{ glm::vec3(-2.356f, -1.1545, 8.6548f), Vent_Smoke_Controller::Directions::North },
+			{ glm::vec3(-4.1754f, -1.1403, 7.6125f), Vent_Smoke_Controller::Directions::East },
 
-		{ glm::vec3(8.7325f, -1.1335, 1.8703f), Vent_Smoke_Controller::Directions::South },
-	}
+			{ glm::vec3(8.7325f, -1.1335, 1.8703f), Vent_Smoke_Controller::Directions::South },
+		}
 	), std::vector<Hitbox*>{});
 
 	Scene_Models.push_back(new Model({ MF_SOLID, MF_USE_DECALS, MF_CAST_SHADOWS }, Object_Material::Metal));

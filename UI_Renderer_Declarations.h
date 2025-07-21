@@ -212,6 +212,7 @@ namespace Font_Table
 //
 
 #define UF_AUTO_RESIZE_TO_TEXT 11u
+#define UF_IMAGE_ASPECT_RATIO_PRESERVE 12u // This preserves the aspect ratio of a background image by scaling other dimensions of the image to fit
 
 bool UI_Continue_Looping = false;
 
@@ -311,8 +312,19 @@ public:
 	float X1o, Y1o, X2o, Y2o; // Offset
 
 	UI_Transformed_Coordinates() {}
-	UI_Transformed_Coordinates(float X1p, float Y1p, float X2p, float Y2p, float UI_Border_Size, bool Clamp_To_Side, bool Fill_Screen = false, bool Clamp_Right = false)
+	UI_Transformed_Coordinates(float X1p, float Y1p, float X2p, float Y2p, float UI_Border_Size, bool Clamp_To_Side, bool Fill_Screen = false, bool Clamp_Right = false, bool Correct_Aspect_Ratio = false)
 	{
+		float Scale = (Window_Aspect_Ratio * X2p);
+		if (Correct_Aspect_Ratio && (Scale < 1.0f))
+		{
+			Scale = 1.0f / Scale;
+
+			X1p *= Scale;
+			Y1p *= Scale;
+			X2p *= Scale;
+			Y2p *= Scale;
+		}
+
 		if (Clamp_To_Side) // This preserves the horizontal dimensions of the UI element
 		{
 			float Width = X2p - X1p;
@@ -383,7 +395,7 @@ class UI_Element // The subclasses hereof will handle things like text, buttons,
 public:
 	float X1, Y1, X2, Y2;
 
-	bool Flags[12] = { false, true, false, false, false, true, false, false, false, false, false, false };
+	bool Flags[13] = { false, true, false, false, false, true, false, false, false, false, false, false, false };
 
 	float Shadow_Distance = 1.0f / 20.0f;
 
@@ -534,7 +546,7 @@ public:
 		if (Flags[UF_DELETE_IF_ALPHA_ZERO] && Colour.w == 0)
 			Flags[UF_TO_BE_DELETED] = true;
 
-		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT]);
+		UI_Transformed_Coordinates Coords(X1, Y1, X2, Y2, UI_Border_Size, Flags[UF_CLAMP_TO_SIDE], Flags[UF_FILL_SCREEN], Flags[UF_CLAMP_RIGHT], Flags[UF_IMAGE_ASPECT_RATIO_PRESERVE]);
 
 		Handle_Shadow(Coords);
 

@@ -378,6 +378,7 @@ void Loading_Screen_Loop(bool& Finished_Loading_Flag)
 	UI_Elements.back()->Flags[UF_CENTRE_TEXT] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_TO_SIDE] = true;
 	UI_Elements.back()->Flags[UF_CLAMP_RIGHT] = false;
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
 
 	Fade_From_Colour(glm::vec4(0.0f), 4.0f);
 	
