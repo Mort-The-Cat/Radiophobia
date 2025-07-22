@@ -38,6 +38,8 @@ float Player_Viewmodel_Walk_Timer = 0.0f;
 
 inline void Holster_Current_Item() { if (Player_Current_Item != nullptr) Player_Current_Item->Holster(); Player_Desired_Item = nullptr; }
 
+Lightsource* Player_Flashlight;
+
 class Pistol : public Item
 {
 public:
@@ -45,8 +47,6 @@ public:
 	Mesh_Animator Shoot, Shoot_Hand;
 	Mesh_Animator Last_Shot, Last_Shot_Hand; // This is when the player fires their last shot
 	Mesh_Animator Reload, Reload_Hand;
-
-	Lightsource* Flashlight;
 
 	// Note that we need a pair of animations for the pistol and the pistol's hand-holder
 
@@ -257,8 +257,8 @@ public:
 		Player_Viewmodel_Walk_Magnitude = 0.1f * Speed;
 		Player_Viewmodel_Walk_Timer += 14.0f * Speed * Tick;
 
-		Flashlight->Position = Player_Camera.Position + glm::vec3(0.0f, 0.1f, 0.0f);
-		Flashlight->Direction = Camera_Direction;
+		Player_Flashlight->Position = Player_Camera.Position + glm::vec3(0.0f, 0.1f, 0.0f);
+		Player_Flashlight->Direction = Camera_Direction;
 
 		for (size_t W = 0; W < Viewmodel_Meshes.size(); W++)
 		{
@@ -304,11 +304,85 @@ public:
 
 Pistol Makarov_Pistol;
 
-void Initialise_Pistol_Flashlight()
+/*
+class Radio : public Item // This test object is 2D
 {
-	Makarov_Pistol.Flashlight = new Lightsource(glm::vec3(0, 0, 0), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 30.0f, 3.0f);
-	Makarov_Pistol.Flashlight->Flags[LF_PRIORITY] = true;
-	Scene_Lights.push_back(Makarov_Pistol.Flashlight);
+public:
+
+	float Equip_Timer = 0.0f;
+	float Radio_Y_Position = 0.0f;
+
+	enum Radio_State 
+	{
+		Drawing = 0u,
+		Holstering = 1u,
+		Checking_Message = 2u
+	} Current_State;
+
+	virtual void Equip_Item() override
+	{
+		Current_State = Drawing;
+	}
+
+	virtual void Holster() override
+	{
+		Current_State = Holstering;
+		Equip_Timer = 1.0f;
+	}
+
+	virtual void Handle_Viewmodel_States() override
+	{
+		const float Time_Required = 0.5f;
+
+		float Approach_Factor = sin((Equip_Timer * 2.0f - 0.5f) * 3.14159) * 0.5f + 0.5f;
+
+		switch (Current_State)
+		{
+			case(Drawing):
+				Equip_Timer += Tick;
+				Radio_Y_Position = Approach_Factor;
+
+				if (Equip_Timer > Time_Required)
+				{
+					Radio_Y_Position = 1.0f;
+					Equip_Timer = Time_Required;
+					Current_State = Checking_Message;
+				}
+			break;
+
+			case(Holstering):
+				Equip_Timer -= Tick;
+				Radio_Y_Position = Approach_Factor;
+
+				if (Equip_Timer < 0.0f)
+				{
+					Player_Current_Item = Player_Desired_Item;
+					Equip_Timer = 0.0f;
+					Current_State = Drawing;
+				}
+			break;
+
+			case(Checking_Message):
+
+			break;
+		}
+	}
+
+	virtual void Render_Viewmodel() override
+	{
+		UI_Elements.push_back(new UI_Element(-1.4f, 1.0f - 0.8f * Radio_Y_Position, -0.4f, 2.0 - 0.8f * Radio_Y_Position, Pull_Texture("Assets/UI/Geiger.png").Texture));
+		UI_Elements.back()->Flags[UF_TO_BE_DELETED] = true;
+		UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+	}
+};
+Radio Player_Radio;
+*/
+
+void Initialise_Player_Flashlight()
+{
+	Player_Flashlight = new Lightsource(glm::vec3(0, 0, 0), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), 30.0f, 3.0f);
+	Player_Flashlight->Flags[LF_PRIORITY] = true;
+	Scene_Lights.push_back(Player_Flashlight);
 }
 
 void Initialise_Pistol()
@@ -398,7 +472,7 @@ void Handle_Player_Items()
 {
 	if (!Player_Flags[Player_Items_Revoke_Flag]) // As long as the player's items are revoked, they can't swap back to any item
 	{
-		if (Inputs[Controls::Item_1])
+		if (Inputs[Controls::Item_2])
 		{
 			if (Player_Current_Item != &Makarov_Pistol)
 			{
@@ -408,6 +482,17 @@ void Handle_Player_Items()
 					Player_Current_Item->Holster();		// We need to holster it before they can pull out another item
 			}
 		}
+
+		/*if (Inputs[Controls::Item_1])
+		{
+			if (Player_Current_Item != &Player_Radio)
+			{
+				Player_Desired_Item = &Player_Radio;
+
+				if (Player_Current_Item != nullptr)
+					Player_Current_Item->Holster();
+			}
+		}*/
 	}
 }
 

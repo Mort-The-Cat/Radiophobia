@@ -130,21 +130,21 @@ C:\Radiophobia\Radiophobia-main\Physics_Engine.h(258,55): warning C4244: 'argume
 C:\Radiophobia\Radiophobia-main\Physics_Engine.h(391,4): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(232,101): warning C4305: 'argument': truncation from 'double' to 'T'
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(232,101): warning C4305:         with
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(232,101): warning C4305:         [
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(232,101): warning C4305:             T=float
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(232,101): warning C4305:         ]
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(236,101): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(236,101): warning C4305:         with
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(236,101): warning C4305:         [
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(236,101): warning C4305:             T=float
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(236,101): warning C4305:         ]
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(238,102): warning C4305: 'argument': truncation from 'double' to 'T'
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(238,102): warning C4305:         with
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(238,102): warning C4305:         [
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(238,102): warning C4305:             T=float
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(238,102): warning C4305:         ]
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(242,102): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(242,102): warning C4305:         with
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(242,102): warning C4305:         [
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(242,102): warning C4305:             T=float
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(242,102): warning C4305:         ]
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Input_Handler.h(411,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Radiophobia\Radiophobia-main\Input_Handler.h(415,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\UI_Renderer_Declarations.h(53,31): warning C4267: 'argument': conversion from 'size_t' to 'FT_UInt', possible loss of data
@@ -219,25 +219,25 @@ C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(50,2): warning C4984: 'if co
 C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(65,3): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(156,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(158,62): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(156,57): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(158,57): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(156,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(158,51): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(156,46): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(158,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(162,62): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(164,62): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(162,51): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(164,51): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(162,46): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Menus.h(164,46): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\AI_Navigation_Grid.h(68,37): warning C4244: '=': conversion from 'float' to 'size_t', possible loss of data
@@ -255,7 +255,7 @@ C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(297,27): warning C4267:
 C:\Radiophobia\Radiophobia-main\Light_BVH_Tree_Handler.h(439,4): warning C4984: 'if constexpr' is a C++17 language extension
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Interactable_Declarations.h(178,156): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Interactable_Declarations.h(180,156): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(32,3): warning C4984: 'if constexpr' is a C++17 language extension
@@ -275,10 +275,10 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(114,26): warning C4244: 
 C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(114,50): warning C4244: 'argument': conversion from 'float' to 'const unsigned __int64', possible loss of data
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Level_Init.h(303,48): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Level_Init.h(306,48): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
-C:\Radiophobia\Radiophobia-main\Game_Scenes\Level_Init.h(629,48): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Radiophobia\Radiophobia-main\Game_Scenes\Level_Init.h(632,48): warning C4305: 'argument': truncation from 'double' to 'float'
   (compiling source file 'Main.cpp')
   
 C:\Radiophobia\Radiophobia-main\UI_Dialogue_Handler.h(15,12): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
@@ -389,9 +389,9 @@ C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(27,7): warning C4267: '=
 C:\Radiophobia\Radiophobia-main\Hitdetection_Blockmap.h(28,7): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   (compiling source file 'Main.cpp')
   
+  Previous IPDB not found, fall back to full compilation.
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  Previous IPDB not found, fall back to full compilation.
 C:\Radiophobia\Radiophobia-main\OpenGL_Declarations.h(235): warning C4715: 'Get_File_Contents': not all control paths return a value
 C:\Radiophobia\Radiophobia-main\Hitdetection_Declarations.h(359): warning C4715: 'Generate_AABB_Hitboxes': not all control paths return a value
   All 5514 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.

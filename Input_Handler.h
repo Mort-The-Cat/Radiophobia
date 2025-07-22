@@ -47,9 +47,9 @@ namespace Collision_Test
 
 void UI_Loop();
 
-bool Inputs[12];
+bool Inputs[13];
 
-std::array<uint16_t, 12> Inputs_Keycode = // The values of these keycodes can be changed during runtime if the user wishes to adjust the controls for whatever reason
+std::array<uint16_t, 13> Inputs_Keycode = // The values of these keycodes can be changed during runtime if the user wishes to adjust the controls for whatever reason
 {
 	GLFW_KEY_W, // Forwards
 	GLFW_KEY_S, // backwards
@@ -70,7 +70,9 @@ std::array<uint16_t, 12> Inputs_Keycode = // The values of these keycodes can be
 
 	//
 
-	GLFW_KEY_1 // Item 1
+	GLFW_KEY_1, // Item 1
+
+	GLFW_KEY_2 // Item 2
 };
 
 GLFWgamepadstate Controller_Inputs;
@@ -91,6 +93,7 @@ namespace Gamepad_Controls
 	uint8_t Auxilliary = 4u;
 
 	uint8_t Item_1 = GLFW_GAMEPAD_BUTTON_DPAD_LEFT;
+	uint8_t Item_2 = GLFW_GAMEPAD_BUTTON_DPAD_UP;
 
 	uint8_t Aim = GLFW_GAMEPAD_BUTTON_LEFT_BUMPER;
 
@@ -117,6 +120,7 @@ namespace Controls // These are the indices for every user input. This may need 
 	const uint8_t Auxilliary = 10;
 
 	const uint8_t Item_1 = 11;
+	const uint8_t Item_2 = 12;
 };
 
 float Mouse_Sensitivity = 0.5;

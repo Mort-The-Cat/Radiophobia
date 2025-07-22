@@ -135,14 +135,16 @@ void Close_Game(UI_Element* Element)
 
 void Place_Background_Elements()
 {
-	/*Cache::Texture_Cache_Info T = Pull_Texture("Assets/UI/Title_Screen.png");
+	/*Cache::Texture_Cache_Info T = Pull_Texture("Assets/UI/Title_Screen_Base.png");
 
 	float Aspect_Ratio = (float)T.Texture_Width / (float)T.Texture_Height;
 
 	UI_Elements.push_back(new UI_Element(-Aspect_Ratio, -1.0f, Aspect_Ratio, 1.0f, T.Texture)); // Background image
 	UI_Elements.back()->Flags[UF_IMAGE] = true;
 	UI_Elements.back()->Flags[UF_IMAGE_ASPECT_RATIO_PRESERVE] = true;
-	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;*/
+	UI_Elements.back()->Flags[UF_RENDER_BORDER] = false;
+
+	UI_Elements.back()->Colour = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);*/
 
 	// This is the background image (I don't quite like it right now)
 

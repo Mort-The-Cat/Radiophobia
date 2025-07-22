@@ -123,6 +123,8 @@ public:
 	~Phone_Controller()
 	{
 		Sound->Flags[ASF_TO_BE_DELETED] = true;
+
+		Object->Mesh.Delete_Buffer();
 	}
 
 	Phone_Controller()
@@ -314,6 +316,8 @@ public:
 	~Damageable_Vent_Controller()
 	{
 		Damaged_Sound->Flags[ASF_TO_BE_DELETED] = true;
+
+		Object->Mesh.Delete_Buffer(); // We want to delete the animation buffer object
 	}
 
 	Damageable_Vent_Controller(std::string Directoryp) 
@@ -430,6 +434,8 @@ public:
 	~Door_Controller()
 	{
 		Opening_Sound->Flags[ASF_TO_BE_DELETED] = true;
+
+		Object->Mesh.Delete_Buffer(); // We want to free this animation model buffer
 	}
 
 	Door_Controller(const char* Directory)

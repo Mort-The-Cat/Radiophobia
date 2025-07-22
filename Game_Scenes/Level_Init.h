@@ -112,7 +112,7 @@ void Unload_Intro_Level_Assets()
 	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Door_5_Open.anim").Animation);
 	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Vent_Damage.anim").Animation);
 	Cache::Remove_From_Animation_Cache(Pull_Animation("Assets/Animations/Intro_Level/Vent_Remove.anim").Animation);
-}
+}*/
 
 void Unload_Test_Tunnel_Assets()
 {
@@ -122,7 +122,7 @@ void Unload_Test_Tunnel_Assets()
 	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Frame.obj");
 	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Exit_Door.obj");
 	Cache::Remove_From_Mesh_Cache("Assets/Models/Intro_Tunnel/Tunnel.obj");
-}*/
+}
 
 void Load_Intro_Level_Assets()
 {
@@ -132,7 +132,7 @@ void Load_Intro_Level_Assets()
 
 	Decal_Particles.Particles.Particles_Data.clear();
 
-	Context_Interface::Loading_Progress_Total = 36;
+	Context_Interface::Loading_Progress_Total = 39;
 
 	Push_Merged_Material_Textures();
 
@@ -145,12 +145,15 @@ void Load_Intro_Level_Assets()
 	Pull_Animation<THREADED>("Assets/Animations/Intro_Level/Vent_Remove.anim");
 
 	Pull_Animation<THREADED>("Assets/Animations/Murderer_Idle.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Murderer_Step.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Murderer_Attack_0.anim");
+	Pull_Animation<THREADED>("Assets/Animations/Murderer_Attack_1.anim");
 
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Toilets.obj", LOAD_MESH_OBJ_BIT);
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Tables.obj", LOAD_MESH_OBJ_BIT);
 	Pull_Mesh<THREADED>("Assets/Models/Intro_Level/Heaters.obj", LOAD_MESH_OBJ_BIT);
 
-	Pull_Texture<THREADED>("Assets/Textures/Shelf_things.png");
+	Pull_Texture<THREADED>("Assets/Textures/Shelf_Things.png");
 	Pull_Texture<THREADED>("Assets/Textures/Stromkasten.png");
 	Pull_Texture<THREADED>("Assets/Textures/Toilet_Texture.png");
 
@@ -331,7 +334,7 @@ void Setup_Intro_Tunnel()
 
 	Lighting_BVH::Load_BVH_Tree_Corrections("Assets/Light_Occluders/Tunnel_Corrections.txt");
 
-	Initialise_Pistol_Flashlight();
+	Initialise_Player_Flashlight();
 
 	Audio::Set_Music_Tracks_For_Deletion(); // This stops any music currently playing
 	Audio::Create_Music_Source(Pull_Audio("Assets/Audio/Music/Falling_Shepard_Tone.wav").Source); // This plays the loaded ambience track
@@ -441,7 +444,7 @@ void Setup_Intro_Level()
 
 	Scene_Models.push_back(new Model({ MF_CAST_SHADOWS, MF_USE_DECALS }, Object_Material::Metal));
 	Scene_Models.back()->Position = glm::vec3(0, 0, 0);
-	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Shelf_Objects.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Shelf_things.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
+	Create_Model(Pull_Mesh("Assets/Models/Intro_Level/Shelf_Objects.obj", LOAD_MESH_OBJ_BIT).Vertex_Buffer, Pull_Texture("Assets/Textures/Shelf_Things.png").Texture, Pull_Texture("Black").Texture, Scene_Models.back(), new Controller(), std::vector<Hitbox*>{});
 
 	//
 
@@ -658,7 +661,7 @@ void Setup_Intro_Level()
 
 	Lighting_BVH::Load_BVH_Tree_Corrections("Assets/Light_Occluders/Intro_Level_Corrections.txt");
 
-	Initialise_Pistol_Flashlight();
+	Initialise_Player_Flashlight();
 
 	//
 

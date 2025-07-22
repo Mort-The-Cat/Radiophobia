@@ -15,6 +15,13 @@ class Test_Enemy_Controller : public Damageable_Controller
 public:
 	Mesh_Animator Animator;
 
+	~Test_Enemy_Controller()
+	{
+		// When we delete this object, we want to free the animated model object
+
+		Object->Mesh.Delete_Buffer();
+	}
+
 	Test_Enemy_Controller(float Healthp)
 	{ 
 		Health = Healthp; 
